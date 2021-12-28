@@ -1,4 +1,4 @@
-module Piece (Piece, PieceType, PieceColour) where
+module Piece (Piece, PieceType(King, Queen, Rook, Bishop, Knight, Pawn), PieceColour(White, Black)) where
 import Data.Char (toUpper, toLower)
 
 data PieceColour = White | Black deriving Eq

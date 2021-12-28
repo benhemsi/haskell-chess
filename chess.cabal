@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      Moves
       Piece
       Square
   other-modules:
@@ -32,7 +33,10 @@ library
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      adjunctions
+    , array
+    , base >=4.7 && <5
+    , distributive
   default-language: Haskell2010
 
 executable chess-exe
@@ -43,8 +47,11 @@ executable chess-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      adjunctions
+    , array
+    , base >=4.7 && <5
     , chess
+    , distributive
   default-language: Haskell2010
 
 test-suite chess-test
@@ -56,6 +63,9 @@ test-suite chess-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      adjunctions
+    , array
+    , base >=4.7 && <5
     , chess
+    , distributive
   default-language: Haskell2010
