@@ -24,6 +24,7 @@ dependencies:
 - array
 - adjunctions
 - distributive
+- hspec
 
 library:
   source-dirs: src
