@@ -23,8 +23,12 @@ dependencies:
 - base >= 4.7 && < 5
 - array
 - adjunctions
+- containers
 - distributive
 - hspec
+- raw-strings-qq
+- regex-compat
+- mtl
 
 library:
   source-dirs: src
