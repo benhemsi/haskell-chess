@@ -26,6 +26,7 @@ dependencies:
 - containers
 - distributive
 - hspec
+- QuickCheck
 - raw-strings-qq
 - regex-compat
 - mtl

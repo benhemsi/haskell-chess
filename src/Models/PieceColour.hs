@@ -2,7 +2,7 @@ module Models.PieceColour (PieceColour (White, Black)) where
 
 import Text.Read
 
-data PieceColour = White | Black deriving (Eq)
+data PieceColour = White | Black deriving (Eq, Enum)
 
 instance Show PieceColour where
   show White = "w"

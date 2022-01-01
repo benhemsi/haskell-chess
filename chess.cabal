@@ -40,7 +40,8 @@ library
   hs-source-dirs:
       src
   build-depends:
-      adjunctions
+      QuickCheck
+    , adjunctions
     , array
     , base >=4.7 && <5
     , containers
@@ -59,7 +60,8 @@ executable chess-exe
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      adjunctions
+      QuickCheck
+    , adjunctions
     , array
     , base >=4.7 && <5
     , chess
@@ -83,7 +85,8 @@ test-suite chess-test
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      adjunctions
+      QuickCheck
+    , adjunctions
     , array
     , base >=4.7 && <5
     , chess

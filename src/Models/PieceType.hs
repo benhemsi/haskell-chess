@@ -2,7 +2,7 @@ module Models.PieceType (PieceType (King, Queen, Rook, Bishop, Knight, Pawn)) wh
 
 import Text.Read
 
-data PieceType = King | Queen | Rook | Bishop | Knight | Pawn deriving (Eq)
+data PieceType = King | Queen | Rook | Bishop | Knight | Pawn deriving (Eq, Enum, Bounded)
 
 instance Show PieceType where
   show King = "K"
