@@ -1,9 +1,9 @@
 module MovesSpec where
-import Moves
 
-import Models.Square
 import Models.File
 import Models.Rank
+import Models.Square
+import Moves
 import Test.Hspec
 
 spec = do
@@ -15,33 +15,33 @@ spec = do
   describe "rookMoves" $ do
     it "correctly calculate the north and east moves" $ do
       let moves = flattenRookMoves (rookMoves (emptyBoardMoves (square Fa R1)))
-      map (show . end) moves `shouldMatchList` map (("a" ++) . show) [2..8] ++ map (: "1") ['b'..'h']
+      map (show . end) moves `shouldMatchList` map (("a" ++) . show) [2 .. 8] ++ map (: "1") ['b' .. 'h']
 
     it "correctly calculate the south and west moves" $ do
       let moves = flattenRookMoves (rookMoves (emptyBoardMoves (square Fh R8)))
-      map (show . end) moves `shouldMatchList` map (("h" ++) . show) [1..7] ++ map (: "8") ['a'..'g']
+      map (show . end) moves `shouldMatchList` map (("h" ++) . show) [1 .. 7] ++ map (: "8") ['a' .. 'g']
 
   describe "bishopMoves" $ do
     it "correctly calculate the northEast diagonal" $ do
       let moves = flattenBishopMoves (bishopMoves (emptyBoardMoves (square Fa R1)))
-      map (show . end) moves `shouldMatchList` zipWith (\ f r -> f : show r) ['b'..'h'] [2..8]
+      map (show . end) moves `shouldMatchList` zipWith (\f r -> f : show r) ['b' .. 'h'] [2 .. 8]
 
     it "correctly calculate the southEast diagonal" $ do
       let moves = flattenBishopMoves (bishopMoves (emptyBoardMoves (square Fa R8)))
-      map (show . end) moves `shouldMatchList` zipWith (\ f r -> f : show r) ['b'..'h'] (reverse [1..7])
+      map (show . end) moves `shouldMatchList` zipWith (\f r -> f : show r) ['b' .. 'h'] (reverse [1 .. 7])
 
     it "correctly calculate the southWest diagonal" $ do
       let moves = flattenBishopMoves (bishopMoves (emptyBoardMoves (square Fh R8)))
-      map (show . end) moves `shouldMatchList` zipWith (\ f r -> f : show r) ['a'..'g'] [1..7]
+      map (show . end) moves `shouldMatchList` zipWith (\f r -> f : show r) ['a' .. 'g'] [1 .. 7]
 
     it "correctly calculate the northWest diagonal" $ do
       let moves = flattenBishopMoves (bishopMoves (emptyBoardMoves (square Fh R1)))
-      map (show . end) moves `shouldMatchList` zipWith (\ f r -> f : show r) (reverse ['a'..'g']) [2..8]
+      map (show . end) moves `shouldMatchList` zipWith (\f r -> f : show r) (reverse ['a' .. 'g']) [2 .. 8]
 
   describe "queenMoves" $ do
     it "correctly combine rook and bishop moves" $ do
       let moves = flattenQueenMoves (queenMoves (emptyBoardMoves (square Fa R1)))
-      map (show . end) moves `shouldMatchList` map (("a" ++) . show) [2..8] ++ map (: "1") ['b'..'h'] ++ zipWith (\ f r -> f : show r) ['b'..'h'] [2..8]
+      map (show . end) moves `shouldMatchList` map (("a" ++) . show) [2 .. 8] ++ map (: "1") ['b' .. 'h'] ++ zipWith (\f r -> f : show r) ['b' .. 'h'] [2 .. 8]
 
   describe "knightMoves" $ do
     it "correctly calculate the knight jumps" $ do

@@ -75,6 +75,8 @@ test-suite chess-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Models.PieceColourSpec
+      Models.PieceTypeSpec
       MovesSpec
       Paths_chess
   hs-source-dirs:

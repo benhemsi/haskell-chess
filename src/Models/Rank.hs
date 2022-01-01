@@ -1,8 +1,10 @@
-module Models.Rank (
-    Rank (R1, R2, R3, R4, R5, R6, R7, R8),
+module Models.Rank
+  ( Rank (R1, R2, R3, R4, R5, R6, R7, R8),
     predRank,
     succRank,
-                   ) where
+  )
+where
+
 import Data.Ix
 
 data Rank = R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 deriving (Enum, Eq, Ord, Ix)
@@ -24,4 +26,3 @@ predRank rank = case rank of
 succRank rank = case rank of
   R8 -> R8
   _ -> succ rank
-

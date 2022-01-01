@@ -1,23 +1,21 @@
-module Models.PieceColour (PieceColour(White, Black)) where
-import Text.Read
-import Text.ParserCombinators.ReadPrec 
+module Models.PieceColour (PieceColour (White, Black)) where
 
-data PieceColour = White | Black deriving Eq
+import Text.Read
+
+data PieceColour = White | Black deriving (Eq)
 
 instance Show PieceColour where
   show White = "w"
   show Black = "b"
 
-readPieceColour :: Char -> PieceColour
-readPieceColour 'w' = White
-readPieceColour 'b' = Black
-readPieceColour c = error (c : " is an invalid piece colour. Use w or b.")
-
 instance Read PieceColour where
   readPrec =
-    prec
-      0
-      ( do
-          Char x <- lexP
-          return (readPieceColour x)
-      )
+    do
+      Ident s <- lexP
+      case s of
+        "w" -> return White
+        "b" -> return Black
+        _ -> pfail
+
+  readListPrec = readListPrecDefault
+  readList = readListDefault

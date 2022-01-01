@@ -1,6 +1,5 @@
 module Models.Square
-  ( 
-    Square,
+  ( Square,
     square,
     square',
     file,
@@ -8,13 +7,18 @@ module Models.Square
     getRange,
   )
 where
+
 import Data.Ix
 import Data.List (elemIndex)
 import Models.File
 import Models.Rank
 
-data Square = Square { file :: File, rank :: Rank } deriving Eq
+data Square = Square {file :: File, rank :: Rank} deriving (Eq)
+
+square :: File -> Rank -> Square
 square = Square
+
+square' :: Rank -> File -> Square
 square' = flip square
 
 instance Show Square where
@@ -35,7 +39,7 @@ instance Bounded Square where
   maxBound = Square Fh R8
 
 instance Ix Square where
-  range (minSq, maxSq) = [minSq..maxSq]
+  range (minSq, maxSq) = [minSq .. maxSq]
   index (minSq, maxSq) s =
     case elemIndex s (range (minSq, maxSq)) of
       Just i -> i

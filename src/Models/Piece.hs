@@ -1,9 +1,10 @@
 module Models.Piece (Piece, pieceColour, pieceType) where
-import Models.PieceType (PieceType)
-import Models.PieceColour
-import Data.Char (toUpper, toLower)
 
-data Piece = Piece { pieceColour :: PieceColour, pieceType :: PieceType } deriving Eq
+import Data.Char (toLower, toUpper)
+import Models.PieceColour
+import Models.PieceType (PieceType)
+
+data Piece = Piece {pieceColour :: PieceColour, pieceType :: PieceType} deriving (Eq)
 
 instance Show Piece where
   show (Piece pieceColour pieceType) =
