@@ -1,6 +1,9 @@
 module MovesSpec where
 import Moves
-import Square
+
+import Models.Square
+import Models.File
+import Models.Rank
 import Test.Hspec
 
 spec = do

@@ -1,13 +1,9 @@
-module PieceList where
+module Models.PieceList where
 import Data.Set (Set, fromList)
-import Piece
-import Square (Square)
-
-data PieceOnSquare =
-  PieceOnSquare
-    { piece :: Piece,
-      square :: Square
-    }
+import Models.PieceColour
+import Models.Piece
+import Models.PieceOnSquare (PieceOnSquare, piece, square)
+import Models.Square (Square)
 
 type PieceList = [PieceOnSquare]
 

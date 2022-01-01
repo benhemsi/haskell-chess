@@ -19,8 +19,10 @@ module Moves
     flattenQueenMoves,
   )
 where
-import Square
-import Piece
+import Models.Square
+import Models.File
+import Models.Rank
+import Models.Piece
 import Data.Ix (range)
 import Data.Array (Array, array, (!))
 

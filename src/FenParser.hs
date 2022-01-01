@@ -1,9 +1,10 @@
 {-# LANGUAGE QuasiQuotes #-}
 
 module FenParser where
-import Piece
-import PieceList
-import Square (Square)
+import Models.Piece
+import Models.PieceColour
+import Models.PieceList
+import Models.Square (Square)
 import Moves
 import Text.Regex
 import Text.RawString.QQ (r)
