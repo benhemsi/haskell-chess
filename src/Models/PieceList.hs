@@ -1,7 +1,7 @@
 module Models.PieceList where
 import Data.Set (Set, fromList)
 import Models.PieceColour
-import Models.Piece
+import Models.Piece hiding (piece)
 import Models.PieceOnSquare (PieceOnSquare, piece, square)
 import Models.Square (Square)
 
