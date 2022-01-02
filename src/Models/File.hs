@@ -1,8 +1,10 @@
-module Models.File (
-  File (Fa, Fb, Fc, Fd, Fe, Ff, Fg, Fh),
-  predFile,
-  succFile,
-                   ) where
+module Models.File
+  ( File (Fa, Fb, Fc, Fd, Fe, Ff, Fg, Fh),
+    predFile,
+    succFile,
+  )
+where
+
 import Data.Ix
 
 data File = Fa | Fb | Fc | Fd | Fe | Ff | Fg | Fh deriving (Enum, Eq, Ord, Ix)
@@ -24,4 +26,3 @@ predFile file = case file of
 succFile file = case file of
   Fh -> Fh
   _ -> succ file
-

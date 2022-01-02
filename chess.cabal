@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       FenParser
+      Models.CastlingPrivileges
       Models.File
       Models.Piece
       Models.PieceColour
@@ -47,9 +48,8 @@ library
     , containers
     , distributive
     , hspec
-    , mtl
     , raw-strings-qq
-    , regex-compat
+    , regex-tdfa
   default-language: Haskell2010
 
 executable chess-exe
@@ -68,15 +68,15 @@ executable chess-exe
     , containers
     , distributive
     , hspec
-    , mtl
     , raw-strings-qq
-    , regex-compat
+    , regex-tdfa
   default-language: Haskell2010
 
 test-suite chess-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Models.CastlingPrivilegesSpec
       Models.PieceColourSpec
       Models.PieceSpec
       Models.PieceTypeSpec
@@ -94,7 +94,6 @@ test-suite chess-test
     , containers
     , distributive
     , hspec
-    , mtl
     , raw-strings-qq
-    , regex-compat
+    , regex-tdfa
   default-language: Haskell2010

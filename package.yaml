@@ -28,8 +28,8 @@ dependencies:
 - hspec
 - QuickCheck
 - raw-strings-qq
-- regex-compat
-- mtl
+- regex-tdfa
+# - mtl
 
 library:
   source-dirs: src
