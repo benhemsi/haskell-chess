@@ -1,13 +1,10 @@
 module Models.SquareSpec where
 
+import Models.ArbitraryInstances
 import Models.Square
 import Test.Hspec
 import Test.Hspec.QuickCheck
-import Test.QuickCheck
 import Text.Read
-
-instance Arbitrary Square where
-  arbitrary = chooseEnum (minBound, maxBound)
 
 spec = do
   describe "read" $ do

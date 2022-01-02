@@ -29,7 +29,7 @@ dependencies:
 - QuickCheck
 - raw-strings-qq
 - regex-tdfa
-# - mtl
+- split
 
 library:
   source-dirs: src

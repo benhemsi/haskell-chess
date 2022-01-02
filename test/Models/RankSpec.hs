@@ -1,13 +1,10 @@
 module Models.RankSpec where
 
+import Models.ArbitraryInstances
 import Models.Rank
 import Test.Hspec
 import Test.Hspec.QuickCheck
-import Test.QuickCheck
 import Text.Read
-
-instance Arbitrary Rank where
-  arbitrary = chooseEnum (minBound, maxBound)
 
 spec = do
   describe "read" $ do

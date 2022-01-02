@@ -1,13 +1,10 @@
 module Models.FileSpec where
 
+import Models.ArbitraryInstances
 import Models.File
 import Test.Hspec
 import Test.Hspec.QuickCheck
-import Test.QuickCheck
 import Text.Read
-
-instance Arbitrary File where
-  arbitrary = chooseEnum (minBound, maxBound)
 
 spec = do
   describe "read" $ do

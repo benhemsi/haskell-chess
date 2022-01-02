@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       FenParser
+      Models.ArbitraryInstances
       Models.CastlingPrivileges
       Models.File
       Models.Piece
@@ -50,6 +51,7 @@ library
     , hspec
     , raw-strings-qq
     , regex-tdfa
+    , split
   default-language: Haskell2010
 
 executable chess-exe
@@ -70,6 +72,7 @@ executable chess-exe
     , hspec
     , raw-strings-qq
     , regex-tdfa
+    , split
   default-language: Haskell2010
 
 test-suite chess-test
@@ -79,6 +82,7 @@ test-suite chess-test
       Models.CastlingPrivilegesSpec
       Models.FileSpec
       Models.PieceColourSpec
+      Models.PieceOnSquareSpec
       Models.PieceSpec
       Models.PieceTypeSpec
       Models.RankSpec
@@ -99,4 +103,5 @@ test-suite chess-test
     , hspec
     , raw-strings-qq
     , regex-tdfa
+    , split
   default-language: Haskell2010

@@ -3,22 +3,11 @@
 {-# HLINT ignore "Use <$>" #-}
 module Models.CastlingPrivilegesSpec where
 
+import Models.ArbitraryInstances
 import Models.CastlingPrivileges
 import Test.Hspec
 import Test.Hspec.QuickCheck
-import Test.QuickCheck
 import Text.Read
-
-makeBool :: Gen Bool
-makeBool = chooseEnum (True, False)
-
-instance Arbitrary CastlingPrivileges where
-  arbitrary = do
-    wk <- makeBool
-    wq <- makeBool
-    bk <- makeBool
-    bq <- makeBool
-    return (castlingPrivileges wk wq bk bq)
 
 spec = do
   describe "read" $ do

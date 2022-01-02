@@ -1,13 +1,10 @@
 module Models.PieceColourSpec where
 
+import Models.ArbitraryInstances
 import Models.PieceColour
 import Test.Hspec
 import Test.Hspec.QuickCheck
-import Test.QuickCheck
 import Text.Read
-
-instance Arbitrary PieceColour where
-  arbitrary = chooseEnum (White, Black)
 
 spec = do
   describe "read" $ do
