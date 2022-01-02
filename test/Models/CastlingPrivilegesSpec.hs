@@ -20,11 +20,15 @@ instance Arbitrary CastlingPrivileges where
     bq <- makeBool
     return (CastlingPrivileges wk wq bk bq)
 
--- spec = do
---   describe "read" $ do
---     it "is inverse to show" $
---       verboseCheck (\x -> (read . show) x `shouldBe` (x :: CastlingPrivileges))
+spec = do
+  describe "read" $ do
+    prop "is inverse to show" $
+      \x -> (read . show) x `shouldBe` (x :: CastlingPrivileges)
 
---     it "throw an error for anything else" $ do
---       let result = readMaybe "wb" :: Maybe CastlingPrivileges
---       result `shouldBe` Nothing
+    it "throw an error when the castling privileges are in the wrong order" $ do
+      let result = readMaybe "kK" :: Maybe CastlingPrivileges
+      result `shouldBe` Nothing
+
+    it "throw an error for an incorrect string" $ do
+      let result = readMaybe "a" :: Maybe CastlingPrivileges
+      result `shouldBe` Nothing

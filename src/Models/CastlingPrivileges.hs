@@ -1,5 +1,8 @@
+{-# LANGUAGE QuasiQuotes #-}
+
 module Models.CastlingPrivileges where
 
+import Text.RawString.QQ (r)
 import Text.Read
 import Text.Regex.TDFA
 
@@ -14,13 +17,18 @@ instance Show CastlingPrivileges where
       [] -> "-"
       s -> s
 
-regexMatch :: String -> String
-regexMatch s = s =~ "((K?Q?k?q)|-)"
+regexMatch :: String -> Bool
+regexMatch s = s =~ [r|^(-|(K?Q?k?q?))$|]
 
--- instance Read CastlingPrivileges where
---   readPrec = do
---     Ident s <- lexP
---     case regexMatch s do 
---       "-" -> CastlingPrivileges False False False False 
-      
---     return (CastlingPrivileges ('K' `elem` s) ('Q' `elem` s) ('k' `elem` s) ('q' `elem` s))
+instance Read CastlingPrivileges where
+  readPrec =
+    ( do
+        Symbol "-" <- lexP
+        return (CastlingPrivileges False False False False)
+    )
+      +++ ( do
+              Ident s <- lexP
+              if regexMatch s
+                then return (CastlingPrivileges ('K' `elem` s) ('Q' `elem` s) ('k' `elem` s) ('q' `elem` s))
+                else pfail
+          )
