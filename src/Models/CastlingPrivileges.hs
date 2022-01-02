@@ -1,6 +1,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 
-module Models.CastlingPrivileges where
+module Models.CastlingPrivileges (CastlingPrivileges (whiteKingSide, whiteQueenSide, blackKingSide, blackQueenSide), castlingPrivileges) where
 
 import Text.RawString.QQ (r)
 import Text.Read
@@ -10,6 +10,8 @@ data CastlingPrivileges = CastlingPrivileges
   { whiteKingSide, whiteQueenSide, blackKingSide, blackQueenSide :: Bool
   }
   deriving (Eq)
+
+castlingPrivileges = CastlingPrivileges
 
 instance Show CastlingPrivileges where
   show (CastlingPrivileges wk wq bk bq) =
@@ -32,3 +34,6 @@ instance Read CastlingPrivileges where
                 then return (CastlingPrivileges ('K' `elem` s) ('Q' `elem` s) ('k' `elem` s) ('q' `elem` s))
                 else pfail
           )
+
+  readListPrec = readListPrecDefault
+  readList = readListDefault

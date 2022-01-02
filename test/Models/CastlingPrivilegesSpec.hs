@@ -18,7 +18,7 @@ instance Arbitrary CastlingPrivileges where
     wq <- makeBool
     bk <- makeBool
     bq <- makeBool
-    return (CastlingPrivileges wk wq bk bq)
+    return (castlingPrivileges wk wq bk bq)
 
 spec = do
   describe "read" $ do

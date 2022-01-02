@@ -6,8 +6,9 @@ module Models.File
 where
 
 import Data.Ix
+import Text.Read
 
-data File = Fa | Fb | Fc | Fd | Fe | Ff | Fg | Fh deriving (Enum, Eq, Ord, Ix)
+data File = Fa | Fb | Fc | Fd | Fe | Ff | Fg | Fh deriving (Bounded, Enum, Eq, Ord, Ix)
 
 instance Show File where
   show Fa = "a"
@@ -18,6 +19,24 @@ instance Show File where
   show Ff = "f"
   show Fg = "g"
   show Fh = "h"
+
+instance Read File where
+  readPrec =
+    do
+      Ident s <- lexP
+      case s of
+        "a" -> return Fa
+        "b" -> return Fb
+        "c" -> return Fc
+        "d" -> return Fd
+        "e" -> return Fe
+        "f" -> return Ff
+        "g" -> return Fg
+        "h" -> return Fh
+        _ -> pfail
+
+  readListPrec = readListPrecDefault
+  readList = readListDefault
 
 predFile file = case file of
   Fa -> Fa

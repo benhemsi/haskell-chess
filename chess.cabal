@@ -77,9 +77,12 @@ test-suite chess-test
   main-is: Spec.hs
   other-modules:
       Models.CastlingPrivilegesSpec
+      Models.FileSpec
       Models.PieceColourSpec
       Models.PieceSpec
       Models.PieceTypeSpec
+      Models.RankSpec
+      Models.SquareSpec
       MovesSpec
       Paths_chess
   hs-source-dirs:

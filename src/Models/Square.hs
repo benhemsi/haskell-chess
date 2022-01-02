@@ -12,6 +12,7 @@ import Data.Ix
 import Data.List (elemIndex)
 import Models.File
 import Models.Rank
+import Text.Read
 
 data Square = Square {file :: File, rank :: Rank} deriving (Eq)
 
@@ -23,6 +24,19 @@ square' = flip square
 
 instance Show Square where
   show (Square file rank) = show file ++ show rank
+
+instance Read Square where
+  readPrec =
+    do
+      Ident (f : r) <- lexP
+      let file = readMaybe [f]
+          rank = readMaybe r
+      case (file, rank) of
+        (Just f', Just r') -> return (Square f' r')
+        _ -> pfail
+
+  readListPrec = readListPrecDefault
+  readList = readListDefault
 
 instance Enum Square where
   toEnum i =
