@@ -7,7 +7,6 @@ import Models.CastlingPrivileges
 import Models.File
 import Models.Piece
 import Models.PieceColour
-import Models.PieceList
 import Models.PieceOnSquare hiding (piece)
 import Models.PieceType
 import Models.Rank

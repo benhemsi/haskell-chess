@@ -27,11 +27,12 @@ library
   exposed-modules:
       FenParser
       Models.ArbitraryInstances
+      Models.Board
       Models.CastlingPrivileges
+      Models.EvaluationBoard
       Models.File
       Models.Piece
       Models.PieceColour
-      Models.PieceList
       Models.PieceOnSquare
       Models.PieceType
       Models.Rank
