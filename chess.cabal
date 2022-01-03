@@ -31,13 +31,20 @@ library
       Models.CastlingPrivileges
       Models.EvaluationBoard
       Models.File
+      Models.Move
       Models.Piece
       Models.PieceColour
       Models.PieceOnSquare
       Models.PieceType
       Models.Rank
       Models.Square
-      Moves
+      Move.BishopMoves
+      Move.KingMoves
+      Move.KnightMoves
+      Move.PawnMoves
+      Move.PieceMoves
+      Move.QueenMoves
+      Move.RookMoves
   other-modules:
       Paths_chess
   hs-source-dirs:
@@ -88,7 +95,7 @@ test-suite chess-test
       Models.PieceTypeSpec
       Models.RankSpec
       Models.SquareSpec
-      MovesSpec
+      Move.PieceMovesSpec
       Paths_chess
   hs-source-dirs:
       test

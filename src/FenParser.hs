@@ -7,7 +7,6 @@ import Models.Piece
 import Models.PieceColour
 import Models.PieceOnSquare (PieceList)
 import Models.Square (Square)
-import Moves
 import Text.ParserCombinators.ReadPrec
 import Text.RawString.QQ (r)
 import Text.Read
