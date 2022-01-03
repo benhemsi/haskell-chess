@@ -1,5 +1,6 @@
 module Move.KingMoves where
 
+import qualified Data.Set as Set
 import Models.File
 import Models.Move
 import Models.Rank
@@ -21,3 +22,6 @@ emptyBoardMoves start =
           let endSq = square f r,
           endSq /= start
       ]
+
+validMoves :: KingMoves -> Squares -> Moves
+validMoves kingMoves likeOccupiedSquares = filter (\move -> end move `Set.member` likeOccupiedSquares) kingMoves

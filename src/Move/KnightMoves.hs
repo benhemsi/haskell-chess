@@ -1,5 +1,6 @@
 module Move.KnightMoves where
 
+import qualified Data.Set as Set
 import Models.Move
 import Models.Square
 
@@ -18,3 +19,6 @@ emptyBoardMoves start =
           f >= 0 && f <= 8,
           r >= 0 && r <= 8
       ]
+
+validMoves :: KnightMoves -> Squares -> Moves
+validMoves knightMoves likeOccupiedSquares = filter (\move -> end move `Set.member` likeOccupiedSquares) knightMoves

@@ -1,5 +1,6 @@
 module Move.PawnMoves where
 
+import qualified Data.Set as Set
 import Models.File
 import Models.Move
 import Models.Rank
@@ -22,3 +23,12 @@ emptyBoardMoves start =
                 takeRightBlack = [Move start (square (succ startFile) (pred startRank)) | startFile /= Fh]
              in PawnMoves (forwardWhite : takeLeftWhite ++ takeRightWhite) (forwardBlack : takeLeftBlack ++ takeRightBlack)
       )
+
+validMoves :: PawnMoves -> Squares -> Squares -> PawnMoves
+validMoves pawnMoves whiteOccupiedSquares blackOccupiedSquares = PawnMoves (filterMoves (white pawnMoves) blackOccupiedSquares) (filterMoves (black pawnMoves) whiteOccupiedSquares)
+  where
+    filterMoves :: Moves -> Squares -> Moves
+    filterMoves moves oppoOccupiedSquares =
+      case moves of
+        (forward : takeMoves) -> forward : filter (\move -> end move `Set.member` oppoOccupiedSquares) takeMoves
+        [] -> []

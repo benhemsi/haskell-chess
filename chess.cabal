@@ -31,9 +31,11 @@ library
       Models.CastlingPrivileges
       Models.EvaluationBoard
       Models.File
+      Models.FullPieceList
       Models.Move
       Models.Piece
       Models.PieceColour
+      Models.PieceList
       Models.PieceOnSquare
       Models.PieceType
       Models.Rank

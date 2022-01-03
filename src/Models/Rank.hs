@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Models.Rank
   ( Rank (R1, R2, R3, R4, R5, R6, R7, R8),
     predRank,
@@ -5,11 +7,12 @@ module Models.Rank
   )
 where
 
+import Data.Data
 import Data.Ix
 import Text.Read
 import Text.Read.Lex (numberToInteger)
 
-data Rank = R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 deriving (Bounded, Enum, Eq, Ord, Ix)
+data Rank = R1 | R2 | R3 | R4 | R5 | R6 | R7 | R8 deriving (Bounded, Enum, Eq, Ord, Ix, Data, Typeable)
 
 instance Show Rank where
   show R1 = "1"

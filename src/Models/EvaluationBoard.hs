@@ -1,5 +1,5 @@
 module Models.EvaluationBoard where
 
-import Models.PieceOnSquare (PieceList)
+import Models.PieceList
 
 data EvaluationSquare = EvaluationSquare {whiteAttackers, blackAttackers :: PieceList}

@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-deferred-out-of-scope-variables #-}
 
-module Models.PieceOnSquare (PieceOnSquare, PieceList, piece, square, pieceOnSquare) where
+module Models.PieceOnSquare (PieceOnSquare, piece, square, pieceOnSquare) where
 
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
@@ -13,8 +13,6 @@ data PieceOnSquare = PieceOnSquare
     square :: Square
   }
   deriving (Eq)
-
-type PieceList = [PieceOnSquare]
 
 pieceOnSquare :: Piece -> Square -> PieceOnSquare
 pieceOnSquare = PieceOnSquare

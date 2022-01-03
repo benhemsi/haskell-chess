@@ -1,11 +1,16 @@
+{-# LANGUAGE DeriveDataTypeable #-}
 module Move.BishopMoves where
 
 import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Models.PieceList
+import qualified Data.Set as Set
+import qualified Models.PieceOnSquare as POS
+import Data.Data
 
-data BishopMoves = BishopMoves {northEast, southEast, southWest, northWest :: Moves} deriving (Show)
+data BishopMoves = BishopMoves {northEast, southEast, southWest, northWest :: Moves} deriving (Show, Data, Typeable)
 
 emptyBoardMoves :: Square -> BishopMoves
 emptyBoardMoves start = BishopMoves northEast southEast southWest northWest
@@ -28,3 +33,7 @@ emptyBoardMoves start = BishopMoves northEast southEast southWest northWest
 
 flattenMoves :: BishopMoves -> Moves
 flattenMoves bishopMoves = northEast bishopMoves ++ southEast bishopMoves ++ southWest bishopMoves ++ northWest bishopMoves
+
+validMoves :: BishopMoves -> Squares -> Squares -> Moves
+validMoves bishopMoves likeOccupiedSquares oppoOccupiedSquares = flattenMoves filteredBishopMoves where
+  filteredBishopMoves = filterSlidingPieceMoves bishopMoves likeOccupiedSquares oppoOccupiedSquares

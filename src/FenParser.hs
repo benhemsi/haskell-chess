@@ -5,7 +5,7 @@ module FenParser where
 import Models.CastlingPrivileges
 import Models.Piece
 import Models.PieceColour
-import Models.PieceOnSquare (PieceList)
+import Models.PieceList
 import Models.Square (Square)
 import Text.ParserCombinators.ReadPrec
 import Text.RawString.QQ (r)

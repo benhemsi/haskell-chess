@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Models.File
   ( File (Fa, Fb, Fc, Fd, Fe, Ff, Fg, Fh),
     predFile,
@@ -5,10 +7,11 @@ module Models.File
   )
 where
 
+import Data.Data
 import Data.Ix
 import Text.Read
 
-data File = Fa | Fb | Fc | Fd | Fe | Ff | Fg | Fh deriving (Bounded, Enum, Eq, Ord, Ix)
+data File = Fa | Fb | Fc | Fd | Fe | Ff | Fg | Fh deriving (Bounded, Enum, Eq, Ord, Ix, Data, Typeable)
 
 instance Show File where
   show Fa = "a"

@@ -1,5 +1,8 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Models.Square
   ( Square,
+    Squares,
     square,
     square',
     file,
@@ -8,13 +11,17 @@ module Models.Square
   )
 where
 
+import Data.Data
 import Data.Ix
 import Data.List (elemIndex)
+import qualified Data.Set as Set
 import Models.File
 import Models.Rank
 import Text.Read
 
-data Square = Square {file :: File, rank :: Rank} deriving (Eq)
+data Square = Square {file :: File, rank :: Rank} deriving (Eq, Data, Typeable)
+
+type Squares = Set.Set Square
 
 square :: File -> Rank -> Square
 square = Square

@@ -12,3 +12,7 @@ emptyBoardMoves start = QueenMoves (R.emptyBoardMoves start) (B.emptyBoardMoves 
 
 flattenMoves :: QueenMoves -> Moves
 flattenMoves queenMoves = R.flattenMoves (rook queenMoves) ++ B.flattenMoves (bishop queenMoves)
+
+validMoves :: QueenMoves -> Squares -> Squares -> Moves
+validMoves queenMoves likeOccupiedSquares oppoOccupiedSquares =
+  R.validMoves (rook queenMoves) likeOccupiedSquares oppoOccupiedSquares ++ B.validMoves (bishop queenMoves) likeOccupiedSquares oppoOccupiedSquares
