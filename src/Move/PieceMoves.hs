@@ -59,5 +59,5 @@ validMoves (PieceOnSquare (Piece colour pieceT) start) fullPL = pieceMoves
 pieceListMoves :: PieceColour -> FullPieceList -> Moves
 pieceListMoves colour fullPL =
   case colour of
-    White -> whitePieces fullPL >>= (\pos -> validMoves pos fullPL)
-    Black -> blackPieces fullPL >>= (\pos -> validMoves pos fullPL)
+    White -> whitePieces fullPL >>= (`validMoves` fullPL)
+    Black -> blackPieces fullPL >>= (`validMoves` fullPL)

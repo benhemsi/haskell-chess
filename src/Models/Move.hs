@@ -8,8 +8,13 @@ import Models.PieceList (PieceList)
 import qualified Models.PieceOnSquare as POS
 import Models.Square
 import Data.Maybe (fromJust)
+import Models.Piece
 
-data Move = Move {start, end :: Square} deriving (Eq, Show, Data, Typeable)
+data Move = Move {start, end :: Square} 
+  | PawnPromotion Move Piece
+  | EnPassent Move Piece
+  | Castle Move Move
+  deriving (Eq, Show, Data, Typeable)
 
 type Moves = [Move]
 

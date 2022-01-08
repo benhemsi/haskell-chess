@@ -19,7 +19,7 @@ instance Arbitrary CastlingPrivileges where
     wq <- arbitrary
     bk <- arbitrary
     bq <- arbitrary
-    return (castlingPrivileges wk wq bk bq)
+    return (CastlingPrivileges wk wq bk bq)
 
 instance Arbitrary File where
   arbitrary = chooseEnum (minBound, maxBound)

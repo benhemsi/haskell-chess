@@ -6,10 +6,10 @@ import Models.Square
 
 data FullPieceList = FullPieceList
   { whitePieces, blackPieces :: PieceList,
-    whiteOccupiedSquares, blackOccupiedSquares :: Squares
+    whiteOccupiedSquares, blackOccupiedSquares, whiteAttackedSquares, blackAttackedSquares :: Squares
   }
 
 getPieceList :: PieceColour -> FullPieceList -> PieceList
-getPieceList colour = case colour of 
-                        White -> whitePieces
-                        Black -> blackPieces
+getPieceList colour = case colour of
+  White -> whitePieces
+  Black -> blackPieces

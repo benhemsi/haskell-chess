@@ -1,8 +1,11 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Models.PieceType (PieceType (..)) where
 
+import Data.Data
 import Text.Read
 
-data PieceType = King | Queen | Rook | Bishop | Knight | Pawn deriving (Eq, Enum, Bounded)
+data PieceType = King | Queen | Rook | Bishop | Knight | Pawn deriving (Eq, Enum, Bounded, Data, Typeable)
 
 instance Show PieceType where
   show King = "K"

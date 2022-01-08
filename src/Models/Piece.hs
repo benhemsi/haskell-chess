@@ -1,11 +1,14 @@
+{-# LANGUAGE DeriveDataTypeable #-}
+
 module Models.Piece (Piece (..)) where
 
 import Data.Char (isUpper, toLower, toUpper)
+import Data.Data
 import Models.PieceColour
 import Models.PieceType
 import Text.Read
 
-data Piece = Piece {pieceColour :: PieceColour, pieceType :: PieceType} deriving (Eq)
+data Piece = Piece {pieceColour :: PieceColour, pieceType :: PieceType} deriving (Eq, Data, Typeable)
 
 instance Show Piece where
   show (Piece pieceColour pieceType) =
