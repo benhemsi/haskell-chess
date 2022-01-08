@@ -1,4 +1,4 @@
-module Models.Piece (Piece, pieceColour, pieceType, piece) where
+module Models.Piece (Piece (..)) where
 
 import Data.Char (isUpper, toLower, toUpper)
 import Models.PieceColour
@@ -25,6 +25,3 @@ instance Read Piece where
 
   readListPrec = readListPrecDefault
   readList = readListDefault
-
-piece :: PieceColour -> PieceType -> Piece
-piece = Piece

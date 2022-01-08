@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.Board where
+module Models.Board (Board) where
 
 import Data.Array
 import Data.Distributive

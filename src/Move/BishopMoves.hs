@@ -1,14 +1,13 @@
 {-# LANGUAGE DeriveDataTypeable #-}
+
 module Move.BishopMoves where
 
+import Data.Data
 import Models.File
 import Models.Move
+import Models.PieceList
 import Models.Rank
 import Models.Square
-import Models.PieceList
-import qualified Data.Set as Set
-import qualified Models.PieceOnSquare as POS
-import Data.Data
 
 data BishopMoves = BishopMoves {northEast, southEast, southWest, northWest :: Moves} deriving (Show, Data, Typeable)
 
@@ -21,19 +20,20 @@ emptyBoardMoves start = BishopMoves northEast southEast southWest northWest
           targetFile = file target
           targetRank = rank target
        in zipWith
-            (curry (Move start . uncurry square))
+            (curry (Move start . uncurry Square))
             (getRange startFile targetFile)
             (getRange startRank targetRank)
     startFile = file start
     startRank = rank start
-    northEast = if (startFile /= Fh) && (startRank /= R8) then getDiagonal (square (succ startFile) (succ startRank)) (square Fh R8) else []
-    southEast = if (startFile /= Fh) && (startRank /= R1) then getDiagonal (square (succ startFile) (pred startRank)) (square Fh R1) else []
-    southWest = if (startFile /= Fa) && (startRank /= R1) then getDiagonal (square (pred startFile) (pred startRank)) (square Fa R1) else []
-    northWest = if (startFile /= Fa) && (startRank /= R8) then getDiagonal (square (pred startFile) (succ startRank)) (square Fa R8) else []
+    northEast = if (startFile /= Fh) && (startRank /= R8) then getDiagonal (Square (succ startFile) (succ startRank)) (Square Fh R8) else []
+    southEast = if (startFile /= Fh) && (startRank /= R1) then getDiagonal (Square (succ startFile) (pred startRank)) (Square Fh R1) else []
+    southWest = if (startFile /= Fa) && (startRank /= R1) then getDiagonal (Square (pred startFile) (pred startRank)) (Square Fa R1) else []
+    northWest = if (startFile /= Fa) && (startRank /= R8) then getDiagonal (Square (pred startFile) (succ startRank)) (Square Fa R8) else []
 
 flattenMoves :: BishopMoves -> Moves
 flattenMoves bishopMoves = northEast bishopMoves ++ southEast bishopMoves ++ southWest bishopMoves ++ northWest bishopMoves
 
 validMoves :: BishopMoves -> Squares -> Squares -> Moves
-validMoves bishopMoves likeOccupiedSquares oppoOccupiedSquares = flattenMoves filteredBishopMoves where
-  filteredBishopMoves = filterSlidingPieceMoves bishopMoves likeOccupiedSquares oppoOccupiedSquares
+validMoves bishopMoves likeOccupiedSquares oppoOccupiedSquares = flattenMoves filteredBishopMoves
+  where
+    filteredBishopMoves = filterSlidingPieceMoves bishopMoves likeOccupiedSquares oppoOccupiedSquares

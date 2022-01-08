@@ -27,7 +27,7 @@ instance Arbitrary File where
 instance Arbitrary Piece where
   arbitrary =
     elements
-      [ piece c t | c <- [White, Black], t <- [minBound .. maxBound]
+      [ Piece c t | c <- [White, Black], t <- [minBound .. maxBound]
       ]
 
 instance Arbitrary PieceColour where
@@ -46,4 +46,4 @@ instance Arbitrary PieceOnSquare where
   arbitrary = do
     p <- arbitrary
     sq <- arbitrary
-    return (pieceOnSquare p sq)
+    return (PieceOnSquare p sq)

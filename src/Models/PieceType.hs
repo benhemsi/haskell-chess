@@ -1,4 +1,4 @@
-module Models.PieceType (PieceType (King, Queen, Rook, Bishop, Knight, Pawn)) where
+module Models.PieceType (PieceType (..)) where
 
 import Text.Read
 

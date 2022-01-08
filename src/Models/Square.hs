@@ -1,12 +1,8 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module Models.Square
-  ( Square,
+  ( Square (..),
     Squares,
-    square,
-    square',
-    file,
-    rank,
     getRange,
   )
 where
@@ -22,12 +18,6 @@ import Text.Read
 data Square = Square {file :: File, rank :: Rank} deriving (Eq, Data, Typeable)
 
 type Squares = Set.Set Square
-
-square :: File -> Rank -> Square
-square = Square
-
-square' :: Rank -> File -> Square
-square' = flip square
 
 instance Show Square where
   show (Square file rank) = show file ++ show rank
@@ -49,7 +39,7 @@ instance Enum Square where
   toEnum i =
     let file = toEnum (i `rem` 8)
         rank = toEnum (i `div` 8)
-     in square file rank
+     in Square file rank
   fromEnum (Square file rank) = 8 * fromEnum rank + fromEnum file
 
 instance Ord Square where

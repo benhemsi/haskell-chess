@@ -19,7 +19,7 @@ emptyBoardMoves start =
    in [ Move start endSq
         | f <- [minFile .. maxFile],
           r <- [minRank .. maxRank],
-          let endSq = square f r,
+          let endSq = Square f r,
           endSq /= start
       ]
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 
-module Models.CastlingPrivileges (CastlingPrivileges (whiteKingSide, whiteQueenSide, blackKingSide, blackQueenSide), castlingPrivileges) where
+module Models.CastlingPrivileges (CastlingPrivileges (..), castlingPrivileges) where
 
 import Text.RawString.QQ (r)
 import Text.Read

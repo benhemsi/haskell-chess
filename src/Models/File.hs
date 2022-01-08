@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
 module Models.File
-  ( File (Fa, Fb, Fc, Fd, Fe, Ff, Fg, Fh),
+  ( File (..),
     predFile,
     succFile,
   )

@@ -1,4 +1,4 @@
-module Models.PieceColour (PieceColour (White, Black)) where
+module Models.PieceColour (PieceColour (..)) where
 
 import Text.Read
 

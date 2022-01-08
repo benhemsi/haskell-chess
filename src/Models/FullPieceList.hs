@@ -1,4 +1,4 @@
-module Models.FullPieceList where
+module Models.FullPieceList (FullPieceList(..)) where
 
 import Models.PieceList
 import Models.Square

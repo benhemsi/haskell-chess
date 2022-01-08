@@ -58,6 +58,6 @@ validMoves (PieceOnSquare (Piece colour pieceT) start) whiteOccupiedSquares blac
 
 pieceListMoves :: PieceColour -> FullPieceList -> Moves
 pieceListMoves colour (FullPieceList whitePieces blackPieces whiteOccupiedSquares blackOccupiedSquares) =
-  case colour of 
+  case colour of
     White -> whitePieces >>= (\pos -> validMoves pos whiteOccupiedSquares blackOccupiedSquares)
     Black -> blackPieces >>= (\pos -> validMoves pos whiteOccupiedSquares blackOccupiedSquares)

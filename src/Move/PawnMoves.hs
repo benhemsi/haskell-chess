@@ -15,12 +15,12 @@ emptyBoardMoves start =
           then PawnMoves [] []
           else
             let startFile = file start
-                forwardWhite = Move start (square startFile (succ startRank))
-                forwardBlack = Move start (square startFile (pred startRank))
-                takeLeftWhite = [Move start (square (pred startFile) (succ startRank)) | startFile /= Fa]
-                takeLeftBlack = [Move start (square (pred startFile) (pred startRank)) | startFile /= Fa]
-                takeRightWhite = [Move start (square (succ startFile) (succ startRank)) | startFile /= Fh]
-                takeRightBlack = [Move start (square (succ startFile) (pred startRank)) | startFile /= Fh]
+                forwardWhite = Move start (Square startFile (succ startRank))
+                forwardBlack = Move start (Square startFile (pred startRank))
+                takeLeftWhite = [Move start (Square (pred startFile) (succ startRank)) | startFile /= Fa]
+                takeLeftBlack = [Move start (Square (pred startFile) (pred startRank)) | startFile /= Fa]
+                takeRightWhite = [Move start (Square (succ startFile) (succ startRank)) | startFile /= Fh]
+                takeRightBlack = [Move start (Square (succ startFile) (pred startRank)) | startFile /= Fh]
              in PawnMoves (forwardWhite : takeLeftWhite ++ takeRightWhite) (forwardBlack : takeLeftBlack ++ takeRightBlack)
       )
 
