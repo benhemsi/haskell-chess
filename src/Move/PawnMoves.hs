@@ -25,10 +25,10 @@ emptyBoardMoves start =
       )
 
 validMoves :: PawnMoves -> Squares -> Squares -> PawnMoves
-validMoves pawnMoves whiteOccupiedSquares blackOccupiedSquares = PawnMoves (filterMoves (white pawnMoves) blackOccupiedSquares) (filterMoves (black pawnMoves) whiteOccupiedSquares)
+validMoves pawnMoves whiteOccupiedSquares blackOccupiedSquares = PawnMoves (filterMoves (white pawnMoves) whiteOccupiedSquares blackOccupiedSquares) (filterMoves (black pawnMoves) blackOccupiedSquares whiteOccupiedSquares)
   where
-    filterMoves :: Moves -> Squares -> Moves
-    filterMoves moves oppoOccupiedSquares =
+    filterMoves :: Moves -> Squares -> Squares -> Moves
+    filterMoves moves likeOccupiedSquares oppoOccupiedSquares =
       case moves of
-        (forward : takeMoves) -> forward : filter (\move -> end move `Set.member` oppoOccupiedSquares) takeMoves
+        (forward : takeMoves) -> [forward | end forward `Set.notMember` (likeOccupiedSquares `Set.union` oppoOccupiedSquares)] ++ filter (\move -> end move `Set.member` oppoOccupiedSquares) takeMoves
         [] -> []

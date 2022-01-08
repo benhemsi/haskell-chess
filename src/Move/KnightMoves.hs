@@ -21,4 +21,4 @@ emptyBoardMoves start =
       ]
 
 validMoves :: KnightMoves -> Squares -> Moves
-validMoves knightMoves likeOccupiedSquares = filter (\move -> end move `Set.member` likeOccupiedSquares) knightMoves
+validMoves knightMoves likeOccupiedSquares = filter (\move -> end move `Set.notMember` likeOccupiedSquares) knightMoves
