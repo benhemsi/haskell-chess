@@ -34,14 +34,14 @@ moveBoard = tabulate getEmptyBoardMoves
 emptyBoardMoves :: Square -> PieceMoves
 emptyBoardMoves = index moveBoard
 
-validMoves :: PieceOnSquare -> Squares -> Squares -> Moves
-validMoves (PieceOnSquare (Piece colour pieceT) start) whiteOccupiedSquares blackOccupiedSquares = pieceMoves
+validMoves :: PieceOnSquare -> FullPieceList -> Moves
+validMoves (PieceOnSquare (Piece colour pieceT) start) fullPL = pieceMoves
   where
     unfilteredMoves = emptyBoardMoves start
 
     (likeOccupiedSquares, oppoOccupiedSquares) = case colour of
-      White -> (whiteOccupiedSquares, blackOccupiedSquares)
-      Black -> (blackOccupiedSquares, whiteOccupiedSquares)
+      White -> (whiteOccupiedSquares fullPL, blackOccupiedSquares fullPL)
+      Black -> (blackOccupiedSquares fullPL, whiteOccupiedSquares fullPL)
 
     pieceMoves = case pieceT of
       King -> K.validMoves (kingMoves unfilteredMoves) likeOccupiedSquares
@@ -51,13 +51,13 @@ validMoves (PieceOnSquare (Piece colour pieceT) start) whiteOccupiedSquares blac
       Knight -> N.validMoves (knightMoves unfilteredMoves) likeOccupiedSquares
       Pawn -> filteredPawnMoves
         where
-          fullPawnMoves = P.validMoves (pawnMoves unfilteredMoves) whiteOccupiedSquares blackOccupiedSquares
+          fullPawnMoves = P.validMoves (pawnMoves unfilteredMoves) (whiteOccupiedSquares fullPL) (blackOccupiedSquares fullPL)
           filteredPawnMoves = case colour of
             White -> P.white fullPawnMoves
             Black -> P.black fullPawnMoves
 
 pieceListMoves :: PieceColour -> FullPieceList -> Moves
-pieceListMoves colour (FullPieceList whitePieces blackPieces whiteOccupiedSquares blackOccupiedSquares) =
+pieceListMoves colour fullPL =
   case colour of
-    White -> whitePieces >>= (\pos -> validMoves pos whiteOccupiedSquares blackOccupiedSquares)
-    Black -> blackPieces >>= (\pos -> validMoves pos whiteOccupiedSquares blackOccupiedSquares)
+    White -> whitePieces fullPL >>= (\pos -> validMoves pos fullPL)
+    Black -> blackPieces fullPL >>= (\pos -> validMoves pos fullPL)

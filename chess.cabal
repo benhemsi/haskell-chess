@@ -25,11 +25,12 @@ source-repository head
 
 library
   exposed-modules:
+      Evaluation.EvaluationBoard
+      Evaluation.EvaluationState
       FenParser
       Models.ArbitraryInstances
       Models.Board
       Models.CastlingPrivileges
-      Models.EvaluationBoard
       Models.File
       Models.FullPieceList
       Models.Move
@@ -59,6 +60,7 @@ library
     , containers
     , distributive
     , hspec
+    , mtl
     , raw-strings-qq
     , regex-tdfa
     , split
@@ -80,6 +82,7 @@ executable chess-exe
     , containers
     , distributive
     , hspec
+    , mtl
     , raw-strings-qq
     , regex-tdfa
     , split
@@ -89,6 +92,7 @@ test-suite chess-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Evaluation.EvaluationBoardSpec
       Models.CastlingPrivilegesSpec
       Models.FileSpec
       Models.PieceColourSpec
@@ -116,6 +120,7 @@ test-suite chess-test
     , containers
     , distributive
     , hspec
+    , mtl
     , raw-strings-qq
     , regex-tdfa
     , split
