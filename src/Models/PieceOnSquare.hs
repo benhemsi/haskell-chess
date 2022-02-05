@@ -1,24 +1,34 @@
-module Models.PieceOnSquare (PieceOnSquare (..)) where
+{-# LANGUAGE TemplateHaskell #-}
 
+module Models.PieceOnSquare where
+
+import Control.Lens
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
-import Models.Piece (Piece)
-import Models.Square (Square)
+import Models.Piece
+import Models.Square
 import Text.Read
+import Models.PieceType
 
 data PieceOnSquare = PieceOnSquare
-  { piece :: Piece,
-    square :: Square
-  } deriving Eq
+  { _piece :: Piece,
+    _square :: Square
+  }
+  deriving (Eq)
+
+makeLenses ''PieceOnSquare
+
+pieceTypeLens :: Lens' PieceOnSquare PieceType
+pieceTypeLens = piece . pieceType
 
 instance Ord PieceOnSquare where
-  a <= b = square a <= square b
+  a <= b = _square a <= _square b
 
 -- Takes a PieceList and returns a string with '1' for each empty square and show Piece for each occupied square
 initialPass :: [PieceOnSquare] -> String
 initialPass pl = initialPassRec [minBound .. maxBound] (sort pl)
   where
-    initialPassRec (sq : sqs) (p : ps) = if square p == sq then (show . piece) p ++ initialPassRec sqs ps else '1' : initialPassRec sqs (p : ps)
+    initialPassRec (sq : sqs) (p : ps) = if _square p == sq then (show . _piece) p ++ initialPassRec sqs ps else '1' : initialPassRec sqs (p : ps)
     initialPassRec (sq : sqs) [] = '1' : initialPassRec sqs []
     initialPassRec [] _ = ""
 
@@ -66,7 +76,7 @@ secondaryPass' s = concat (reverse out)
     out = map (reverse . explode []) splitString
 
 instance Show PieceOnSquare where
-  show p = (show . piece) p ++ (show . square) p
+  show p = (show . _piece) p ++ (show . _square) p
   showList pl s = (secondaryPass . initialPass) pl ++ s
 
 instance Read PieceOnSquare where

@@ -1,12 +1,17 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Models.Move where
 
+import Control.Lens
 import qualified Data.Set as Set
 import Models.Square
 
--- TODO Add BaseMove data type
-data Move = Move {start, end :: Square}
+data Move = Move {_start, _end :: Square}
 
-data MoveTypes = Mv Move
+makeLenses ''Move
+
+data MoveTypes
+  = Mv Move
   | EnP EnPassent
   | PP PawnPromotion
   | Cst Castle
@@ -32,3 +37,15 @@ data Moves
 
 class Moveable p where
   emptyBoardMoves :: p -> Square -> Moves
+
+startingSquare :: MoveTypes -> Square
+startingSquare (Mv mv) = _start mv
+startingSquare (EnP (EnPassent mv _)) = _start mv
+startingSquare (PP (PawnPromotion mv)) = _start mv
+startingSquare (Cst (Castle mv _)) = _start mv
+
+attackedSquare :: MoveTypes -> Maybe Square
+attackedSquare (Mv mv) = Just (_end mv)
+attackedSquare (EnP (EnPassent _ sq)) = Just sq
+attackedSquare (PP _) = Nothing
+attackedSquare (Cst _) = Nothing

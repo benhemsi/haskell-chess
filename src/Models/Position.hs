@@ -6,10 +6,12 @@ import Control.Lens
 import Models.CastlingPrivileges
 import Models.FenRepresentation
 import Models.FullPieceList
+import Models.Move
 import Models.PieceColour
+import Models.PieceList
 import Models.Square
 
-data Position = Position {_fen :: FenRepresentation, _pieceList :: FullPieceList}
+data Position = Position {_fen :: FenRepresentation, _pieceList :: FullPieceList, _moves :: [MoveTypes]}
 
 makeLenses ''Position
 
@@ -22,6 +24,12 @@ castlingPrivilegesLens = fen . castlingPrivileges
 enPassentLens :: Lens' Position (Maybe Square)
 enPassentLens = fen . enPassentSquare
 
+whitePiecesLens :: Lens' Position PieceList
+whitePiecesLens = pieceList . whitePieces
+
+blackPiecesLens :: Lens' Position PieceList
+blackPiecesLens = pieceList . blackPieces
+
 whiteOccupiedSquaresLens :: Lens' Position Squares
 whiteOccupiedSquaresLens = pieceList . whiteOccupiedSquares
 
@@ -33,6 +41,11 @@ whiteAttackedSquaresLens = pieceList . whiteAttackedSquares
 
 blackAttackedSquaresLens :: Lens' Position Squares
 blackAttackedSquaresLens = pieceList . blackAttackedSquares
+
+getLikePieces :: Position -> PieceList
+getLikePieces pos = case view nextToMoveLens pos of
+  White -> view whitePiecesLens pos
+  Black -> view blackPiecesLens pos
 
 getLikeOccupiedSquares :: Position -> Squares
 getLikeOccupiedSquares pos = case view nextToMoveLens pos of

@@ -10,8 +10,8 @@ data Rook = R deriving (Show, Read)
 
 instance Moveable Rook where
   emptyBoardMoves R start =
-    let startFile = file start
-        startRank = rank start
+    let startFile = _file start
+        startRank = _rank start
         north = if startRank == R8 then [] else map (Move start . Square startFile) (getRange (succ startRank) R8)
         south = if startRank == R1 then [] else map (Move start . Square startFile) (getRange (pred startRank) R1)
         east = if startFile == Fh then [] else map (Move start . flip Square startRank) (getRange (succ startFile) Fh)

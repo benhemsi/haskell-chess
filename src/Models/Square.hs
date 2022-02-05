@@ -1,13 +1,8 @@
-{-# LANGUAGE DeriveDataTypeable #-}
+{-# LANGUAGE TemplateHaskell #-}
 
-module Models.Square
-  ( Square (..),
-    Squares,
-    getRange,
-  )
-where
+module Models.Square where
 
-import Data.Data
+import Control.Lens
 import Data.Ix
 import Data.List (elemIndex)
 import qualified Data.Set as Set
@@ -15,7 +10,9 @@ import Models.File
 import Models.Rank
 import Text.Read
 
-data Square = Square {file :: File, rank :: Rank} deriving (Eq, Data, Typeable)
+data Square = Square {_file :: File, _rank :: Rank} deriving (Eq)
+
+makeLenses ''Square
 
 type Squares = Set.Set Square
 

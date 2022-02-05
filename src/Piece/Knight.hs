@@ -7,8 +7,8 @@ data Knight = N deriving (Show, Read)
 
 instance Moveable Knight where
   emptyBoardMoves N start =
-    let startFile = fromEnum (file start)
-        startRank = fromEnum (rank start)
+    let startFile = fromEnum (_file start)
+        startRank = fromEnum (_rank start)
      in Moves [ Move start (Square (toEnum f) (toEnum r))
           | i <- [-2, -1, 1, 2],
             j <- [-2, -1, 1, 2],

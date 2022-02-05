@@ -12,14 +12,14 @@ data Pawn = P deriving (Show, Read)
 instance Moveable Pawn where
   emptyBoardMoves P start = pawnMoves
     where
-      startRank = rank start
+      startRank = _rank start
       emptyPawnMoves = PM Nothing Nothing [] [] Nothing
       pawnMoves = case startRank of
         R1 -> PawnMoves emptyPawnMoves emptyPawnMoves
         R8 -> PawnMoves emptyPawnMoves emptyPawnMoves
         rank -> PawnMoves whiteMoves blackMoves
           where
-            startFile = file start
+            startFile = _file start
 
             promotionWhite = case startRank of
               R7 -> Just $ PawnPromotion (Move start (Square startFile (succ startRank)))
@@ -56,16 +56,16 @@ instance Moveable Pawn where
               _ -> Nothing
 
             enPassentLeftWhite = case startRank of
-              R5 -> fmap (\tl -> EnPassent tl (Square (pred . file . end $ tl) R6)) takeLeftWhite
+              R5 -> fmap (\tl -> EnPassent tl (Square (pred . _file . _end $ tl) R6)) takeLeftWhite
               _ -> Nothing
             enPassentLeftBlack = case startRank of
-              R4 -> fmap (\tl -> EnPassent tl (Square (pred . file . end $ tl) R3)) takeLeftBlack
+              R4 -> fmap (\tl -> EnPassent tl (Square (pred . _file . _end $ tl) R3)) takeLeftBlack
               _ -> Nothing
             enPassentRightWhite = case startRank of
-              R5 -> fmap (\tl -> EnPassent tl (Square (succ . file . end $ tl) R6)) takeRightWhite
+              R5 -> fmap (\tl -> EnPassent tl (Square (succ . _file . _end $ tl) R6)) takeRightWhite
               _ -> Nothing
             enPassentRightBlack = case startRank of
-              R4 -> fmap (\tl -> EnPassent tl (Square (succ . file . end $ tl) R3)) takeRightBlack
+              R4 -> fmap (\tl -> EnPassent tl (Square (succ . _file . _end $ tl) R3)) takeRightBlack
               _ -> Nothing
 
             maybesToList mayA mayB = toList mayA ++ toList mayB

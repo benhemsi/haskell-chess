@@ -10,8 +10,8 @@ data King = K deriving (Show, Read)
 
 instance Moveable King where
   emptyBoardMoves K start =
-    let startFile = file start
-        startRank = rank start
+    let startFile = _file start
+        startRank = _rank start
         minFile = predFile startFile
         maxFile = succFile startFile
         minRank = predRank startRank
@@ -22,3 +22,4 @@ instance Moveable King where
             let endSq = Square f r,
             endSq /= start
         ]
+-- TODO add castling

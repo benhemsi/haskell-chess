@@ -1,11 +1,16 @@
-module Models.Piece (Piece (..)) where
+{-# LANGUAGE TemplateHaskell #-}
+
+module Models.Piece where
 
 import Data.Char (isUpper, toLower, toUpper)
 import Models.PieceColour
 import Models.PieceType
 import Text.Read
+import Control.Lens 
 
-data Piece = Piece {pieceColour :: PieceColour, pieceType :: PieceType} deriving Eq
+data Piece = Piece {_pieceColour :: PieceColour, _pieceType :: PieceType} deriving Eq
+
+makeLenses ''Piece
 
 instance Show Piece where
   show (Piece pieceColour pieceType) =

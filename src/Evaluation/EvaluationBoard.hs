@@ -12,11 +12,16 @@ import Models.PieceColour
 import Models.PieceList
 import Models.PieceOnSquare
 import Models.Square
--- import Move.PieceMoves
+import Models.Position
 
-data EvaluationSquare = EvaluationSquare {whiteAttackers, blackAttackers :: PieceList}
+data EvaluationSquare = EvaluationSquare {_whiteAttackers, _blackAttackers :: PieceList}
 
 type EvaluationBoard = Board EvaluationSquare
+
+-- getSquareAttackers :: Position -> EvaluationBoard
+-- getSquareAttackers fullPL = evalBoard
+--   where 
+    
 
 -- getSquareAttackers :: PieceList -> FullPieceList -> Map.Map Square [PieceOnSquare]
 -- getSquareAttackers pl fullPL = Map.fromList output
@@ -28,8 +33,8 @@ type EvaluationBoard = Board EvaluationSquare
 -- buildEvaluationBoard :: FullPieceList -> EvaluationBoard
 -- buildEvaluationBoard fullPL = array (minBound, maxBound) output
 --   where
---     whiteSquareAttackers = getSquareAttackers (whitePieces fullPL) fullPL
---     blackSquareAttackers = getSquareAttackers (blackPieces fullPL) fullPL
+--     whiteSquareAttackers = getSquareAttackers (_whitePieces fullPL) fullPL
+--     blackSquareAttackers = getSquareAttackers (_blackPieces fullPL) fullPL
 --     output = do
 --       i <- range (minBound, maxBound)
 --       let whitePL = fromMaybe [] (Map.lookup i whiteSquareAttackers)
@@ -40,8 +45,8 @@ type EvaluationBoard = Board EvaluationSquare
 -- getAttackers sq colour = getPieceList . (! sq)
 --   where
 --     getPieceList = case colour of
---       White -> whiteAttackers
---       Black -> blackAttackers
+--       White -> _whiteAttackers
+--       Black -> _blackAttackers
 
 -- checkIfSquareAttacked :: Square -> PieceColour -> EvaluationBoard -> Bool
 -- checkIfSquareAttacked sq colour = not . null . getAttackers sq colour

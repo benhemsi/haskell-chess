@@ -43,6 +43,7 @@ library
       Models.Rank
       Models.Square
       Moves.MoveLogic
+      Moves.MoveTree
       Piece.Bishop
       Piece.King
       Piece.Knight

@@ -12,16 +12,16 @@ instance Moveable Bishop where
   emptyBoardMoves B start = Sliders $ SlidingMoves northEast southEast southWest northWest
     where
       getDiagonal start target =
-        let startFile = file start
-            startRank = rank start
-            targetFile = file target
-            targetRank = rank target
+        let startFile = _file start
+            startRank = _rank start
+            targetFile = _file target
+            targetRank = _rank target
          in zipWith
               (curry (Move start . uncurry Square))
               (getRange startFile targetFile)
               (getRange startRank targetRank)
-      startFile = file start
-      startRank = rank start
+      startFile = _file start
+      startRank = _rank start
       northEast = if (startFile /= Fh) && (startRank /= R8) then getDiagonal (Square (succ startFile) (succ startRank)) (Square Fh R8) else []
       southEast = if (startFile /= Fh) && (startRank /= R1) then getDiagonal (Square (succ startFile) (pred startRank)) (Square Fh R1) else []
       southWest = if (startFile /= Fa) && (startRank /= R1) then getDiagonal (Square (pred startFile) (pred startRank)) (Square Fa R1) else []
