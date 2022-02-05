@@ -1,15 +1,17 @@
 module Moves.MoveLogic where
 
+import Control.Lens
 import qualified Data.Set as Set
 import Models.Move
 import Models.FullPieceList
 import Models.Square
+import Models.Position
 
-filterSlidingMoves :: SlidingMoves -> OccupiedSquares -> [Move]
-filterSlidingMoves (SlidingMoves a b c d) occupiedSquares = foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
+filterSlidingMoves :: SlidingMoves -> Position -> [Move]
+filterSlidingMoves (SlidingMoves a b c d) pos = foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
   where
-    likePieces = like occupiedSquares
-    oppoPieces = oppo occupiedSquares
+    likePieces = getLikeOccupiedSquares pos
+    oppoPieces = getOppoOccupiedSquares pos
     filterMoves :: [Move] -> [Move] -> [Move]
     filterMoves [] curr = curr
     filterMoves (move : moves) curr
@@ -20,20 +22,21 @@ filterSlidingMoves (SlidingMoves a b c d) occupiedSquares = foldMoves a ++ foldM
     foldMoves moves = filterMoves moves []
 
 -- Takes a list of moves and filters out any which end on squares occupied by like pieces
-filterMoves :: [Move] -> OccupiedSquares -> [Move]
-filterMoves emptyBoardMoves occupiedSquares = filterMoves emptyBoardMoves
+filterMoves :: [Move] -> Position -> [Move]
+filterMoves emptyBoardMoves pos = filterMoves emptyBoardMoves
   where
-    likePieces = like occupiedSquares
+    likePieces = getLikeOccupiedSquares pos
     filterFunction :: Move -> Bool
     filterFunction (Move _ end) = end `Set.member` likePieces
+    filterFunction _ = False
     filterMoves :: [Move] -> [Move]
     filterMoves moves = filter filterFunction emptyBoardMoves
 
-filterPawnMoves :: PawnMoves -> OccupiedSquares -> [Move]
-filterPawnMoves (PM f1 f2 tl tr enPL enPR pr) occupiedSquares = forward ++ takes ++ enPassent ++ promotion
+filterPawnMoves :: PawnMoves -> Position -> [Move]
+filterPawnMoves (PM f1 f2 tks enPs pr) pos = forward ++ takes ++ enPassent ++ promotion
   where
-    likePieces = like occupiedSquares
-    oppoPieces = oppo occupiedSquares
+    likePieces = getLikeOccupiedSquares pos
+    oppoPieces = getOppoOccupiedSquares pos
     allPieces = likePieces `Set.union` oppoPieces
 
     filterMove :: Maybe Move -> [Move]
@@ -45,26 +48,25 @@ filterPawnMoves (PM f1 f2 tl tr enPL enPR pr) occupiedSquares = forward ++ takes
       ([], _) -> forward1
       _ -> forward1 ++ filterMove f2
 
-    filterTake :: Maybe Move -> [Move]
-    filterTake take = case take of
-      Just move -> [move | end move `Set.member` oppoPieces]
+    takes = filter (\move -> end move `Set.member` oppoPieces) tks
+
+    enPassent = case view enPassentLens pos of
+      Just sq -> map EnP $ filter (\(EnPassent move _) -> end move == sq) enPs
       Nothing -> []
-    takes = filterTake tl ++ filterTake tr
 
-    enPassent = [] -- TODO fill this in when have sorted FEN rep
-    promotion = filterMove (fmap (\(PawnPromotion move) -> move) pr)
+    promotion = filterMove (fmap PP pr)
 
-filterKingMoves :: KingMoves -> OccupiedSquares -> Squares -> [Move]
-filterKingMoves (KM moves kingSide queenSide) occupiedSquares attackedSquares = filterMoves moves occupiedSquares -- TODO add castling filtering
+filterKingMoves :: KingMoves -> Position -> [Move]
+filterKingMoves (KM moves kingSide queenSide) = filterMoves moves -- TODO add castling filtering
   -- where
   --   squaresToCheck
 
-filterAllMoves :: Moves -> OccupiedSquares -> Squares -> [Move]
-filterAllMoves (Moves moves) occupiedSquares _ = filterMoves moves occupiedSquares
-filterAllMoves (Sliders moves) occupiedSquares _ = filterSlidingMoves moves occupiedSquares
-filterAllMoves (QueenMoves bishopMoves rookMoves) occupiedSquares _ = filterSlidingMoves bishopMoves occupiedSquares ++ filterSlidingMoves rookMoves occupiedSquares
-filterAllMoves (PawnMoves whiteMoves blackMoves) occupiedSquares _ = filterPawnMoves whiteMoves occupiedSquares ++ filterPawnMoves blackMoves occupiedSquares
-filterAllMoves (KingMoves kingMoves) occupiedSquares attackedSquares = filterKingMoves kingMoves occupiedSquares attackedSquares
+filterAllMoves :: Moves -> Position -> [Move]
+filterAllMoves (Moves moves) pos = filterMoves moves pos
+filterAllMoves (Sliders moves) pos = filterSlidingMoves moves pos
+filterAllMoves (QueenMoves bishopMoves rookMoves) pos = filterSlidingMoves bishopMoves pos ++ filterSlidingMoves rookMoves pos
+filterAllMoves (PawnMoves whiteMoves blackMoves) pos = filterPawnMoves whiteMoves pos ++ filterPawnMoves blackMoves pos
+filterAllMoves (KingMoves kingMoves) pos = filterKingMoves kingMoves pos
 
 -- filterSlidingPieceMoves :: Data a => a -> Squares -> Squares -> a
 -- filterSlidingPieceMoves moves likeOccupiedSquares oppoOccupiedSquares =

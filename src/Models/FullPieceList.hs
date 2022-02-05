@@ -18,5 +18,3 @@ getPieceList :: PieceColour -> FullPieceList -> PieceList
 getPieceList colour = case colour of
   White -> _whitePieces
   Black -> _blackPieces
-
-data OccupiedSquares = OccupiedSquares {like, oppo :: Squares}
