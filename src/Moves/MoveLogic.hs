@@ -7,8 +7,11 @@ import Models.FullPieceList
 import Models.Square
 import Models.Position
 
-filterSlidingMoves :: SlidingMoves -> Position -> [Move]
-filterSlidingMoves (SlidingMoves a b c d) pos = foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
+movesToMoveTypes :: [Move] -> [MoveTypes]
+movesToMoveTypes = map Mv
+
+filterSlidingMoves :: SlidingMoves -> Position -> [MoveTypes]
+filterSlidingMoves (SlidingMoves a b c d) pos = movesToMoveTypes $ foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
   where
     likePieces = getLikeOccupiedSquares pos
     oppoPieces = getOppoOccupiedSquares pos
@@ -22,18 +25,17 @@ filterSlidingMoves (SlidingMoves a b c d) pos = foldMoves a ++ foldMoves b ++ fo
     foldMoves moves = filterMoves moves []
 
 -- Takes a list of moves and filters out any which end on squares occupied by like pieces
-filterMoves :: [Move] -> Position -> [Move]
+filterMoves :: [Move] -> Position -> [MoveTypes]
 filterMoves emptyBoardMoves pos = filterMoves emptyBoardMoves
   where
     likePieces = getLikeOccupiedSquares pos
     filterFunction :: Move -> Bool
     filterFunction (Move _ end) = end `Set.member` likePieces
-    filterFunction _ = False
-    filterMoves :: [Move] -> [Move]
-    filterMoves moves = filter filterFunction emptyBoardMoves
+    filterMoves :: [Move] -> [MoveTypes]
+    filterMoves moves = movesToMoveTypes $ filter filterFunction emptyBoardMoves
 
-filterPawnMoves :: PawnMoves -> Position -> [Move]
-filterPawnMoves (PM f1 f2 tks enPs pr) pos = forward ++ takes ++ enPassent ++ promotion
+filterPawnMoves :: PawnMoves -> Position -> [MoveTypes]
+filterPawnMoves (PM f1 f2 tks enPs pr) pos = movesToMoveTypes (forward ++ takes) ++ enPassent ++ promotion
   where
     likePieces = getLikeOccupiedSquares pos
     oppoPieces = getOppoOccupiedSquares pos
@@ -54,14 +56,14 @@ filterPawnMoves (PM f1 f2 tks enPs pr) pos = forward ++ takes ++ enPassent ++ pr
       Just sq -> map EnP $ filter (\(EnPassent move _) -> end move == sq) enPs
       Nothing -> []
 
-    promotion = filterMove (fmap PP pr)
+    promotion = map (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
 
-filterKingMoves :: KingMoves -> Position -> [Move]
+filterKingMoves :: KingMoves -> Position -> [MoveTypes]
 filterKingMoves (KM moves kingSide queenSide) = filterMoves moves -- TODO add castling filtering
   -- where
   --   squaresToCheck
 
-filterAllMoves :: Moves -> Position -> [Move]
+filterAllMoves :: Moves -> Position -> [MoveTypes]
 filterAllMoves (Moves moves) pos = filterMoves moves pos
 filterAllMoves (Sliders moves) pos = filterSlidingMoves moves pos
 filterAllMoves (QueenMoves bishopMoves rookMoves) pos = filterSlidingMoves bishopMoves pos ++ filterSlidingMoves rookMoves pos

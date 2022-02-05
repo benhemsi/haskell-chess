@@ -3,9 +3,13 @@ module Models.Move where
 import qualified Data.Set as Set
 import Models.Square
 
+-- TODO Add BaseMove data type
 data Move = Move {start, end :: Square}
+
+data MoveTypes = Mv Move
   | EnP EnPassent
   | PP PawnPromotion
+  | Cst Castle
 
 data EnPassent = EnPassent Move Square
 
