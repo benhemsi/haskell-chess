@@ -9,7 +9,7 @@ import Piece.Moveable
 data Pawn = P deriving (Show, Read)
 
 instance Moveable Pawn where
-  emptyBoardMoves _ start = pawnMoves
+  emptyBoardMoves P start = pawnMoves
     where
       startRank = rank start
       emptyPawnMoves = PM Nothing Nothing Nothing Nothing Nothing Nothing Nothing

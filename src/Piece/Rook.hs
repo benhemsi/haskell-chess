@@ -9,7 +9,7 @@ import Piece.Moveable
 data Rook = R deriving (Show, Read)
 
 instance Moveable Rook where
-  emptyBoardMoves _ start =
+  emptyBoardMoves R start =
     let startFile = file start
         startRank = rank start
         north = if startRank == R8 then [] else map (Move start . Square startFile) (getRange (succ startRank) R8)

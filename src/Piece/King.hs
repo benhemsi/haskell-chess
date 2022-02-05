@@ -9,7 +9,7 @@ import Piece.Moveable
 data King = K deriving (Show, Read)
 
 instance Moveable King where
-  emptyBoardMoves _ start =
+  emptyBoardMoves K start =
     let startFile = file start
         startRank = rank start
         minFile = predFile startFile

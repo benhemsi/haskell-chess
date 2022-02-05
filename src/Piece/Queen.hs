@@ -8,7 +8,7 @@ import Models.Move
 data Queen = Q deriving (Show, Read)
 
 instance Moveable Queen where
-  emptyBoardMoves _ start = QueenMoves (getSlidingMoves bishopMoves) (getSlidingMoves rookMoves)
+  emptyBoardMoves Q start = QueenMoves (getSlidingMoves bishopMoves) (getSlidingMoves rookMoves)
     where
       getSlidingMoves :: Moves -> SlidingMoves
       getSlidingMoves (Sliders moves) = moves

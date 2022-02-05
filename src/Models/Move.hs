@@ -26,4 +26,3 @@ data Moves
 
 class Moveable p where
   emptyBoardMoves :: p -> Square -> Moves
-

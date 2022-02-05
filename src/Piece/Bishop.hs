@@ -9,7 +9,7 @@ import Piece.Moveable
 data Bishop = B deriving (Show, Read)
 
 instance Moveable Bishop where
-  emptyBoardMoves _ start = Sliders $ SlidingMoves northEast southEast southWest northWest
+  emptyBoardMoves B start = Sliders $ SlidingMoves northEast southEast southWest northWest
     where
       getDiagonal start target =
         let startFile = file start

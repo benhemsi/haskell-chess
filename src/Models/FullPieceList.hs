@@ -4,7 +4,7 @@ import Models.PieceColour
 import Models.PieceList
 import Models.Square
 
-data FullPieceList = forall p. FullPieceList
+data FullPieceList = FullPieceList
   { whitePieces, blackPieces :: PieceList,
     whiteOccupiedSquares, blackOccupiedSquares, whiteAttackedSquares, blackAttackedSquares :: Squares
   }

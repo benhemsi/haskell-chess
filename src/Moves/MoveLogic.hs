@@ -1,7 +1,9 @@
 module Moves.MoveLogic where
 
+import qualified Data.Set as Set
 import Models.Move
 import Models.FullPieceList
+import Models.Square
 
 filterSlidingMoves :: SlidingMoves -> OccupiedSquares -> [Move]
 filterSlidingMoves (SlidingMoves a b c d) occupiedSquares = foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
