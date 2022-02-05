@@ -1,7 +1,9 @@
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Models.CastlingPrivileges (CastlingPrivileges (..), getCastlingMoves, getKingSideCastle, getQueenSideCastle) where
 
+import Control.Lens
 import qualified Data.Set as Set
 import Models.File
 import Models.FullPieceList
@@ -14,9 +16,11 @@ import Text.Read
 import Text.Regex.TDFA
 
 data CastlingPrivileges = CastlingPrivileges
-  { whiteKingSide, whiteQueenSide, blackKingSide, blackQueenSide :: Bool
+  { _whiteKingSide, _whiteQueenSide, _blackKingSide, _blackQueenSide :: Bool
   }
   deriving (Eq)
+
+makeLenses ''CastlingPrivileges
 
 instance Show CastlingPrivileges where
   show (CastlingPrivileges wk wq bk bq) =
@@ -61,11 +65,11 @@ getCastlingMoves :: PieceColour -> FullPieceList -> CastlingPrivileges -> [Castl
 getCastlingMoves colour fullPL castlingPrivileges = output
   where
     (kingSidePrivilege, queenSidePrivilege, rank, attackedSquares) = case colour of
-      White -> (whiteKingSide, whiteQueenSide, R1, blackAttackedSquares fullPL)
-      Black -> (blackKingSide, blackQueenSide, R8, whiteAttackedSquares fullPL)
-    kingSideSquaresToCheck = Set.unions [whiteOccupiedSquares fullPL, blackOccupiedSquares fullPL, attackedSquares]
+      White -> (_whiteKingSide, _whiteQueenSide, R1, _blackAttackedSquares fullPL)
+      Black -> (_blackKingSide, _blackQueenSide, R8, _whiteAttackedSquares fullPL)
+    kingSideSquaresToCheck = Set.unions [_whiteOccupiedSquares fullPL, _blackOccupiedSquares fullPL, attackedSquares]
     kingSide = kingSidePrivilege castlingPrivileges && (Square Ff rank `Set.notMember` kingSideSquaresToCheck) && (Square Fg rank `Set.notMember` kingSideSquaresToCheck)
-    queenSideSquaresToCheck = Set.unions [whiteOccupiedSquares fullPL, blackOccupiedSquares fullPL, Set.delete (Square Fb rank) attackedSquares]
+    queenSideSquaresToCheck = Set.unions [_whiteOccupiedSquares fullPL, _blackOccupiedSquares fullPL, Set.delete (Square Fb rank) attackedSquares]
     queenSide = queenSidePrivilege castlingPrivileges && (Square Fb rank `Set.notMember` queenSideSquaresToCheck) && (Square Fc rank `Set.notMember` queenSideSquaresToCheck) && (Square Fd rank `Set.notMember` queenSideSquaresToCheck)
     start = Square Fe rank
     output = [getKingSideCastle colour | kingSide] ++ [getQueenSideCastle colour | queenSide]

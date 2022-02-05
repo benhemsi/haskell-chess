@@ -1,17 +1,22 @@
-module Models.FullPieceList (FullPieceList (..), OccupiedSquares (..)) where
+{-# LANGUAGE TemplateHaskell #-}
 
+module Models.FullPieceList where
+
+import Control.Lens
 import Models.PieceColour
 import Models.PieceList
 import Models.Square
 
 data FullPieceList = FullPieceList
-  { whitePieces, blackPieces :: PieceList,
-    whiteOccupiedSquares, blackOccupiedSquares, whiteAttackedSquares, blackAttackedSquares :: Squares
+  { _whitePieces, _blackPieces :: PieceList,
+    _whiteOccupiedSquares, _blackOccupiedSquares, _whiteAttackedSquares, _blackAttackedSquares :: Squares
   }
+
+makeLenses ''FullPieceList
 
 getPieceList :: PieceColour -> FullPieceList -> PieceList
 getPieceList colour = case colour of
-  White -> whitePieces
-  Black -> blackPieces
+  White -> _whitePieces
+  Black -> _blackPieces
 
 data OccupiedSquares = OccupiedSquares {like, oppo :: Squares}

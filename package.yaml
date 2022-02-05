@@ -26,6 +26,7 @@ dependencies:
 - containers
 - distributive
 - hspec
+- lens
 - mtl
 - QuickCheck
 - raw-strings-qq

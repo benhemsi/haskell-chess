@@ -1,7 +1,9 @@
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Models.FenRepresentation where
 
+import Control.Lens
 import Models.CastlingPrivileges
 import Models.Piece
 import Models.PieceColour
@@ -12,11 +14,13 @@ import Text.RawString.QQ (r)
 import Text.Read
 
 data FenRepresentation = FenRepresentation
-  { pieceList :: PieceList,
-    nextToMove :: PieceColour,
-    castlingPrivileges :: CastlingPrivileges,
-    enPassentSquare :: Maybe Square,
-    halfMoveClock, fullMoveClock :: Int
+  { _pieces :: PieceList,
+    _nextToMove :: PieceColour,
+    _castlingPrivileges :: CastlingPrivileges,
+    _enPassentSquare :: Maybe Square,
+    _halfMoveClock, _fullMoveClock :: Int
   }
+
+makeLenses ''FenRepresentation
 
 fenPattern = [r|^\s*(([KQRBNPkqrbnp1-8]{1,8}+\/){7})([KQRBNPkqrbnp1-8]{1,8})\s+(w|b)\s+((K?Q?k?q?)|-)\s+([a-h][36]|-)\s+(0|[1-9]\d*)\s+(0|[1-9]\d*)$|]

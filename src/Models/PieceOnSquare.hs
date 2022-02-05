@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-deferred-out-of-scope-variables #-}
-
 module Models.PieceOnSquare (PieceOnSquare (..)) where
 
 import Data.List (intercalate, sort)

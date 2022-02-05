@@ -22,3 +22,7 @@ instance Read PieceColour where
 
   readListPrec = readListPrecDefault
   readList = readListDefault
+
+oppoColour :: PieceColour -> PieceColour
+oppoColour White = Black
+oppoColour Black = White
