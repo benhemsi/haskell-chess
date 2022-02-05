@@ -3,6 +3,7 @@
 module Models.Position where
 
 import Control.Lens
+import qualified Data.Set as Set
 import Models.CastlingPrivileges
 import Models.FenRepresentation
 import Models.FullPieceList
@@ -29,6 +30,12 @@ whitePiecesLens = pieceList . whitePieces
 
 blackPiecesLens :: Lens' Position PieceList
 blackPiecesLens = pieceList . blackPieces
+
+whiteKingLens :: Lens' Position Square
+whiteKingLens = pieceList . whiteKing
+
+blackKingLens :: Lens' Position Square
+blackKingLens = pieceList . blackKing
 
 whiteOccupiedSquaresLens :: Lens' Position Squares
 whiteOccupiedSquaresLens = pieceList . whiteOccupiedSquares
@@ -66,3 +73,8 @@ getOppoAttackedSquares :: Position -> Squares
 getOppoAttackedSquares pos = case view nextToMoveLens pos of
   White -> view blackAttackedSquaresLens pos
   Black -> view whiteAttackedSquaresLens pos
+
+inCheck :: Position -> Bool
+inCheck pos = case view nextToMoveLens pos of
+  White -> view whiteKingLens pos `Set.member` getOppoAttackedSquares pos
+  Black -> view blackKingLens pos `Set.member` getOppoAttackedSquares pos

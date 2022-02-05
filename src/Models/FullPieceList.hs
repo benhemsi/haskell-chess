@@ -9,7 +9,8 @@ import Models.Square
 
 data FullPieceList = FullPieceList
   { _whitePieces, _blackPieces :: PieceList,
-    _whiteOccupiedSquares, _blackOccupiedSquares, _whiteAttackedSquares, _blackAttackedSquares :: Squares
+    _whiteOccupiedSquares, _blackOccupiedSquares, _whiteAttackedSquares, _blackAttackedSquares :: Squares,
+    _whiteKing, _blackKing :: Square
   }
 
 makeLenses ''FullPieceList
