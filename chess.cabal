@@ -27,10 +27,10 @@ library
   exposed-modules:
       Evaluation.EvaluationBoard
       Evaluation.EvaluationState
-      FenParser
       Models.ArbitraryInstances
       Models.Board
       Models.CastlingPrivileges
+      Models.FenRepresentation
       Models.File
       Models.FullPieceList
       Models.Move
@@ -39,15 +39,18 @@ library
       Models.PieceList
       Models.PieceOnSquare
       Models.PieceType
+      Models.Position
       Models.Rank
       Models.Square
-      Move.BishopMoves
-      Move.KingMoves
-      Move.KnightMoves
-      Move.PawnMoves
-      Move.PieceMoves
-      Move.QueenMoves
-      Move.RookMoves
+      Moves.MoveLogic
+      Piece.Bishop
+      Piece.King
+      Piece.Knight
+      Piece.Moveable
+      Piece.Pawn
+      Piece.Piece
+      Piece.Queen
+      Piece.Rook
   other-modules:
       Paths_chess
   hs-source-dirs:

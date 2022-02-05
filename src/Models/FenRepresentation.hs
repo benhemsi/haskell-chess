@@ -1,6 +1,6 @@
 {-# LANGUAGE QuasiQuotes #-}
 
-module FenParser where
+module Models.FenRepresentation where
 
 import Models.CastlingPrivileges
 import Models.Piece

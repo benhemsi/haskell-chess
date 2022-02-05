@@ -1,46 +1,29 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
 module Models.Move where
 
-import Data.Data
 import qualified Data.Set as Set
-import Models.PieceList (PieceList)
-import qualified Models.PieceOnSquare as POS
 import Models.Square
-import Data.Maybe (fromJust)
-import Models.Piece
 
-data Move = Move {start, end :: Square} 
-  | PawnPromotion Move Piece
-  | EnPassent Move Piece
-  | Castle Move Move
-  deriving (Eq, Show, Data, Typeable)
+data Move = Move {start, end :: Square}
 
-type Moves = [Move]
+data EnPassent = EnPassent Move Square
 
-filterSlidingMoves :: Moves -> Squares -> Squares -> Moves
-filterSlidingMoves moves likeOccupiedSquares oppoOccupiedSquare = filterMoves moves [] likeOccupiedSquares oppoOccupiedSquare
-  where
-    filterMoves :: Moves -> Moves -> Squares -> Squares -> Moves
-    filterMoves [] curr _ _ = curr
-    filterMoves (move : moves) curr likeOccupiedSquares oppoOccupiedSquare
-      | end move `Set.member` likeOccupiedSquares = curr
-      | end move `Set.member` oppoOccupiedSquare = move : curr
-      | otherwise = filterMoves moves (move : curr) likeOccupiedSquares oppoOccupiedSquare
+newtype PawnPromotion = PawnPromotion Move
 
--- Takes a list of moves and filters out any which end on squares occupied by like pieces
-filterAllMoves :: Moves -> PieceList -> Moves
-filterAllMoves emptyBoardMoves likePieces = filterMoves emptyBoardMoves likeOccupiedSquares
-  where
-    filterMoves :: Moves -> Squares -> Moves
-    filterMoves moves likePieces = foldl (\curr move -> if end move `Set.member` likePieces then curr else move : curr) [] moves
+data Castle = Castle Move Move
 
-    likeOccupiedSquares = Set.fromList (map POS.square likePieces)
+data SlidingMoves = SlidingMoves [Move] [Move] [Move] [Move]
 
-filterSlidingPieceMoves :: Data a => a -> Squares -> Squares -> a
-filterSlidingPieceMoves moves likeOccupiedSquares oppoOccupiedSquares =
-  gmapT
-    ( \moves -> case cast moves of
-        Just mvs -> fromJust (cast (filterSlidingMoves mvs likeOccupiedSquares oppoOccupiedSquares))
-        Nothing -> moves
-    ) moves
+data PawnMoves = PM {forward, jump, takeLeft, takeRight :: Maybe Move, enPassentLeft, enPassentRight :: Maybe EnPassent, promotion :: Maybe PawnPromotion}
+
+data KingMoves = KM [Move] (Maybe Castle) (Maybe Castle)
+
+data Moves
+  = Moves [Move]
+  | Sliders SlidingMoves
+  | QueenMoves {bishopMoves :: SlidingMoves, rookMoves :: SlidingMoves}
+  | PawnMoves {white, black :: PawnMoves}
+  | KingMoves KingMoves
+
+class Moveable p where
+  emptyBoardMoves :: p -> Square -> Moves
+

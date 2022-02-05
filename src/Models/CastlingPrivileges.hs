@@ -43,21 +43,21 @@ instance Read CastlingPrivileges where
   readListPrec = readListPrecDefault
   readList = readListDefault
 
-getKingSideCastle :: PieceColour -> Move
+getKingSideCastle :: PieceColour -> Castle
 getKingSideCastle colour = Castle (Move (Square Fe rank) (Square Fg rank)) (Move (Square Fh rank) (Square Ff rank))
   where
     rank = case colour of
       White -> R1
       Black -> R8
 
-getQueenSideCastle :: PieceColour -> Move
+getQueenSideCastle :: PieceColour -> Castle
 getQueenSideCastle colour = Castle (Move (Square Fe rank) (Square Fc rank)) (Move (Square Fa rank) (Square Fd rank))
   where
     rank = case colour of
       White -> R1
       Black -> R8
 
-getCastlingMoves :: PieceColour -> FullPieceList -> CastlingPrivileges -> Moves
+getCastlingMoves :: PieceColour -> FullPieceList -> CastlingPrivileges -> [Castle]
 getCastlingMoves colour fullPL castlingPrivileges = output
   where
     (kingSidePrivilege, queenSidePrivilege, rank, attackedSquares) = case colour of

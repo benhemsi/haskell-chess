@@ -1,16 +1,15 @@
-module Move.KnightMoves where
+module Piece.Knight where
 
-import qualified Data.Set as Set
 import Models.Move
 import Models.Square
 
-type KnightMoves = Moves
+data Knight = N deriving (Show, Read)
 
-emptyBoardMoves :: Square -> KnightMoves
+emptyBoardMoves :: Square -> Moves
 emptyBoardMoves start =
   let startFile = fromEnum (file start)
       startRank = fromEnum (rank start)
-   in [ Move start (Square (toEnum f) (toEnum r))
+   in Moves [ Move start (Square (toEnum f) (toEnum r))
         | i <- [-2, -1, 1, 2],
           j <- [-2, -1, 1, 2],
           abs (i * j) == 2,
@@ -19,6 +18,3 @@ emptyBoardMoves start =
           f >= 0 && f <= 8,
           r >= 0 && r <= 8
       ]
-
-validMoves :: KnightMoves -> Squares -> Moves
-validMoves knightMoves likeOccupiedSquares = filter (\move -> end move `Set.notMember` likeOccupiedSquares) knightMoves

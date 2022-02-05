@@ -1,5 +1,7 @@
-module Models.PieceList (PieceList) where
+{-# LANGUAGE RankNTypes #-}
+
+module Models.PieceList where
 
 import Models.PieceOnSquare
 
-type PieceList = [PieceOnSquare]
+type PieceList = forall p. [PieceOnSquare p]
