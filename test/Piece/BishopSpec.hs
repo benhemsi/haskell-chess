@@ -1,11 +1,11 @@
-module Move.BishopMovesSpec where
+module Piece.BishopSpec where
 
 import qualified Data.Set as Set
 import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
-import Move.BishopMoves
+import Piece.Bishop
 import Test.Hspec
 
 spec = do

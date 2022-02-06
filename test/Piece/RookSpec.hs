@@ -1,11 +1,11 @@
-module Move.RookMovesSpec where
+module Piece.RookSpec where
 
 import qualified Data.Set as Set
 import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
-import Move.RookMoves
+import Piece.Rook
 import Test.Hspec
 
 spec = do

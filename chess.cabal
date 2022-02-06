@@ -107,13 +107,12 @@ test-suite chess-test
       Models.PieceTypeSpec
       Models.RankSpec
       Models.SquareSpec
-      Move.BishopMovesSpec
-      Move.KingMovesSpec
-      Move.KnightMovesSpec
-      Move.PawnMovesSpec
-      Move.QueenMovesSpec
-      Move.RookMovesSpec
-      Moves.MoveTreeSpec
+      Piece.BishopSpec
+      Piece.KingSpec
+      Piece.KnightSpec
+      Piece.PawnSpec
+      Piece.QueenSpec
+      Piece.RookSpec
       Paths_chess
   hs-source-dirs:
       test
