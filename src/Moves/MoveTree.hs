@@ -6,11 +6,13 @@ import Data.Foldable
 
 data MoveTree a = EmptyTree | Leaf a | Node a [MoveTree a] deriving (Eq, Functor, Foldable, Traversable)
 
-filterTree :: Eq a => (a -> Bool) -> MoveTree a -> MoveTree a
-filterTree predicate tree = case tree of
+filterLeaves :: Eq a => (a -> Bool) -> MoveTree a -> MoveTree a
+filterLeaves predicate tree = case tree of
   EmptyTree -> EmptyTree
-  Leaf a -> if predicate a then Leaf a else EmptyTree
-  Node a trees -> if predicate a then Node a (filter (EmptyTree /=) (map (filterTree predicate) trees)) else EmptyTree
+  Leaf x -> if predicate x then Leaf x else EmptyTree
+  Node x [] -> filterLeaves predicate (Leaf x)
+  Node x [EmptyTree] -> filterLeaves predicate (Leaf x)
+  Node x trees -> Node x (filter (EmptyTree /=) (map (filterLeaves predicate) trees))
 
 instance Semigroup a => Semigroup (MoveTree a) where
   tree1 <> tree2 = case (tree1, tree2) of
