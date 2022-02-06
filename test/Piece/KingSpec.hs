@@ -11,10 +11,13 @@ import Test.Hspec
 spec = do
   describe "emptyBoardMoves" $ do
     it "correctly calculate King moves" $ do
-      let moves = emptyBoardMoves (Square Fa R1)
-      map (show . end) moves `shouldMatchList` ["a2", "b1", "b2"]
+      let 
+        start = Square Fa R1
+        moves = emptyBoardMoves K start
+        expected  = map (Move start) [Square Fa R2, Square Fb R1, Square Fb R2]
+      moves `shouldMatchList` expected
 
-  describe "validMoves" $ do
-    it "correctly filter out moves which end on a like piece" $ do
-      let moves = validMoves (emptyBoardMoves (Square Fa R1)) (Set.singleton (Square Fb R2))
-      map (show . end) moves `shouldMatchList` ["a2", "b1"]
+  -- describe "validMoves" $ do
+  --   it "correctly filter out moves which end on a like piece" $ do
+  --     let moves = validMoves (emptyBoardMoves K (Square Fa R1)) (Set.singleton (Square Fb R2))
+  --     map (show . end) moves `shouldMatchList` ["a2", "b1"]
