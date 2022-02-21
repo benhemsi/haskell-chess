@@ -7,6 +7,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Moves.MoveLogic
 import Piece.Queen
 import Test.Hspec
 
@@ -15,7 +16,7 @@ spec = do
     it "correctly combine rook and bishop moves" $ do
       let 
         start = Square Fa R1
-        moves = getMoves (emptyBoardMoves Q start)
+        moves = flattenMoves (emptyBoardMoves Q start)
         expected = map (Mv . Move start) $ [Square f r | f <- [Fb .. Fh] | r <- [R2 .. R8]] ++ [Square f R1 | f <- [Fb .. Fh]] ++ [Square Fa r | r <- [R2 .. R8]] 
       moves `shouldMatchList` expected
 

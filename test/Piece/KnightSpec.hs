@@ -5,6 +5,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Moves.MoveLogic
 import Piece.Knight
 import Test.Hspec
 
@@ -13,7 +14,7 @@ spec = do
     it "correctly calculate the knight jumps" $ do
       let
         start = Square Fa R1
-        moves = getMoves (emptyBoardMoves N start)
+        moves = flattenMoves (emptyBoardMoves N start)
         expected = map (Mv . Move start) [Square Fc R2, Square Fb R3]
       moves `shouldMatchList` expected
 

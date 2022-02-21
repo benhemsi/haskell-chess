@@ -5,6 +5,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Moves.MoveLogic
 import Piece.Rook
 import Test.Hspec
 
@@ -13,14 +14,14 @@ spec = do
     it "correctly calculate the north and east moves" $ do
       let 
         start = Square Fa R1
-        moves = getMoves (emptyBoardMoves R start)
+        moves = flattenMoves (emptyBoardMoves R start)
         expected = map (Mv . Move start) $ [Square f R1 | f <- [Fb .. Fh]] ++ [Square Fa r | r <- [R2 .. R8]] 
       moves `shouldMatchList` expected
 
     it "correctly calculate the south and west moves" $ do
       let 
         start = Square Fh R8
-        moves = getMoves (emptyBoardMoves R start)
+        moves = flattenMoves (emptyBoardMoves R start)
         expected = map (Mv . Move start) $ [Square f R8 | f <- [Fa .. Fg]] ++ [Square Fh r | r <- [R1 .. R7]] 
       moves `shouldMatchList` expected
 

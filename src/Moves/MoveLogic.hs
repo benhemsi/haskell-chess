@@ -11,6 +11,17 @@ import Models.PieceType
 import Models.Position
 import Models.Square
 
+flattenMoves :: Moves -> [MoveTypes]
+flattenMoves (Moves mvs) = map Mv mvs
+flattenMoves (Sliders (SlidingMoves a b c d)) = map Mv (a ++ b ++ c ++ d)
+flattenMoves (QueenMoves b r) = flattenMoves (Sliders b) ++ flattenMoves (Sliders r)
+flattenMoves (KingMoves (KM mvs kc qc)) = map Mv mvs ++ map Cst (toList kc) ++ map Cst (toList qc)
+flattenMoves (PawnMoves w b) = whiteMoves ++ blackMoves
+  where
+    flattenPawnMoves (PM f j t enP pr prTks) = map Mv (toList f ++ toList j ++ t) ++ map EnP enP ++ map (\(PawnPromotion mv) -> PP mv) (toList pr ++ prTks)
+    whiteMoves = flattenPawnMoves w
+    blackMoves = flattenPawnMoves b
+
 movesToMoveTypes :: [Move] -> [MoveTypes]
 movesToMoveTypes = map Mv
 

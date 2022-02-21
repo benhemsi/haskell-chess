@@ -1,11 +1,11 @@
 module Piece.Pawn where
 
+import Data.Foldable (Foldable (toList))
 import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
 import Piece.Moveable
-import Data.Foldable (Foldable(toList))
 
 data Pawn = P deriving (Show, Read)
 
@@ -66,8 +66,8 @@ instance Moveable Pawn where
             enPassentsBlack = maybesToList enPassentLeftBlack enPassentRightBlack
 
             whiteMoves = case startRank of
-                           R7 -> PM Nothing jumpWhite [] enPassentsWhite (fmap PawnPromotion forwardWhite) (map PawnPromotion takesWhite)
-                           _ -> PM forwardWhite jumpWhite takesWhite enPassentsWhite Nothing []
+              R7 -> PM Nothing jumpWhite [] enPassentsWhite (fmap PawnPromotion forwardWhite) (map PawnPromotion takesWhite)
+              _ -> PM forwardWhite jumpWhite takesWhite enPassentsWhite Nothing []
             blackMoves = case startRank of
-                           R2 -> PM Nothing jumpBlack [] enPassentsBlack (fmap PawnPromotion forwardBlack) (map PawnPromotion takesBlack)
-                           _ -> PM forwardBlack jumpBlack takesBlack enPassentsBlack Nothing []
+              R2 -> PM Nothing jumpBlack [] enPassentsBlack (fmap PawnPromotion forwardBlack) (map PawnPromotion takesBlack)
+              _ -> PM forwardBlack jumpBlack takesBlack enPassentsBlack Nothing []

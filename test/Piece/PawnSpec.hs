@@ -5,6 +5,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Moves.MoveLogic
 import Piece.Pawn
 import Test.Hspec
 
@@ -13,7 +14,7 @@ spec = do
     it "correctly calculate the white and black pawn moves" $ do
       let 
         start = Square Fb R2
-        moves = getMoves $ emptyBoardMoves P start
+        moves = flattenMoves $ emptyBoardMoves P start
         expectedWhite = map (Mv . Move start) [Square Fa R3, Square Fb R3, Square Fb R4, Square Fc R3]
         expectedBlack = map (PP . Move start) [Square Fa R1, Square Fb R1, Square Fc R1]
       moves `shouldMatchList` expectedWhite ++ expectedBlack

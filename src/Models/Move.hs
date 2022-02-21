@@ -55,14 +55,3 @@ attackedSquare (Mv mv) = Just (_end mv)
 attackedSquare (EnP (EnPassent _ sq)) = Just sq
 attackedSquare (PP mv) = Just (_end mv)
 attackedSquare (Cst _) = Nothing
-
-getMoves :: Moves -> [MoveTypes]
-getMoves (Moves mvs) = map Mv mvs
-getMoves (Sliders (SlidingMoves a b c d)) = map Mv (a ++ b ++ c ++ d)
-getMoves (QueenMoves b r) = getMoves (Sliders b) ++ getMoves (Sliders r)
-getMoves (KingMoves (KM mvs kc qc)) = map Mv mvs ++ map Cst (toList kc) ++ map Cst (toList qc)
-getMoves (PawnMoves w b) = whiteMoves ++ blackMoves
-  where
-    flattenPawnMoves (PM f j t enP pr prTks) = map Mv (toList f ++ toList j ++ t) ++ map EnP enP ++ map (\(PawnPromotion mv) -> PP mv) (toList pr ++ prTks)
-    whiteMoves = flattenPawnMoves w
-    blackMoves = flattenPawnMoves b
