@@ -2,8 +2,10 @@ module Moves.MoveLogic where
 
 import Control.Lens
 import qualified Data.Set as Set
+import Data.Foldable (toList)
 import Models.FullPieceList
 import Models.Move
+import Models.PieceColour
 import Models.PieceOnSquare
 import Models.PieceType
 import Models.Position
@@ -36,7 +38,7 @@ filterMoves emptyBoardMoves pos = filterMoves emptyBoardMoves
     filterMoves moves = movesToMoveTypes $ filter filterFunction emptyBoardMoves
 
 filterPawnMoves :: PawnMoves -> Position -> [MoveTypes]
-filterPawnMoves (PM f1 f2 tks enPs pr) pos = movesToMoveTypes (forward ++ takes) ++ enPassent ++ promotion
+filterPawnMoves (PM f1 f2 tks enPs pr prTks) pos = movesToMoveTypes (forward ++ takes) ++ enPassent ++ promotion ++ promotionTakes
   where
     likePieces = getLikeOccupiedSquares pos
     oppoPieces = getOppoOccupiedSquares pos
@@ -57,7 +59,8 @@ filterPawnMoves (PM f1 f2 tks enPs pr) pos = movesToMoveTypes (forward ++ takes)
       Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
       Nothing -> []
 
-    promotion = map (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
+    promotion = toList $ fmap PP (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
+    promotionTakes = map (\(PawnPromotion mv) -> PP mv) $ filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoPieces) prTks
 
 filterKingMoves :: KingMoves -> Position -> [MoveTypes]
 filterKingMoves (KM moves kingSide queenSide) = filterMoves moves -- TODO add castling filtering
@@ -68,7 +71,9 @@ filterAllMoves :: Moves -> Position -> [MoveTypes]
 filterAllMoves (Moves moves) pos = filterMoves moves pos
 filterAllMoves (Sliders moves) pos = filterSlidingMoves moves pos
 filterAllMoves (QueenMoves bishopMoves rookMoves) pos = filterSlidingMoves bishopMoves pos ++ filterSlidingMoves rookMoves pos
-filterAllMoves (PawnMoves whiteMoves blackMoves) pos = filterPawnMoves whiteMoves pos ++ filterPawnMoves blackMoves pos
+filterAllMoves (PawnMoves whiteMoves blackMoves) pos = case view nextToMoveLens pos of
+  White -> filterPawnMoves whiteMoves pos
+  Black -> filterPawnMoves blackMoves pos
 filterAllMoves (KingMoves kingMoves) pos = filterKingMoves kingMoves pos
 
 pawnTakingMoves :: Position -> [MoveTypes]

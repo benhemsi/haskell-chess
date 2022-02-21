@@ -13,7 +13,7 @@ instance Moveable Pawn where
   emptyBoardMoves P start = pawnMoves
     where
       startRank = _rank start
-      emptyPawnMoves = PM Nothing Nothing [] [] Nothing
+      emptyPawnMoves = PM Nothing Nothing [] [] Nothing []
       pawnMoves = case startRank of
         R1 -> PawnMoves emptyPawnMoves emptyPawnMoves
         R8 -> PawnMoves emptyPawnMoves emptyPawnMoves
@@ -21,19 +21,8 @@ instance Moveable Pawn where
           where
             startFile = _file start
 
-            promotionWhite = case startRank of
-              R7 -> Just $ PawnPromotion (Move start (Square startFile (succ startRank)))
-              _ -> Nothing
-            promotionBlack = case startRank of
-              R2 -> Just $ PawnPromotion (Move start (Square startFile (pred startRank)))
-              _ -> Nothing
-
-            forwardWhite = case promotionWhite of
-              Nothing -> Just $ Move start (Square startFile (succ startRank))
-              Just _ -> Nothing
-            forwardBlack = case promotionBlack of
-              Nothing -> Just $ Move start (Square startFile (pred startRank))
-              Just _ -> Nothing
+            forwardWhite = Just $ Move start (Square startFile (succ startRank))
+            forwardBlack = Just $ Move start (Square startFile (pred startRank))
 
             jumpWhite = case startRank of
               R2 -> Just $ Move start (Square startFile (succ $ succ startRank))
@@ -43,17 +32,17 @@ instance Moveable Pawn where
               _ -> Nothing
 
             takeLeftWhite = case startFile of
-              Fa -> Just $ Move start (Square (pred startFile) (succ startRank))
-              _ -> Nothing
+              Fa -> Nothing
+              _ -> Just $ Move start (Square (pred startFile) (succ startRank))
             takeLeftBlack = case startFile of
-              Fa -> Just $ Move start (Square (pred startFile) (pred startRank))
-              _ -> Nothing
+              Fa -> Nothing
+              _ -> Just $ Move start (Square (pred startFile) (pred startRank))
             takeRightWhite = case startFile of
-              Fh -> Just $ Move start (Square (succ startFile) (succ startRank))
-              _ -> Nothing
+              Fh -> Nothing
+              _ -> Just $ Move start (Square (succ startFile) (succ startRank))
             takeRightBlack = case startFile of
-              Fh -> Just $ Move start (Square (succ startFile) (pred startRank))
-              _ -> Nothing
+              Fh -> Nothing
+              _ -> Just $ Move start (Square (succ startFile) (pred startRank))
 
             enPassentLeftWhite = case startRank of
               R5 -> fmap (\tl -> EnPassent tl (Square (pred . _file . _end $ tl) R6)) takeLeftWhite
@@ -76,5 +65,9 @@ instance Moveable Pawn where
             enPassentsWhite = maybesToList enPassentLeftWhite enPassentRightWhite
             enPassentsBlack = maybesToList enPassentLeftBlack enPassentRightBlack
 
-            whiteMoves = PM forwardWhite jumpWhite takesWhite enPassentsWhite promotionWhite
-            blackMoves = PM forwardBlack jumpBlack takesBlack enPassentsBlack promotionBlack
+            whiteMoves = case startRank of
+                           R7 -> PM Nothing jumpWhite [] enPassentsWhite (fmap PawnPromotion forwardWhite) (map PawnPromotion takesWhite)
+                           _ -> PM forwardWhite jumpWhite takesWhite enPassentsWhite Nothing []
+            blackMoves = case startRank of
+                           R2 -> PM Nothing jumpBlack [] enPassentsBlack (fmap PawnPromotion forwardBlack) (map PawnPromotion takesBlack)
+                           _ -> PM forwardBlack jumpBlack takesBlack enPassentsBlack Nothing []

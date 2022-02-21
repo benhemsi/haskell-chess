@@ -1,3 +1,5 @@
+{-# LANGUAGE ParallelListComp #-}
+
 module Piece.Bishop where
 
 import Models.File
@@ -16,13 +18,8 @@ instance Moveable Bishop where
             startRank = _rank start
             targetFile = _file target
             targetRank = _rank target
-         in zipWith
-              (curry (Move start . uncurry Square))
-              (getRange startFile targetFile)
-              (getRange startRank targetRank)
-      startFile = _file start
-      startRank = _rank start
-      northEast = if (startFile /= Fh) && (startRank /= R8) then getDiagonal (Square (succ startFile) (succ startRank)) (Square Fh R8) else []
-      southEast = if (startFile /= Fh) && (startRank /= R1) then getDiagonal (Square (succ startFile) (pred startRank)) (Square Fh R1) else []
-      southWest = if (startFile /= Fa) && (startRank /= R1) then getDiagonal (Square (pred startFile) (pred startRank)) (Square Fa R1) else []
-      northWest = if (startFile /= Fa) && (startRank /= R8) then getDiagonal (Square (pred startFile) (succ startRank)) (Square Fa R8) else []
+         in filter (Move start start /=) [Move start (Square f r) | f <- getRange startFile targetFile | r <- getRange startRank targetRank]
+      northEast = getDiagonal start (Square Fh R8)
+      southEast = getDiagonal start (Square Fh R1)
+      southWest = getDiagonal start (Square Fa R1)
+      northWest = getDiagonal start (Square Fa R8)
