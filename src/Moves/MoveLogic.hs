@@ -112,3 +112,18 @@ takingMoves pos = pawnTakingMoves pos ++ filter (isTakingMove pos) nonPawnMoves
   where
     pawnSquares = Set.fromList $ map _square $ filter (\pieceOnSq -> view pieceTypeLens pieceOnSq == Pawn) (getLikePieces pos)
     nonPawnMoves = filter (\mv -> startingSquare mv `Set.notMember` pawnSquares) (_moves pos)
+
+getEmptyBoardMoves :: PieceOnSquare -> Moves
+getEmptyBoardMoves (PieceOnSquare tpe sq) = emptyBoardMoves tpe sq
+
+getValidMoves :: PieceColour -> Position -> [(PieceOnSquare, [MoveTypes])]
+getValidMoves col pos = [(piece, filterAllMoves moves pos) | piece <- likePieces, let moves = getEmptyBoardMoves piece]
+  where
+    likePieces = case col of
+                   White -> view whitePiecesLens pos
+                   Black -> view blackPiecesLens pos
+
+getAllValidMoves :: Position -> [(PieceOnSquare, [MoveTypes])]
+getAllValidMoves pos = [(piece, filterAllMoves moves pos) | piece <- likePieces, let moves = getEmptyBoardMoves piece]
+  where
+    likePieces = getLikePieces pos

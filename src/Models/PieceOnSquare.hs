@@ -6,9 +6,9 @@ import Control.Lens
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
 import Models.Piece
+import Models.PieceType
 import Models.Square
 import Text.Read
-import Models.PieceType
 
 data PieceOnSquare = PieceOnSquare
   { _piece :: Piece,

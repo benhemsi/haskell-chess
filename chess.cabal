@@ -107,6 +107,7 @@ test-suite chess-test
       Models.PieceTypeSpec
       Models.RankSpec
       Models.SquareSpec
+      Moves.MoveLogicSpec
       Piece.BishopSpec
       Piece.KingSpec
       Piece.KnightSpec

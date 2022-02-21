@@ -7,9 +7,9 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Moves.MoveLogic
 import Piece.Bishop
 import Test.Hspec
-import Moves.MoveLogic
 
 spec = do
   describe "emptyBoardMoves" $ do

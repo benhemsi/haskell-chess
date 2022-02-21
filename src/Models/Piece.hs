@@ -5,6 +5,7 @@ module Models.Piece where
 import Data.Char (isUpper, toLower, toUpper)
 import Models.PieceColour
 import Models.PieceType
+import Models.Move
 import Text.Read
 import Control.Lens 
 
@@ -30,3 +31,6 @@ instance Read Piece where
 
   readListPrec = readListPrecDefault
   readList = readListDefault
+
+instance Moveable Piece where
+  emptyBoardMoves (Piece _ tpe) = emptyBoardMoves tpe
