@@ -18,9 +18,6 @@ data PieceOnSquare = PieceOnSquare
 
 makeLenses ''PieceOnSquare
 
-pieceTypeLens :: Lens' PieceOnSquare PieceType
-pieceTypeLens = piece . pieceType
-
 instance Ord PieceOnSquare where
   a <= b = _square a <= _square b
 

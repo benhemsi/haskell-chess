@@ -11,6 +11,7 @@ import Models.Piece
 import Models.Square
 import Models.FullPieceList
 import Test.Hspec
+import Models.Position (Position)
 
 spec = do
   describe "buildEvaluationBoard" $ do

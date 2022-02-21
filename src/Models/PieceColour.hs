@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Models.PieceColour (PieceColour (..)) where
+module Models.PieceColour where
 
 import Data.Data
 import Text.Read

@@ -3,6 +3,7 @@ module Moves.MoveLogic where
 import Control.Lens
 import qualified Data.Set as Set
 import Data.Foldable (toList)
+import Models.FenRepresentation
 import Models.FullPieceList
 import Models.Move
 import Models.PieceColour
@@ -10,6 +11,7 @@ import Models.PieceOnSquare
 import Models.PieceType
 import Models.Position
 import Models.Square
+import Models.Piece
 
 flattenMoves :: Moves -> [MoveTypes]
 flattenMoves (Moves mvs) = map Mv mvs
@@ -66,7 +68,7 @@ filterPawnMoves (PM f1 f2 tks enPs pr prTks) pos = movesToMoveTypes (forward ++ 
 
     takes = filter (\move -> _end move `Set.member` oppoPieces) tks
 
-    enPassent = case view enPassentLens pos of
+    enPassent = case view (fen . enPassentSquare) pos of
       Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
       Nothing -> []
 
@@ -82,21 +84,10 @@ filterAllMoves :: Moves -> Position -> [MoveTypes]
 filterAllMoves (Moves moves) pos = filterMoves moves pos
 filterAllMoves (Sliders moves) pos = filterSlidingMoves moves pos
 filterAllMoves (QueenMoves bishopMoves rookMoves) pos = filterSlidingMoves bishopMoves pos ++ filterSlidingMoves rookMoves pos
-filterAllMoves (PawnMoves whiteMoves blackMoves) pos = case view nextToMoveLens pos of
+filterAllMoves (PawnMoves whiteMoves blackMoves) pos = case view (fen . nextToMove) pos of
   White -> filterPawnMoves whiteMoves pos
   Black -> filterPawnMoves blackMoves pos
 filterAllMoves (KingMoves kingMoves) pos = filterKingMoves kingMoves pos
-
-pawnTakingMoves :: Position -> [MoveTypes]
-pawnTakingMoves pos = filter pawnTake pawnMoves
-  where
-    likePieces = getLikePieces pos
-    pawnSquares = Set.fromList $ map _square $ filter (\pieceOnSq -> view pieceTypeLens pieceOnSq == Pawn) likePieces
-    pawnMoves = filter (\mv -> startingSquare mv `Set.member` pawnSquares) (_moves pos)
-    oppoPieces = getOppoOccupiedSquares pos
-    pawnTake mv = case attackedSquare mv of
-      Nothing -> False
-      Just sq -> _file sq /= _file (startingSquare mv) && sq `Set.member` oppoPieces
 
 isTakingMove :: Position -> MoveTypes -> Bool
 isTakingMove pos move = output
@@ -107,12 +98,6 @@ isTakingMove pos move = output
       Just sq -> sq `Set.member` oppoPieces
       Nothing -> False
 
-takingMoves :: Position -> [MoveTypes]
-takingMoves pos = pawnTakingMoves pos ++ filter (isTakingMove pos) nonPawnMoves
-  where
-    pawnSquares = Set.fromList $ map _square $ filter (\pieceOnSq -> view pieceTypeLens pieceOnSq == Pawn) (getLikePieces pos)
-    nonPawnMoves = filter (\mv -> startingSquare mv `Set.notMember` pawnSquares) (_moves pos)
-
 getEmptyBoardMoves :: PieceOnSquare -> Moves
 getEmptyBoardMoves (PieceOnSquare tpe sq) = emptyBoardMoves tpe sq
 
@@ -120,10 +105,11 @@ getValidMoves :: PieceColour -> Position -> [(PieceOnSquare, [MoveTypes])]
 getValidMoves col pos = [(piece, filterAllMoves moves pos) | piece <- likePieces, let moves = getEmptyBoardMoves piece]
   where
     likePieces = case col of
-                   White -> view whitePiecesLens pos
-                   Black -> view blackPiecesLens pos
+                   White -> view (pieceList . whitePieces) pos
+                   Black -> view (pieceList . blackPieces) pos
 
-getAllValidMoves :: Position -> [(PieceOnSquare, [MoveTypes])]
-getAllValidMoves pos = [(piece, filterAllMoves moves pos) | piece <- likePieces, let moves = getEmptyBoardMoves piece]
-  where
-    likePieces = getLikePieces pos
+getLikeValidMoves :: Position -> [(PieceOnSquare, [MoveTypes])]
+getLikeValidMoves pos = getValidMoves (view (fen . nextToMove) pos) pos
+
+getOppoValidMoves :: Position -> [(PieceOnSquare, [MoveTypes])]
+getOppoValidMoves pos = getValidMoves (oppoColour (view (fen . nextToMove) pos)) pos
