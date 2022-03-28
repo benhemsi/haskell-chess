@@ -46,7 +46,7 @@ filterMoves emptyBoardMoves pos = filterMoves emptyBoardMoves
   where
     likePieces = getLikeOccupiedSquares pos
     filterFunction :: Move -> Bool
-    filterFunction (Move _ end) = end `Set.member` likePieces
+    filterFunction (Move _ end) = end `Set.notMember` likePieces
     filterMoves :: [Move] -> [MoveTypes]
     filterMoves moves = movesToMoveTypes $ filter filterFunction emptyBoardMoves
 

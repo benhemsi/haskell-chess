@@ -1,11 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Models.Rank
-  ( Rank (..),
-    predRank,
-    succRank,
-  )
-where
+module Models.Rank where
 
 import Data.Data
 import Data.Ix

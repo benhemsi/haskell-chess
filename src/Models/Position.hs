@@ -16,6 +16,9 @@ data Position = Position {_fen :: FenRepresentation, _pieceList :: FullPieceList
 
 makeLenses ''Position
 
+buildBasePosition :: PieceList -> Position
+buildBasePosition pl = Position (buildBaseFenRepresentation pl) (buildBaseFullPieceList pl)
+
 getLikePieces :: Position -> PieceList
 getLikePieces pos = case view (fen . nextToMove) pos of
   White -> view (pieceList . whitePieces) pos

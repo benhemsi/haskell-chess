@@ -1,11 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 
-module Models.File
-  ( File (..),
-    predFile,
-    succFile,
-  )
-where
+module Models.File where
 
 import Data.Data
 import Data.Ix
