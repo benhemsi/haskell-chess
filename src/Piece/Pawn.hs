@@ -1,5 +1,6 @@
 module Piece.Pawn where
 
+import Control.Lens
 import Data.Foldable (Foldable (toList))
 import Models.File
 import Models.Move
@@ -45,16 +46,16 @@ instance Moveable Pawn where
               _ -> Just $ Move start (Square (succ startFile) (pred startRank))
 
             enPassentLeftWhite = case startRank of
-              R5 -> fmap (\tl -> EnPassent tl (Square (pred . _file . _end $ tl) R6)) takeLeftWhite
-              _ -> Nothing
-            enPassentLeftBlack = case startRank of
-              R4 -> fmap (\tl -> EnPassent tl (Square (pred . _file . _end $ tl) R3)) takeLeftBlack
-              _ -> Nothing
-            enPassentRightWhite = case startRank of
-              R5 -> fmap (\tl -> EnPassent tl (Square (succ . _file . _end $ tl) R6)) takeRightWhite
-              _ -> Nothing
-            enPassentRightBlack = case startRank of
-              R4 -> fmap (\tl -> EnPassent tl (Square (succ . _file . _end $ tl) R3)) takeRightBlack
+              R5 -> fmap (\tl -> EnPassent tl (Square (view (end . file) tl) R5)) takeLeftWhite
+              _ -> Nothing                                             
+            enPassentLeftBlack = case startRank of                     
+              R4 -> fmap (\tl -> EnPassent tl (Square (view (end . file) tl) R4)) takeLeftBlack
+              _ -> Nothing                                             
+            enPassentRightWhite = case startRank of                    
+              R5 -> fmap (\tl -> EnPassent tl (Square (view (end . file) tl) R5)) takeRightWhite
+              _ -> Nothing                                             
+            enPassentRightBlack = case startRank of                    
+              R4 -> fmap (\tl -> EnPassent tl (Square (view (end . file) tl) R4)) takeRightBlack
               _ -> Nothing
 
             maybesToList mayA mayB = toList mayA ++ toList mayB

@@ -20,7 +20,7 @@ flattenMoves (QueenMoves b r) = flattenMoves (Sliders b) ++ flattenMoves (Slider
 flattenMoves (KingMoves (KM mvs kc qc)) = map Mv mvs ++ map Cst (toList kc) ++ map Cst (toList qc)
 flattenMoves (PawnMoves w b) = whiteMoves ++ blackMoves
   where
-    flattenPawnMoves (PM f j t enP pr prTks) = map Mv (toList f ++ toList j ++ t) ++ map EnP enP ++ map (\(PawnPromotion mv) -> PP mv) (toList pr ++ prTks)
+    flattenPawnMoves (PM f j t enP pr prTks) = map Mv (toList f ++ toList j ++ t) ++ map EnP enP ++ map PP (toList pr ++ prTks)
     whiteMoves = flattenPawnMoves w
     blackMoves = flattenPawnMoves b
 
@@ -72,8 +72,8 @@ filterPawnMoves (PM f1 f2 tks enPs pr prTks) pos = movesToMoveTypes (forward ++ 
       Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
       Nothing -> []
 
-    promotion = toList $ fmap PP (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
-    promotionTakes = map (\(PawnPromotion mv) -> PP mv) $ filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoPieces) prTks
+    promotion = toList $ fmap (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
+    promotionTakes = map PP $ filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoPieces) prTks
 
 filterKingMoves :: KingMoves -> Position -> [MoveTypes]
 filterKingMoves (KM moves kingSide queenSide) = filterMoves moves -- TODO add castling filtering

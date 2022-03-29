@@ -14,7 +14,7 @@ makeLenses ''Move
 data MoveTypes
   = Mv Move
   | EnP EnPassent
-  | PP Move
+  | PP PawnPromotion
   | Cst Castle deriving Eq
 
 instance Show MoveTypes where
@@ -47,11 +47,11 @@ class Moveable p where
 startingSquare :: MoveTypes -> Square
 startingSquare (Mv mv) = _start mv
 startingSquare (EnP (EnPassent mv _)) = _start mv
-startingSquare (PP mv) = _start mv
+startingSquare (PP (PawnPromotion mv)) = _start mv
 startingSquare (Cst (Castle mv _)) = _start mv
 
 attackedSquare :: MoveTypes -> Maybe Square
 attackedSquare (Mv mv) = Just (_end mv)
-attackedSquare (EnP (EnPassent _ sq)) = Just sq
-attackedSquare (PP mv) = Just (_end mv)
+attackedSquare (EnP (EnPassent mv _)) = Just (_end mv)
+attackedSquare (PP (PawnPromotion mv)) = Just (_end mv)
 attackedSquare (Cst _) = Nothing
