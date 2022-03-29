@@ -8,21 +8,24 @@ import Models.Board
 import Models.Move
 import Models.PieceColour
 import Models.PieceList
-import Models.Square
 import Models.Position
+import Models.Square
 import Moves.MoveLogic
 
-data EvaluationSquare = EvaluationSquare {_whiteAttackers, _blackAttackers :: PieceList}
+data EvaluationSquare =
+  EvaluationSquare
+    { _whiteAttackers, _blackAttackers :: PieceList
+    }
 
 type EvaluationBoard = Board EvaluationSquare
-
 
 getAttackers :: Square -> PieceColour -> EvaluationBoard -> PieceList
 getAttackers sq colour = getPieceList . (! sq)
   where
-    getPieceList = case colour of
-      White -> _whiteAttackers
-      Black -> _blackAttackers
+    getPieceList =
+      case colour of
+        White -> _whiteAttackers
+        Black -> _blackAttackers
 
 checkIfSquareAttacked :: Square -> PieceColour -> EvaluationBoard -> Bool
 checkIfSquareAttacked sq colour = not . null . getAttackers sq colour

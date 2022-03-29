@@ -12,28 +12,47 @@ import Models.PieceColour
 import Models.PieceList
 import Models.Square
 
-data Position = Position {_fen :: FenRepresentation, _pieceList :: FullPieceList}
+data Position =
+  Position
+    { _fen :: FenRepresentation
+    , _pieceList :: FullPieceList
+    }
 
 makeLenses ''Position
 
 buildBasePosition :: PieceList -> Position
-buildBasePosition pl = Position (buildBaseFenRepresentation pl) (buildBaseFullPieceList pl)
+buildBasePosition pl =
+  Position (buildBaseFenRepresentation pl) (buildBaseFullPieceList pl)
 
 getLikePieces :: Position -> PieceList
-getLikePieces pos = case view (fen . nextToMove) pos of
-  White -> view (pieceList . whitePieces) pos
-  Black -> view (pieceList . blackPieces) pos
+getLikePieces pos =
+  case view (fen . nextToMove) pos of
+    White -> view (pieceList . whitePieces) pos
+    Black -> view (pieceList . blackPieces) pos
 
 getLikeOccupiedSquares :: Position -> Squares
-getLikeOccupiedSquares pos = case view (fen . nextToMove) pos of
-  White -> view (pieceList . whiteOccupiedSquares) pos
-  Black -> view (pieceList . blackOccupiedSquares) pos
+getLikeOccupiedSquares pos =
+  case view (fen . nextToMove) pos of
+    White -> view (pieceList . whiteOccupiedSquares) pos
+    Black -> view (pieceList . blackOccupiedSquares) pos
 
 getOppoOccupiedSquares :: Position -> Squares
-getOppoOccupiedSquares pos = case view (fen . nextToMove) pos of
-  White -> view (pieceList . blackOccupiedSquares) pos
-  Black -> view (pieceList . whiteOccupiedSquares) pos
+getOppoOccupiedSquares pos =
+  case view (fen . nextToMove) pos of
+    White -> view (pieceList . blackOccupiedSquares) pos
+    Black -> view (pieceList . whiteOccupiedSquares) pos
 
+getKingSidePrivileges :: Position -> Bool
+getKingSidePrivileges pos =
+  case view (fen . nextToMove) pos of
+    White -> view (fen . castlingPrivileges . whiteKingSide) pos
+    Black -> view (fen . castlingPrivileges . blackKingSide) pos
+
+getQueenSidePrivileges :: Position -> Bool
+getQueenSidePrivileges pos =
+  case view (fen . nextToMove) pos of
+    White -> view (fen . castlingPrivileges . whiteQueenSide) pos
+    Black -> view (fen . castlingPrivileges . blackQueenSide) pos
 -- inCheck :: Position -> Bool
 -- inCheck pos = case view (fen . nextToMove) pos of
 --   White -> view (pieceList . whiteKing) pos `Set.member` getOppoAttackedSquares pos

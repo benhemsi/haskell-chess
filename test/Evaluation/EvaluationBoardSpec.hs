@@ -1,22 +1,21 @@
 module Evaluation.EvaluationBoardSpec where
 
-import Evaluation.EvaluationBoard
 import qualified Data.Set as Set
-import Models.PieceType
+import Evaluation.EvaluationBoard
+import Models.File
+import Models.FullPieceList
+import Models.Piece
 import Models.PieceColour
 import Models.PieceOnSquare
-import Models.File
-import Models.Rank
-import Models.Piece
-import Models.Square
-import Models.FullPieceList
-import Test.Hspec
+import Models.PieceType
 import Models.Position (Position)
+import Models.Rank
+import Models.Square
+import Test.Hspec
 
 spec = do
   describe "buildEvaluationBoard" $ do
-    it "correctly build an evaluation board from a full piece list" $ do
-      pending
+    it "correctly build an evaluation board from a full piece list" $ do pending
       -- let 
       --   whitePiece = PieceOnSquare (Piece White Rook)  (Square Fa R1)
       --   blackPiece = PieceOnSquare (Piece Black Rook) (Square Fh R8)

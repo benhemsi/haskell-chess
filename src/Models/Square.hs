@@ -10,7 +10,12 @@ import Models.File
 import Models.Rank
 import Text.Read
 
-data Square = Square {_file :: File, _rank :: Rank} deriving (Eq)
+data Square =
+  Square
+    { _file :: File
+    , _rank :: Rank
+    }
+  deriving (Eq)
 
 makeLenses ''Square
 
@@ -20,15 +25,13 @@ instance Show Square where
   show (Square file rank) = show file ++ show rank
 
 instance Read Square where
-  readPrec =
-    do
-      Ident (f : r) <- lexP
-      let file = readMaybe [f]
-          rank = readMaybe r
-      case (file, rank) of
-        (Just f', Just r') -> return (Square f' r')
-        _ -> pfail
-
+  readPrec = do
+    Ident (f:r) <- lexP
+    let file = readMaybe [f]
+        rank = readMaybe r
+    case (file, rank) of
+      (Just f', Just r') -> return (Square f' r')
+      _ -> pfail
   readListPrec = readListPrecDefault
   readList = readListDefault
 

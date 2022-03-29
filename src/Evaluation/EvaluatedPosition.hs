@@ -2,22 +2,27 @@
 
 module Evaluation.EvaluatedPosition where
 
-import Data.Array
 import Control.Lens
 import Control.Monad.State
+import Data.Array
+import qualified Data.Map as Map
 import Evaluation.Evaluation
 import Evaluation.EvaluationBoard
-import Models.PieceColour
-import Models.Position
-import Models.Move
-import qualified Data.Map as Map
-import Models.Square
-import Models.PieceList
-import Moves.MoveLogic
 import Models.FenRepresentation
+import Models.Move
+import Models.PieceColour
+import Models.PieceList
 import Models.PieceOnSquare
+import Models.Position
+import Models.Square
+import Moves.MoveLogic
 
-data EvaluatedPosition = EvaluatedPosition {_position :: Position, _moves :: [MoveTypes], _evaluation :: Evaluation}
+data EvaluatedPosition =
+  EvaluatedPosition
+    { _position :: Position
+    , _moves :: [MoveTypes]
+    , _evaluation :: Evaluation
+    }
 
 makeLenses ''EvaluatedPosition
 

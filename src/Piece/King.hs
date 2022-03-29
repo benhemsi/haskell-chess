@@ -6,7 +6,9 @@ import Models.Rank
 import Models.Square
 import Piece.Moveable
 
-data King = K deriving (Show, Read)
+data King =
+  K
+  deriving (Show, Read)
 
 instance Moveable King where
   emptyBoardMoves K start =
@@ -16,10 +18,11 @@ instance Moveable King where
         maxFile = succFile startFile
         minRank = predRank startRank
         maxRank = succRank startRank
-     in Moves [ Move start endSq
-          | f <- [minFile .. maxFile],
-            r <- [minRank .. maxRank],
-            let endSq = Square f r,
-            endSq /= start
-        ]
+     in Moves
+          [ Move start endSq
+          | f <- [minFile .. maxFile]
+          , r <- [minRank .. maxRank]
+          , let endSq = Square f r
+          , endSq /= start
+          ]
 -- TODO add castling

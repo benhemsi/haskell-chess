@@ -7,6 +7,10 @@ import Control.Monad.State
 import Evaluation.EvaluationBoard
 import Models.PieceColour
 
-data Evaluation = Evaluation {_positionEvaluation :: Double, _evaluationBoard :: EvaluationBoard}
+data Evaluation =
+  Evaluation
+    { _positionEvaluation :: Double
+    , _evaluationBoard :: EvaluationBoard
+    }
 
 makeLenses ''Evaluation

@@ -1,7 +1,9 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Models.Board (Board) where
+module Models.Board
+  ( Board
+  ) where
 
 import Data.Array
 import Data.Distributive
@@ -16,9 +18,16 @@ instance Distributive Board where
     where
       repF :: (a -> Board b) -> Square -> a -> b
       repF f = flip ((!) . f)
-      arr = array (minBound, maxBound) [(i, fb) | i <- range (minBound, maxBound), let fb = fmap (repF f i) fa]
+      arr =
+        array
+          (minBound, maxBound)
+          [ (i, fb)
+          | i <- range (minBound, maxBound)
+          , let fb = fmap (repF f i) fa
+          ]
 
 instance Representable Board where
   type Rep Board = Square
-  tabulate f = array (minBound, maxBound) [(i, f i) | i <- range (minBound, maxBound)]
+  tabulate f =
+    array (minBound, maxBound) [(i, f i) | i <- range (minBound, maxBound)]
   index = (!)
