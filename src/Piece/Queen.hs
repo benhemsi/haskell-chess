@@ -10,8 +10,7 @@ data Queen =
   deriving (Show, Read)
 
 instance Moveable Queen where
-  emptyBoardMoves Q start =
-    QueenMoves (getSlidingMoves bishopMoves) (getSlidingMoves rookMoves)
+  emptyBoardMoves Q start = QueenMoves (getSlidingMoves bishopMoves) (getSlidingMoves rookMoves)
     where
       getSlidingMoves :: Moves -> SlidingMoves
       getSlidingMoves (Sliders moves) = moves

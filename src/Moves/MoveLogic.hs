@@ -2,8 +2,10 @@ module Moves.MoveLogic where
 
 import Control.Lens
 import Data.Foldable (toList)
+import Data.Maybe (isJust)
 import qualified Data.Set as Set
 import Models.FenRepresentation
+import Models.File
 import Models.FullPieceList
 import Models.Move
 import Models.Piece
@@ -11,20 +13,18 @@ import Models.PieceColour
 import Models.PieceOnSquare
 import Models.PieceType
 import Models.Position
+import Models.Rank
 import Models.Square
 
 flattenMoves :: Moves -> [MoveTypes]
 flattenMoves (Moves mvs) = map Mv mvs
 flattenMoves (Sliders (SlidingMoves a b c d)) = map Mv (a ++ b ++ c ++ d)
-flattenMoves (QueenMoves b r) =
-  flattenMoves (Sliders b) ++ flattenMoves (Sliders r)
-flattenMoves (KingMoves (KM mvs kc qc)) =
-  map Mv mvs ++ map Cst (toList kc) ++ map Cst (toList qc)
+flattenMoves (QueenMoves b r) = flattenMoves (Sliders b) ++ flattenMoves (Sliders r)
+flattenMoves (KingMoves (KM mvs kc qc)) = map Mv mvs ++ map Cst (toList kc) ++ map Cst (toList qc)
 flattenMoves (PawnMoves w b) = whiteMoves ++ blackMoves
   where
     flattenPawnMoves (PM f j t enP pr prTks) =
-      map Mv (toList f ++ toList j ++ t) ++
-      map EnP enP ++ map PP (toList pr ++ prTks)
+      map Mv (toList f ++ toList j ++ t) ++ map EnP enP ++ map PP (toList pr ++ prTks)
     whiteMoves = flattenPawnMoves w
     blackMoves = flattenPawnMoves b
 
@@ -57,8 +57,7 @@ filterMoves emptyBoardMoves pos = filterMoves emptyBoardMoves
 
 filterPawnMoves :: PawnMoves -> Position -> [MoveTypes]
 filterPawnMoves (PM f1 f2 tks enPs pr prTks) pos =
-  movesToMoveTypes (forward ++ takes) ++
-  enPassent ++ promotion ++ promotionTakes
+  movesToMoveTypes (forward ++ takes) ++ enPassent ++ promotion ++ promotionTakes
   where
     likePieces = getLikeOccupiedSquares pos
     oppoPieces = getOppoOccupiedSquares pos
@@ -74,23 +73,50 @@ filterPawnMoves (PM f1 f2 tks enPs pr prTks) pos =
     takes = filter (\move -> _end move `Set.member` oppoPieces) tks
     enPassent =
       case view (fen . enPassentSquare) pos of
-        Just sq ->
-          map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
+        Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
         Nothing -> []
-    promotion =
-      toList $
-      fmap
-        (PP . PawnPromotion)
-        (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
-    promotionTakes =
-      map PP $
-      filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoPieces) prTks
+    promotion = toList $ fmap (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
+    promotionTakes = map PP $ filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoPieces) prTks
 
 filterKingMoves :: KingMoves -> Position -> [MoveTypes]
-filterKingMoves (KM moves kingSide queenSide) = filterMoves moves -- TODO add castling filtering
+filterKingMoves (KM moves kingSide queenSide) pos = filterMoves moves pos ++ kingSideMove ++ queenSideMove
+  where
+    kingSideMove =
+      if isJust kingSide && getKingSidePrivileges pos
+        then let filesToCheck = [Ff, Fg]
+                 rankToCheck =
+                   case view (fen . nextToMove) pos of
+                     White -> R1
+                     Black -> R8
+                 squaresToCheck = Set.fromList $ map (`Square` rankToCheck) filesToCheck
+                 occupiedSquares = getLikeOccupiedSquares pos `Set.union` getOppoOccupiedSquares pos
+                 attackedSquares = Set.fromList $ concatMap (toList . attackedSquare) $ getOppoMoves pos
+                 allSquaresToCheck = Set.union occupiedSquares attackedSquares
+                 cond = Set.disjoint squaresToCheck allSquaresToCheck
+              in if cond
+                   then toList $ fmap Cst kingSide
+                   else []
+        else []
+    queenSideMove =
+      if isJust queenSide && getQueenSidePrivileges pos
+        then let filesToCheckIfAttacked = [Fc, Fd]
+                 filesToCheckIfOccupied = Fb : filesToCheckIfAttacked
+                 rankToCheck =
+                   case view (fen . nextToMove) pos of
+                     White -> R1
+                     Black -> R8
+                 squaresToCheckIfOccupied = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfOccupied
+                 squaresToCheckIfAttacked = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfAttacked
+                 occupiedSquares = getLikeOccupiedSquares pos `Set.union` getOppoOccupiedSquares pos
+                 attackedSquares = Set.fromList $ concatMap (toList . attackedSquare) $ getOppoMoves pos
+                 cond =
+                   squaresToCheckIfOccupied `Set.disjoint` occupiedSquares &&
+                   squaresToCheckIfAttacked `Set.disjoint` attackedSquares
+              in if cond
+                   then toList $ fmap Cst queenSide
+                   else []
+        else []
 
--- where
---   squaresToCheck
 filterAllMoves :: Moves -> Position -> [MoveTypes]
 filterAllMoves (Moves moves) pos = filterMoves moves pos
 filterAllMoves (Sliders moves) pos = filterSlidingMoves moves pos
@@ -115,12 +141,14 @@ isTakingMove pos move = output
 getEmptyBoardMoves :: PieceOnSquare -> Moves
 getEmptyBoardMoves (PieceOnSquare tpe sq) = emptyBoardMoves tpe sq
 
+getLikeMoves :: Position -> [MoveTypes]
+getLikeMoves pos = concatMap snd $ getLikeValidMoves pos
+
+getOppoMoves :: Position -> [MoveTypes]
+getOppoMoves pos = concatMap snd $ getOppoValidMoves pos
+
 getValidMoves :: PieceColour -> Position -> [(PieceOnSquare, [MoveTypes])]
-getValidMoves col pos =
-  [ (piece, filterAllMoves moves pos)
-  | piece <- likePieces
-  , let moves = getEmptyBoardMoves piece
-  ]
+getValidMoves col pos = [(piece, filterAllMoves moves pos) | piece <- likePieces, let moves = getEmptyBoardMoves piece]
   where
     likePieces =
       case col of
@@ -131,5 +159,4 @@ getLikeValidMoves :: Position -> [(PieceOnSquare, [MoveTypes])]
 getLikeValidMoves pos = getValidMoves (view (fen . nextToMove) pos) pos
 
 getOppoValidMoves :: Position -> [(PieceOnSquare, [MoveTypes])]
-getOppoValidMoves pos =
-  getValidMoves (oppoColour (view (fen . nextToMove) pos)) pos
+getOppoValidMoves pos = getValidMoves (oppoColour (view (fen . nextToMove) pos)) pos

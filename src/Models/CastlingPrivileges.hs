@@ -38,21 +38,13 @@ instance Read CastlingPrivileges where
         return (CastlingPrivileges False False False False)) +++
     (do Ident s <- lexP
         if regexMatch s
-          then return
-                 (CastlingPrivileges
-                    ('K' `elem` s)
-                    ('Q' `elem` s)
-                    ('k' `elem` s)
-                    ('q' `elem` s))
+          then return (CastlingPrivileges ('K' `elem` s) ('Q' `elem` s) ('k' `elem` s) ('q' `elem` s))
           else pfail)
   readListPrec = readListPrecDefault
   readList = readListDefault
 
 getKingSideCastle :: PieceColour -> Castle
-getKingSideCastle colour =
-  Castle
-    (Move (Square Fe rank) (Square Fg rank))
-    (Move (Square Fh rank) (Square Ff rank))
+getKingSideCastle colour = Castle (Move (Square Fe rank) (Square Fg rank)) (Move (Square Fh rank) (Square Ff rank))
   where
     rank =
       case colour of
@@ -60,10 +52,7 @@ getKingSideCastle colour =
         Black -> R8
 
 getQueenSideCastle :: PieceColour -> Castle
-getQueenSideCastle colour =
-  Castle
-    (Move (Square Fe rank) (Square Fc rank))
-    (Move (Square Fa rank) (Square Fd rank))
+getQueenSideCastle colour = Castle (Move (Square Fe rank) (Square Fc rank)) (Move (Square Fa rank) (Square Fd rank))
   where
     rank =
       case colour of

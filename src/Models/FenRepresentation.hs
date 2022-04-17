@@ -28,11 +28,4 @@ fenPattern =
   [r|^\s*(([KQRBNPkqrbnp1-8]{1,8}+\/){7})([KQRBNPkqrbnp1-8]{1,8})\s+(w|b)\s+((K?Q?k?q?)|-)\s+([a-h][36]|-)\s+(0|[1-9]\d*)\s+(0|[1-9]\d*)$|]
 
 buildBaseFenRepresentation :: PieceList -> FenRepresentation
-buildBaseFenRepresentation pl =
-  FenRepresentation
-    pl
-    White
-    (CastlingPrivileges True True True True)
-    Nothing
-    0
-    0
+buildBaseFenRepresentation pl = FenRepresentation pl White (CastlingPrivileges True True True True) Nothing 0 0

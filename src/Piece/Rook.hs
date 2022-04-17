@@ -17,25 +17,17 @@ instance Moveable Rook where
         north =
           if startRank == R8
             then []
-            else map
-                   (Move start . Square startFile)
-                   (getRange (succ startRank) R8)
+            else map (Move start . Square startFile) (getRange (succ startRank) R8)
         south =
           if startRank == R1
             then []
-            else map
-                   (Move start . Square startFile)
-                   (getRange (pred startRank) R1)
+            else map (Move start . Square startFile) (getRange (pred startRank) R1)
         east =
           if startFile == Fh
             then []
-            else map
-                   (Move start . flip Square startRank)
-                   (getRange (succ startFile) Fh)
+            else map (Move start . flip Square startRank) (getRange (succ startFile) Fh)
         west =
           if startFile == Fa
             then []
-            else map
-                   (Move start . flip Square startRank)
-                   (getRange (pred startFile) Fa)
+            else map (Move start . flip Square startRank) (getRange (pred startFile) Fa)
      in Sliders $ SlidingMoves north east south west

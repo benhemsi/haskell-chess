@@ -5,6 +5,7 @@ module Models.PieceOnSquare where
 import Control.Lens
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
+import Models.Move
 import Models.Piece
 import Models.PieceType
 import Models.Square

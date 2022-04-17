@@ -21,14 +21,19 @@ data Position =
 makeLenses ''Position
 
 buildBasePosition :: PieceList -> Position
-buildBasePosition pl =
-  Position (buildBaseFenRepresentation pl) (buildBaseFullPieceList pl)
+buildBasePosition pl = Position (buildBaseFenRepresentation pl) (buildBaseFullPieceList pl)
 
 getLikePieces :: Position -> PieceList
 getLikePieces pos =
   case view (fen . nextToMove) pos of
     White -> view (pieceList . whitePieces) pos
     Black -> view (pieceList . blackPieces) pos
+
+getOppoPieces :: Position -> PieceList
+getOppoPieces pos =
+  case view (fen . nextToMove) pos of
+    White -> view (pieceList . blackPieces) pos
+    Black -> view (pieceList . whitePieces) pos
 
 getLikeOccupiedSquares :: Position -> Squares
 getLikeOccupiedSquares pos =

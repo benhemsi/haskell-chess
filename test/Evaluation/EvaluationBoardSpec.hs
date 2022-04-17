@@ -14,8 +14,7 @@ import Models.Square
 import Test.Hspec
 
 spec = do
-  describe "buildEvaluationBoard" $ do
-    it "correctly build an evaluation board from a full piece list" $ do pending
+  describe "buildEvaluationBoard" $ do it "correctly build an evaluation board from a full piece list" $ do pending
       -- let 
       --   whitePiece = PieceOnSquare (Piece White Rook)  (Square Fa R1)
       --   blackPiece = PieceOnSquare (Piece Black Rook) (Square Fh R8)

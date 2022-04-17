@@ -8,8 +8,7 @@ import Text.Read
 
 spec = do
   describe "read" $ do
-    prop "is inverse to show" $ \x ->
-      (read . show) x `shouldBe` (x :: PieceType)
+    prop "is inverse to show" $ \x -> (read . show) x `shouldBe` (x :: PieceType)
     it "not read in anything else" $ do
       let result = readMaybe "s" :: Maybe PieceType
       result `shouldBe` Nothing

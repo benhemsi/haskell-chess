@@ -25,8 +25,7 @@ instance Arbitrary File where
   arbitrary = chooseEnum (minBound, maxBound)
 
 instance Arbitrary Piece where
-  arbitrary =
-    elements [Piece c t | c <- [White, Black], t <- [minBound .. maxBound]]
+  arbitrary = elements [Piece c t | c <- [White, Black], t <- [minBound .. maxBound]]
 
 instance Arbitrary PieceColour where
   arbitrary = chooseEnum (White, Black)

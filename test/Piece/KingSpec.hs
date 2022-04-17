@@ -14,8 +14,7 @@ spec = do
     it "correctly calculate King moves" $ do
       let start = Square Fa R1
           moves = flattenMoves (emptyBoardMoves K start)
-          expected =
-            map (Mv . Move start) [Square Fa R2, Square Fb R1, Square Fb R2]
+          expected = map (Mv . Move start) [Square Fa R2, Square Fb R1, Square Fb R2]
       moves `shouldMatchList` expected
   -- describe "validMoves" $ do
   --   it "correctly filter out moves which end on a like piece" $ do

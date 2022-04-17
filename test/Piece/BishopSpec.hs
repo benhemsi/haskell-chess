@@ -16,30 +16,22 @@ spec = do
     it "correctly calculate the northEast diagonal" $ do
       let start = Square Fa R1
           moves = flattenMoves (emptyBoardMoves B start)
-          expected =
-            map (Mv . Move start) $
-            [Square f r | f <- [Fb .. Fh] | r <- [R2 .. R8]]
+          expected = map (Mv . Move start) $ [Square f r | f <- [Fb .. Fh] | r <- [R2 .. R8]]
       moves `shouldMatchList` expected
     it "correctly calculate the southEast diagonal" $ do
       let start = Square Fa R8
           moves = flattenMoves (emptyBoardMoves B start)
-          expected =
-            map (Mv . Move start) $
-            [Square f r | f <- [Fb .. Fh] | r <- reverse [R1 .. R7]]
+          expected = map (Mv . Move start) $ [Square f r | f <- [Fb .. Fh] | r <- reverse [R1 .. R7]]
       moves `shouldMatchList` expected
     it "correctly calculate the southWest diagonal" $ do
       let start = Square Fh R8
           moves = flattenMoves (emptyBoardMoves B start)
-          expected =
-            map (Mv . Move start) $
-            [Square f r | f <- [Fa .. Fg] | r <- [R1 .. R7]]
+          expected = map (Mv . Move start) $ [Square f r | f <- [Fa .. Fg] | r <- [R1 .. R7]]
       moves `shouldMatchList` expected
     it "correctly calculate the northWest diagonal" $ do
       let start = Square Fh R1
           moves = flattenMoves (emptyBoardMoves B start)
-          expected =
-            map (Mv . Move start) $
-            [Square f r | f <- reverse [Fa .. Fg] | r <- [R2 .. R8]]
+          expected = map (Mv . Move start) $ [Square f r | f <- reverse [Fa .. Fg] | r <- [R2 .. R8]]
       moves `shouldMatchList` expected
   -- describe "validMoves" $ do
   --   it "correctly filter up to but not including a like piece on the same diagonal" $ do

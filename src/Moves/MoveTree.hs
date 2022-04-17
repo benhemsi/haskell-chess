@@ -20,8 +20,7 @@ filterLeaves predicate tree =
         else EmptyTree
     Node x [] -> filterLeaves predicate (Leaf x)
     Node x [EmptyTree] -> filterLeaves predicate (Leaf x)
-    Node x trees ->
-      Node x (filter (EmptyTree /=) (map (filterLeaves predicate) trees))
+    Node x trees -> Node x (filter (EmptyTree /=) (map (filterLeaves predicate) trees))
 
 instance Semigroup a => Semigroup (MoveTree a) where
   tree1 <> tree2 =
@@ -40,8 +39,7 @@ instance Semigroup a => Semigroup (MoveTree a) where
       (Node _ [Leaf x], Node _ [Leaf y]) -> Leaf (x <> y)
       (Leaf x, Node _ trees) -> Leaf x <> foldl' (<>) EmptyTree trees
       (Node _ trees, Leaf y) -> foldl' (<>) EmptyTree trees <> Leaf y
-      (Node _ treesA, Node _ treesB) ->
-        foldl' (<>) EmptyTree treesA <> foldl' (<>) EmptyTree treesB
+      (Node _ treesA, Node _ treesB) -> foldl' (<>) EmptyTree treesA <> foldl' (<>) EmptyTree treesB
 
 instance Semigroup a => Monoid (MoveTree a) where
   mempty = EmptyTree
