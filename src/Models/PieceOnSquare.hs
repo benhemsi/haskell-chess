@@ -47,8 +47,8 @@ secondaryPass s = intercalate "/" fenRanks
         foldRankRec [] (y:ys) = foldRankRec [y] ys
         foldRankRec (x:xs) ('1':ys) =
           case (readMaybe [x] :: Maybe Int) of
-            Just n -> foldRankRec (show n ++ xs) ys
-            Nothing -> foldRankRec ('1' : xs) ys
+            Just n -> foldRankRec (show (n + 1) ++ xs) ys
+            Nothing -> foldRankRec ('1' : x : xs) ys
         foldRankRec s (y:ys) = foldRankRec (y : s) ys
     grouped = reverse (chunksOf 8 s)
     fenRanks = map foldRank grouped

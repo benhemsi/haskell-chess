@@ -28,7 +28,6 @@ library
       Evaluation.EvaluatedPosition
       Evaluation.Evaluation
       Evaluation.EvaluationBoard
-      Models.ArbitraryInstances
       Models.Board
       Models.CastlingPrivileges
       Models.FenRepresentation
