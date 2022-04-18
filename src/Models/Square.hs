@@ -8,6 +8,7 @@ import Data.List (elemIndex)
 import qualified Data.Set as Set
 import Models.File
 import Models.Rank
+import Test.QuickCheck
 import Text.Read
 
 data Square =
@@ -62,3 +63,6 @@ getRange start end =
   if start <= end
     then range (start, end)
     else reverse (range (end, start))
+
+instance Arbitrary Square where
+  arbitrary = chooseEnum (minBound, maxBound)

@@ -1,6 +1,7 @@
 module Models.Rank where
 
 import Data.Ix
+import Test.QuickCheck
 import Text.Read
 import Text.Read.Lex (numberToInteger)
 
@@ -51,3 +52,6 @@ succRank rank =
   case rank of
     R8 -> R8
     _ -> succ rank
+
+instance Arbitrary Rank where
+  arbitrary = chooseEnum (minBound, maxBound)

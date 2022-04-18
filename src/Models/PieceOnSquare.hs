@@ -1,5 +1,7 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# LANGUAGE TemplateHaskell #-}
 
+{-# HLINT ignore "Use <$>" #-}
 module Models.PieceOnSquare where
 
 import Control.Lens
@@ -9,6 +11,7 @@ import Models.Move
 import Models.Piece
 import Models.PieceType
 import Models.Square
+import Test.QuickCheck
 import Text.Read
 
 data PieceOnSquare =
@@ -92,3 +95,9 @@ instance Read PieceOnSquare where
   readListPrec = do
     Ident s <- lexP
     return ((initialPass' . secondaryPass') s)
+
+instance Arbitrary PieceOnSquare where
+  arbitrary = do
+    p <- arbitrary
+    sq <- arbitrary
+    return (PieceOnSquare p sq)

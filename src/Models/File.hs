@@ -1,6 +1,7 @@
 module Models.File where
 
 import Data.Ix
+import Test.QuickCheck
 import Text.Read
 
 data File
@@ -49,3 +50,6 @@ succFile file =
   case file of
     Fh -> Fh
     _ -> succ file
+
+instance Arbitrary File where
+  arbitrary = chooseEnum (minBound, maxBound)

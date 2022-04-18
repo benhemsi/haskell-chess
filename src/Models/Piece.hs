@@ -2,11 +2,12 @@
 
 module Models.Piece where
 
-import Control.Lens
+import Control.Lens hiding (elements)
 import Data.Char (isUpper, toLower, toUpper)
 import Models.Move
 import Models.PieceColour
 import Models.PieceType
+import Test.QuickCheck
 import Text.Read
 
 data Piece =
@@ -40,3 +41,6 @@ instance Read Piece where
 
 instance Moveable Piece where
   emptyBoardMoves (Piece _ tpe) = emptyBoardMoves tpe
+
+instance Arbitrary Piece where
+  arbitrary = elements [Piece c t | c <- [White, Black], t <- [minBound .. maxBound]]

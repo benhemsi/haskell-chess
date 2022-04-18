@@ -7,6 +7,7 @@ import Piece.Knight
 import Piece.Pawn
 import Piece.Queen
 import Piece.Rook
+import Test.QuickCheck
 import Text.Read
 
 data PieceType
@@ -45,3 +46,6 @@ instance Moveable PieceType where
   emptyBoardMoves Bishop = emptyBoardMoves B
   emptyBoardMoves Knight = emptyBoardMoves N
   emptyBoardMoves Pawn = emptyBoardMoves P
+
+instance Arbitrary PieceType where
+  arbitrary = chooseEnum (minBound, maxBound)

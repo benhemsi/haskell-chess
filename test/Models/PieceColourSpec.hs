@@ -1,6 +1,5 @@
 module Models.PieceColourSpec where
 
-import Models.ArbitraryInstances
 import Models.PieceColour
 import Test.Hspec
 import Test.Hspec.QuickCheck

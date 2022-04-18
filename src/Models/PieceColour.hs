@@ -1,5 +1,6 @@
 module Models.PieceColour where
 
+import Test.QuickCheck
 import Text.Read
 
 data PieceColour
@@ -24,3 +25,6 @@ instance Read PieceColour where
 oppoColour :: PieceColour -> PieceColour
 oppoColour White = Black
 oppoColour Black = White
+
+instance Arbitrary PieceColour where
+  arbitrary = chooseEnum (White, Black)

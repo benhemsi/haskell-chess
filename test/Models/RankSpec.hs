@@ -1,6 +1,5 @@
 module Models.RankSpec where
 
-import Models.ArbitraryInstances
 import Models.Rank
 import Test.Hspec
 import Test.Hspec.QuickCheck

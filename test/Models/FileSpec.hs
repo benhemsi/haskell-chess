@@ -1,6 +1,5 @@
 module Models.FileSpec where
 
-import Models.ArbitraryInstances
 import Models.File
 import Test.Hspec
 import Test.Hspec.QuickCheck

@@ -1,6 +1,5 @@
 module Models.PieceOnSquareSpec where
 
-import Models.ArbitraryInstances
 import Models.PieceOnSquare
 import Test.Hspec
 import Test.Hspec.QuickCheck

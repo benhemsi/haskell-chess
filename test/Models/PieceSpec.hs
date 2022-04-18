@@ -1,6 +1,5 @@
 module Models.PieceSpec where
 
-import Models.ArbitraryInstances
 import Models.Piece
 import Models.PieceColour
 import Models.PieceType

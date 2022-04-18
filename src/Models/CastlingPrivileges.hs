@@ -1,6 +1,8 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
+{-# HLINT ignore "Use <$>" #-}
 module Models.CastlingPrivileges where
 
 import Control.Lens
@@ -11,6 +13,7 @@ import Models.Move
 import Models.PieceColour
 import Models.Rank
 import Models.Square
+import Test.QuickCheck
 import Text.RawString.QQ (r)
 import Text.Read
 import Text.Regex.TDFA
@@ -58,15 +61,11 @@ getQueenSideCastle colour = Castle (Move (Square Fe rank) (Square Fc rank)) (Mov
       case colour of
         White -> R1
         Black -> R8
--- getCastlingMoves :: PieceColour -> FullPieceList -> CastlingPrivileges -> [Castle]
--- getCastlingMoves colour fullPL castlingPrivileges = output
---   where
---     (kingSidePrivilege, queenSidePrivilege, rank, attackedSquares) = case colour of
---       White -> (_whiteKingSide, _whiteQueenSide, R1, _blackAttackedSquares fullPL)
---       Black -> (_blackKingSide, _blackQueenSide, R8, _whiteAttackedSquares fullPL)
---     kingSideSquaresToCheck = Set.unions [_whiteOccupiedSquares fullPL, _blackOccupiedSquares fullPL, attackedSquares]
---     kingSide = kingSidePrivilege castlingPrivileges && (Square Ff rank `Set.notMember` kingSideSquaresToCheck) && (Square Fg rank `Set.notMember` kingSideSquaresToCheck)
---     queenSideSquaresToCheck = Set.unions [_whiteOccupiedSquares fullPL, _blackOccupiedSquares fullPL, Set.delete (Square Fb rank) attackedSquares]
---     queenSide = queenSidePrivilege castlingPrivileges && (Square Fb rank `Set.notMember` queenSideSquaresToCheck) && (Square Fc rank `Set.notMember` queenSideSquaresToCheck) && (Square Fd rank `Set.notMember` queenSideSquaresToCheck)
---     start = Square Fe rank
---     output = [getKingSideCastle colour | kingSide] ++ [getQueenSideCastle colour | queenSide]
+
+instance Arbitrary CastlingPrivileges where
+  arbitrary = do
+    wk <- arbitrary
+    wq <- arbitrary
+    bk <- arbitrary
+    bq <- arbitrary
+    return $ CastlingPrivileges wk wq bk bq

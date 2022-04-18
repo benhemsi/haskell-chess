@@ -1,6 +1,5 @@
 module Models.SquareSpec where
 
-import Models.ArbitraryInstances
 import Models.Square
 import Test.Hspec
 import Test.Hspec.QuickCheck
