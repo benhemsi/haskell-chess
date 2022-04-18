@@ -33,7 +33,8 @@ flattenAttackedSquares = concatMap (toList . attackedSquare)
 
 getAttackedSquares :: Moves -> Position -> [Square]
 getAttackedSquares (Moves mvs) _ = flattenAttackedSquares (flattenMoves $ Moves mvs)
-getAttackedSquares (Sliders slidingMoves) pos = flattenAttackedSquares $ filterSlidingMoves slidingMoves pos
+getAttackedSquares (Sliders slidingMoves) pos =
+  flattenAttackedSquares $ filterSlidingMoves slidingMoves (switchNextToMove pos)
 getAttackedSquares (QueenMoves b r) pos = getAttackedSquares (Sliders b) pos ++ getAttackedSquares (Sliders r) pos
 getAttackedSquares (KingMoves (KM mvs kc qc)) pos = getAttackedSquares (Moves mvs) pos
 getAttackedSquares (PawnMoves w b) pos = squares

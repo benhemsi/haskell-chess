@@ -1,8 +1,5 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
 module Models.File where
 
-import Data.Data
 import Data.Ix
 import Text.Read
 
@@ -15,7 +12,7 @@ data File
   | Ff
   | Fg
   | Fh
-  deriving (Bounded, Enum, Eq, Ord, Ix, Data, Typeable)
+  deriving (Bounded, Enum, Eq, Ord, Ix)
 
 instance Show File where
   show Fa = "a"

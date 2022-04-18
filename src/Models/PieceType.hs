@@ -1,6 +1,4 @@
-module Models.PieceType
-  ( PieceType(..)
-  ) where
+module Models.PieceType where
 
 import Models.Move
 import Piece.Bishop

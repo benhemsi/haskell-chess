@@ -1,14 +1,11 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
 module Models.PieceColour where
 
-import Data.Data
 import Text.Read
 
 data PieceColour
   = White
   | Black
-  deriving (Eq, Enum, Data, Typeable)
+  deriving (Eq, Enum)
 
 instance Show PieceColour where
   show White = "w"

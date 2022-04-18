@@ -1,8 +1,5 @@
-{-# LANGUAGE DeriveDataTypeable #-}
-
 module Models.Rank where
 
-import Data.Data
 import Data.Ix
 import Text.Read
 import Text.Read.Lex (numberToInteger)
@@ -16,7 +13,7 @@ data Rank
   | R6
   | R7
   | R8
-  deriving (Bounded, Enum, Eq, Ord, Ix, Data, Typeable)
+  deriving (Bounded, Enum, Eq, Ord, Ix)
 
 instance Show Rank where
   show R1 = "1"
