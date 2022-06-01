@@ -44,3 +44,27 @@ instance Moveable Piece where
 
 instance Arbitrary Piece where
   arbitrary = elements [Piece c t | c <- [White, Black], t <- [minBound .. maxBound]]
+
+whitePawn = Piece White Pawn
+
+blackPawn = Piece Black Pawn
+
+whiteKnight = Piece White Knight
+
+blackKnight = Piece Black Knight
+
+whiteBishop = Piece White Bishop
+
+blackBishop = Piece Black Bishop
+
+whiteRook = Piece White Rook
+
+blackRook = Piece Black Rook
+
+whiteQueen = Piece White Queen
+
+blackQueen = Piece Black Queen
+
+whiteKing = Piece White King
+
+blackKing = Piece Black King
