@@ -1,7 +1,6 @@
 module Models.FenRepresentationSpec where
 
 import Models.FenRepresentation
-import Models.PieceList
 import Test.Hspec
 
 spec = do

@@ -9,6 +9,7 @@ import Models.Piece
 import Models.PieceColour
 import Models.PieceList
 import Models.Square (Square)
+import Test.QuickCheck
 import Text.ParserCombinators.ReadPrec
 import Text.RawString.QQ (r)
 import Text.Read
@@ -43,3 +44,14 @@ instance Show FenRepresentation where
     where
       showEnPassent (Just sq) = show sq
       showEnPassent Nothing = "-"
+
+instance Arbitrary FenRepresentation where
+  arbitrary = do
+    int <- chooseInt (2, 32)
+    pieces <- vector int
+    nextToMove <- arbitrary
+    castlingPrivileges <- arbitrary
+    enPassent <- arbitrary
+    halfMoveClock <- arbitrary
+    fullMoveClock <- arbitrary
+    return $ FenRepresentation pieces nextToMove castlingPrivileges enPassent halfMoveClock fullMoveClock
