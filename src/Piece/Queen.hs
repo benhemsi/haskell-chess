@@ -2,7 +2,6 @@ module Piece.Queen where
 
 import Models.Move
 import Piece.Bishop
-import Piece.Moveable
 import Piece.Rook
 
 data Queen =

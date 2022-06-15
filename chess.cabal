@@ -42,15 +42,12 @@ library
       Models.Position
       Models.Rank
       Models.Square
-      Moves.Moveable
       Moves.MoveLogic
       Moves.MoveTree
       Piece.Bishop
       Piece.King
       Piece.Knight
-      Piece.Moveable
       Piece.Pawn
-      Piece.Piece
       Piece.Queen
       Piece.Rook
   other-modules:

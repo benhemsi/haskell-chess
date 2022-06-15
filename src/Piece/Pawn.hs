@@ -6,7 +6,6 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
-import Piece.Moveable
 
 data Pawn =
   P
