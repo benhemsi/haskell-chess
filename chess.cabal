@@ -42,6 +42,7 @@ library
       Models.Position
       Models.Rank
       Models.Square
+      Moves.Moveable
       Moves.MoveLogic
       Moves.MoveTree
       Piece.Bishop
