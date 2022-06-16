@@ -6,6 +6,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Models.Weighted
 
 data Pawn =
   P
@@ -91,3 +92,6 @@ instance Moveable Pawn where
                           (fmap PawnPromotion forwardBlack)
                           (map PawnPromotion takesBlack)
                       _ -> PM forwardBlack jumpBlack takesBlack enPassentsBlack Nothing []
+
+instance Weighted Pawn where
+  weight _ = 1

@@ -22,6 +22,12 @@ filterLeaves predicate tree =
     Node x [EmptyTree] -> filterLeaves predicate (Leaf x)
     Node x trees -> Node x (filter (EmptyTree /=) (map (filterLeaves predicate) trees))
 
+evaluateTree :: Monoid a => MoveTree a -> a
+evaluateTree EmptyTree = mempty
+evaluateTree (Leaf x) = x
+evaluateTree (Node x []) = x
+evaluateTree (Node _ xs) = foldl1 (<>) (map evaluateTree xs)
+
 instance Semigroup a => Semigroup (MoveTree a) where
   tree1 <> tree2 =
     case (tree1, tree2) of

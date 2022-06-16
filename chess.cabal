@@ -28,6 +28,7 @@ library
       Evaluation.EvaluatedPosition
       Evaluation.Evaluation
       Evaluation.EvaluationBoard
+      Evaluation.GamePhase
       Models.Board
       Models.CastlingPrivileges
       Models.FenRepresentation
@@ -42,6 +43,7 @@ library
       Models.Position
       Models.Rank
       Models.Square
+      Models.Weighted
       Moves.MoveLogic
       Moves.MoveTree
       Piece.Bishop

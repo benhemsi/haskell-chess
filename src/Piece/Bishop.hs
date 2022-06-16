@@ -6,6 +6,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Models.Weighted
 
 data Bishop =
   B
@@ -26,3 +27,6 @@ instance Moveable Bishop where
       southEast = getDiagonal start (Square Fh R1)
       southWest = getDiagonal start (Square Fa R1)
       northWest = getDiagonal start (Square Fa R8)
+
+instance Weighted Bishop where
+  weight _ = 3

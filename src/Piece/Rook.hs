@@ -4,6 +4,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Models.Weighted
 
 data Rook =
   R
@@ -30,3 +31,6 @@ instance Moveable Rook where
             then []
             else map (Move start . flip Square startRank) (getRange (pred startFile) Fa)
      in Sliders $ SlidingMoves north east south west
+
+instance Weighted Rook where
+  weight _ = 5

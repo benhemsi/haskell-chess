@@ -3,6 +3,7 @@
 module Models.PieceType where
 
 import Models.Move
+import Models.Weighted
 import Piece.Bishop
 import Piece.King
 import Piece.Knight
@@ -22,7 +23,7 @@ data PieceType
   deriving (Eq, Enum, Bounded)
 
 data PieceExi =
-  forall p. (Moveable p, Show p, Read p) =>
+  forall p. (Moveable p, Weighted p, Show p, Read p) =>
             PieceExi p
 
 evalPiece :: PieceType -> PieceExi
@@ -38,6 +39,12 @@ instance Moveable PieceExi where
 
 instance Moveable PieceType where
   emptyBoardMoves pieceType = emptyBoardMoves (evalPiece pieceType)
+
+instance Weighted PieceExi where
+  weight (PieceExi p) = weight p
+
+instance Weighted PieceType where
+  weight pieceType = weight (evalPiece pieceType)
 
 instance Show PieceExi where
   show (PieceExi p) = show p

@@ -1,6 +1,7 @@
 module Piece.Queen where
 
 import Models.Move
+import Models.Weighted
 import Piece.Bishop
 import Piece.Rook
 
@@ -16,3 +17,6 @@ instance Moveable Queen where
       getSlidingMoves _ = SlidingMoves [] [] [] []
       bishopMoves = emptyBoardMoves B start
       rookMoves = emptyBoardMoves R start
+
+instance Weighted Queen where
+  weight _ = 9

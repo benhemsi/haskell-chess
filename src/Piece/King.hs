@@ -5,6 +5,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
+import Models.Weighted
 
 data King =
   K
@@ -33,3 +34,6 @@ instance Moveable King where
           Square Fe R1 -> KM standardMoves (Just kingSide) (Just queenSide)
           Square Fe R8 -> KM standardMoves (Just kingSide) (Just queenSide)
           _ -> KM standardMoves Nothing Nothing
+
+instance Weighted King where
+  weight _ = 1000000

@@ -2,6 +2,7 @@ module Piece.Knight where
 
 import Models.Move
 import Models.Square
+import Models.Weighted
 
 data Knight =
   N
@@ -21,3 +22,6 @@ instance Moveable Knight where
           , f >= 0 && f <= 8
           , r >= 0 && r <= 8
           ]
+
+instance Weighted Knight where
+  weight _ = 3

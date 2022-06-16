@@ -1,5 +1,8 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Evaluation.EvaluationBoard where
 
+import Control.Lens
 import Data.Array
 import Data.List (groupBy)
 import qualified Data.Map as Map
@@ -17,18 +20,24 @@ data EvaluationSquare =
     { _whiteAttackers, _blackAttackers :: PieceList
     }
 
+makeLenses ''EvaluationSquare
+
 type EvaluationBoard = Board EvaluationSquare
 
-getAttackers :: Square -> PieceColour -> EvaluationBoard -> PieceList
-getAttackers sq colour = getPieceList . (! sq)
-  where
-    getPieceList =
-      case colour of
-        White -> _whiteAttackers
-        Black -> _blackAttackers
+getAttackers :: PieceColour -> EvaluationSquare -> PieceList
+getAttackers colour =
+  case colour of
+    White -> view whiteAttackers
+    Black -> view blackAttackers
 
-checkIfSquareAttacked :: Square -> PieceColour -> EvaluationBoard -> Bool
-checkIfSquareAttacked sq colour = not . null . getAttackers sq colour
+getDefenders :: PieceColour -> EvaluationSquare -> PieceList
+getDefenders colour = getAttackers (oppoColour colour)
 
-getNumberOfAttackers :: Square -> PieceColour -> EvaluationBoard -> Int
-getNumberOfAttackers sq colour = length . getAttackers sq colour
+countAttackers :: PieceColour -> EvaluationSquare -> Int
+countAttackers colour sq = length $ getAttackers colour sq
+
+countDefenders :: PieceColour -> EvaluationSquare -> Int
+countDefenders colour sq = length $ getDefenders colour sq
+
+netAttackerCount :: PieceColour -> EvaluationSquare -> Int
+netAttackerCount colour sq = countAttackers colour sq - countDefenders colour sq
