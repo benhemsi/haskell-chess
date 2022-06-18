@@ -5,7 +5,7 @@ import Models.File
 import Models.Move
 import Models.Rank
 import Models.Square
-import Moves.MoveLogic
+import Moves.MoveFiltering
 import Piece.King
 import Test.Hspec
 

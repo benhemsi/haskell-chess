@@ -62,7 +62,7 @@ switchNextToMove pos = outputPos
   where
     currentColour = view (fen . nextToMove) pos
     outputPos = set (fen . nextToMove) (oppoColour currentColour) pos
--- inCheck :: Position -> Bool
--- inCheck pos = case view (fen . nextToMove) pos of
---   White -> view (pieceList . whiteKing) pos `Set.member` getOppoAttackedSquares pos
---   Black -> view (pieceList . blackKing) pos `Set.member` getOppoAttackedSquares pos
+--inCheck :: Position -> Bool
+--inCheck pos = case view (fen . nextToMove) pos of
+--  White -> view (pieceList . whiteKing) pos `Set.member` getOppoAttackedSquares pos
+--  Black -> view (pieceList . blackKing) pos `Set.member` getOppoAttackedSquares pos

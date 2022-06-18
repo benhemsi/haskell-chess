@@ -17,7 +17,7 @@ import Models.PieceList
 import Models.PieceOnSquare
 import Models.Position
 import Models.Square
-import Moves.MoveLogic
+import Moves.MoveFiltering
 import Piece.King
 
 data EvaluatedPosition =
@@ -29,11 +29,11 @@ data EvaluatedPosition =
 
 makeLenses ''EvaluatedPosition
 
-getSquareAttackers :: [(PieceOnSquare, [MoveTypes])] -> Map.Map Square PieceList
+getSquareAttackers :: Map.Map PieceOnSquare [MoveTypes] -> Map.Map Square PieceList
 getSquareAttackers piecesWithMoves = grouped
   where
     exploded = do
-      (pce, mvs) <- piecesWithMoves
+      (pce, mvs) <- Map.toList piecesWithMoves
       Just attackedSq <- map attackedSquare mvs
       return (attackedSq, [pce])
     grouped = Map.fromListWith (++) exploded
@@ -83,7 +83,6 @@ instance Evaluable King where
       evaluationSquares = map (evalBoard !) squaresToCheck
       countOfNearbyAttackers = sum $ map (countAttackers colour) evaluationSquares
   offensiveEvaluation _ _ _ _ _ = mempty
-
 
 evaluatePosition :: Position -> Evaluation
 evaluatePosition pos = output

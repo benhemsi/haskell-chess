@@ -22,8 +22,7 @@ data FullPieceList =
 makeLenses ''FullPieceList
 
 buildBaseFullPieceList :: PieceList -> FullPieceList
-buildBaseFullPieceList pl =
-  FullPieceList whitePcs blackPcs whiteSquares blackSquares (Square Fa R1) (Square Fa R1)
+buildBaseFullPieceList pl = FullPieceList whitePcs blackPcs whiteSquares blackSquares (Square Fa R1) (Square Fa R1)
   where
     filterByColour colour = filter (\p -> view (piece . pieceColour) p == colour)
     whitePcs = filterByColour White pl

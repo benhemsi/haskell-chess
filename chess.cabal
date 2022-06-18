@@ -29,11 +29,14 @@ library
       Evaluation.Evaluation
       Evaluation.EvaluationBoard
       Evaluation.GamePhase
+      Models.AllMoves
       Models.Board
       Models.CastlingPrivileges
       Models.FenRepresentation
       Models.File
       Models.FullPieceList
+      Models.GameEnd
+      Models.GameState
       Models.Move
       Models.Piece
       Models.PieceColour
@@ -41,10 +44,11 @@ library
       Models.PieceOnSquare
       Models.PieceType
       Models.Position
+      Models.PositionWithMoves
       Models.Rank
       Models.Square
       Models.Weighted
-      Moves.MoveLogic
+      Moves.MoveFiltering
       Moves.MoveTree
       Piece.Bishop
       Piece.King
@@ -108,7 +112,7 @@ test-suite chess-test
       Models.PieceTypeSpec
       Models.RankSpec
       Models.SquareSpec
-      Moves.MoveLogicSpec
+      Moves.MoveFilteringSpec
       Piece.BishopSpec
       Piece.KingSpec
       Piece.KnightSpec
