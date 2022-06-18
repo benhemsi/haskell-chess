@@ -8,13 +8,11 @@ import qualified Data.Map as Map
 import Data.Maybe (isJust)
 import qualified Data.Set as Set
 import Models.FenRepresentation
-import Models.File
 import Models.FullPieceList
 import Models.Move
 import Models.PieceColour
 import Models.PieceOnSquare
 import Models.Position
-import Models.Rank
 import Models.Square
 
 class MoveFiltering mvs where

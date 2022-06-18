@@ -1,9 +1,7 @@
 module Models.PieceList where
 
-import Models.File
 import Models.Piece
 import Models.PieceOnSquare
-import Models.Rank
 import Models.Square
 
 type PieceList = [PieceOnSquare]

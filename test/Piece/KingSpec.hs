@@ -1,9 +1,7 @@
 module Piece.KingSpec where
 
 import qualified Data.Set as Set
-import Models.File
 import Models.Move
-import Models.Rank
 import Models.Square
 import Moves.MoveFiltering
 import Piece.King

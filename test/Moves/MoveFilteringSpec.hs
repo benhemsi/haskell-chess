@@ -5,14 +5,12 @@ module Moves.MoveFilteringSpec where
 import Control.Lens
 import qualified Data.Set as Set
 import Models.FenRepresentation
-import Models.File
 import Models.Move
 import Models.Piece
 import Models.PieceColour
 import Models.PieceOnSquare
 import Models.PieceType
 import Models.Position
-import Models.Rank
 import Models.Square
 import Moves.MoveFiltering
 import Piece.Bishop

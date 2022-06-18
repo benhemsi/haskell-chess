@@ -33,7 +33,6 @@ library
       Models.Board
       Models.CastlingPrivileges
       Models.FenRepresentation
-      Models.File
       Models.FullPieceList
       Models.GameEnd
       Models.GameState
@@ -45,8 +44,10 @@ library
       Models.PieceType
       Models.Position
       Models.PositionWithMoves
-      Models.Rank
       Models.Square
+      Models.Square.File
+      Models.Square.Rank
+      Models.Square.Square
       Models.Weighted
       Moves.MoveFiltering
       Moves.MoveTree

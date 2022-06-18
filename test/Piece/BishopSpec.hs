@@ -2,9 +2,7 @@
 
 module Piece.BishopSpec where
 
-import Models.File
 import Models.Move
-import Models.Rank
 import Models.Square
 import Moves.MoveFiltering
 import Piece.Bishop

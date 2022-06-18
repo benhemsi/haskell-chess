@@ -2,9 +2,7 @@ module Piece.Pawn where
 
 import Control.Lens
 import Data.Foldable (Foldable(toList))
-import Models.File
 import Models.Move
-import Models.Rank
 import Models.Square
 import Models.Weighted
 

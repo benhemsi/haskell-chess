@@ -1,3 +1,5 @@
 .stack-work/
 *~
 .projections.json
+.idea
+chess.iml

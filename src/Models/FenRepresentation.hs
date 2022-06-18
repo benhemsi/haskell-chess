@@ -7,7 +7,7 @@ import Control.Lens
 import Models.CastlingPrivileges
 import Models.PieceColour
 import Models.PieceList
-import Models.Square (Square)
+import Models.Square
 import Test.QuickCheck
 import Text.RawString.QQ (r)
 

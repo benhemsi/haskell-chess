@@ -1,6 +1,6 @@
 module Models.RankSpec where
 
-import Models.Rank
+import Models.Square
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Text.Read

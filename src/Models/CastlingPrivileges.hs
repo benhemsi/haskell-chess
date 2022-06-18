@@ -6,10 +6,8 @@
 module Models.CastlingPrivileges where
 
 import Control.Lens
-import Models.File
 import Models.Move
 import Models.PieceColour
-import Models.Rank
 import Models.Square
 import Test.QuickCheck
 import Text.RawString.QQ (r)

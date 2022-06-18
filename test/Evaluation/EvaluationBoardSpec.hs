@@ -2,14 +2,12 @@ module Evaluation.EvaluationBoardSpec where
 
 import qualified Data.Set as Set
 import Evaluation.EvaluationBoard
-import Models.File
 import Models.FullPieceList
 import Models.Piece
 import Models.PieceColour
 import Models.PieceOnSquare
 import Models.PieceType
 import Models.Position (Position)
-import Models.Rank
 import Models.Square
 import Test.Hspec
 
