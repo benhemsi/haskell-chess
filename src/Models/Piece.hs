@@ -20,10 +20,10 @@ data Piece =
 makeLenses ''Piece
 
 instance Show Piece where
-  show (Piece pieceColour pieceType) =
-    if pieceColour == White
-      then map toUpper (show pieceType)
-      else map toLower (show pieceType)
+  show (Piece pieceClr pieceTpe) =
+    if pieceClr == White
+      then map toUpper (show pieceTpe)
+      else map toLower (show pieceTpe)
 
 instance Read Piece where
   readPrec = do
@@ -45,26 +45,38 @@ instance Moveable Piece where
 instance Arbitrary Piece where
   arbitrary = elements [Piece c t | c <- [White, Black], t <- [minBound .. maxBound]]
 
+whitePawn :: Piece
 whitePawn = Piece White Pawn
 
+blackPawn :: Piece
 blackPawn = Piece Black Pawn
 
+whiteKnight :: Piece
 whiteKnight = Piece White Knight
 
+blackKnight :: Piece
 blackKnight = Piece Black Knight
 
+whiteBishop :: Piece
 whiteBishop = Piece White Bishop
 
+blackBishop :: Piece
 blackBishop = Piece Black Bishop
 
+whiteRook :: Piece
 whiteRook = Piece White Rook
 
+blackRook :: Piece
 blackRook = Piece Black Rook
 
+whiteQueen :: Piece
 whiteQueen = Piece White Queen
 
+blackQueen :: Piece
 blackQueen = Piece Black Queen
 
+whiteKing :: Piece
 whiteKing = Piece White King
 
+blackKing :: Piece
 blackKing = Piece Black King

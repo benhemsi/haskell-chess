@@ -10,13 +10,13 @@ data Queen =
   deriving (Show, Read)
 
 instance Moveable Queen where
-  emptyBoardMoves Q start = QueenMoves (getSlidingMoves bishopMoves) (getSlidingMoves rookMoves)
+  emptyBoardMoves Q startSq = QueenMoves (getSlidingMoves bishopMvs) (getSlidingMoves rookMvs)
     where
       getSlidingMoves :: Moves -> SlidingMoves
       getSlidingMoves (Sliders moves) = moves
       getSlidingMoves _ = SlidingMoves [] [] [] []
-      bishopMoves = emptyBoardMoves B start
-      rookMoves = emptyBoardMoves R start
+      bishopMvs = emptyBoardMoves B startSq
+      rookMvs = emptyBoardMoves R startSq
 
 instance Weighted Queen where
   weight _ = 9

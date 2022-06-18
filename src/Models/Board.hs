@@ -8,7 +8,6 @@ module Models.Board
 import Data.Array
 import Data.Distributive
 import Data.Functor.Rep
-import Data.Ix (range)
 import Models.Square
 
 type Board = Array Square

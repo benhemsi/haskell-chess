@@ -12,7 +12,7 @@ startingPieceList :: PieceList
 startingPieceList = pawns ++ knights ++ bishops ++ rooks ++ queens ++ kings
   where
     getPieces :: Piece -> Rank -> [File] -> [PieceOnSquare]
-    getPieces piece rank files = [PieceOnSquare piece (Square file rank) | file <- files]
+    getPieces pce rnk files = [PieceOnSquare pce (Square fle rnk) | fle <- files]
     whitePawns = getPieces whitePawn R2 [Fa .. Fh]
     blackPawns = getPieces blackPawn R7 [Fa .. Fh]
     pawns = whitePawns ++ blackPawns

@@ -2,7 +2,6 @@
 
 module Piece.BishopSpec where
 
-import qualified Data.Set as Set
 import Models.File
 import Models.Move
 import Models.Rank

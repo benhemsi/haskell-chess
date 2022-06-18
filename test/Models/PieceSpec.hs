@@ -1,8 +1,6 @@
 module Models.PieceSpec where
 
 import Models.Piece
-import Models.PieceColour
-import Models.PieceType
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Text.Read

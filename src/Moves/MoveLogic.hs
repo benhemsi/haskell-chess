@@ -8,10 +8,8 @@ import Models.FenRepresentation
 import Models.File
 import Models.FullPieceList
 import Models.Move
-import Models.Piece
 import Models.PieceColour
 import Models.PieceOnSquare
-import Models.PieceType
 import Models.Position
 import Models.Rank
 import Models.Square
@@ -36,7 +34,7 @@ getAttackedSquares (Moves mvs) _ = flattenAttackedSquares (flattenMoves $ Moves 
 getAttackedSquares (Sliders slidingMoves) pos =
   flattenAttackedSquares $ filterSlidingMoves slidingMoves (switchNextToMove pos)
 getAttackedSquares (QueenMoves b r) pos = getAttackedSquares (Sliders b) pos ++ getAttackedSquares (Sliders r) pos
-getAttackedSquares (KingMoves (KM mvs kc qc)) pos = getAttackedSquares (Moves mvs) pos
+getAttackedSquares (KingMoves (KM mvs _ _)) pos = getAttackedSquares (Moves mvs) pos
 getAttackedSquares (PawnMoves w b) pos = squares
   where
     getSquares (PM _ _ tks enPs _ prTks) =
@@ -73,13 +71,12 @@ filterSlidingMoves (SlidingMoves a b c d) pos =
     foldMoves moves = filterMoves moves []
 
 filterMoves :: [Move] -> Position -> [MoveTypes]
-filterMoves emptyBoardMoves pos = filterMoves emptyBoardMoves
+filterMoves emptyBoardMvs pos = output
   where
     likePieces = getLikeOccupiedSquares pos
     filterFunction :: Move -> Bool
     filterFunction (Move _ end) = end `Set.notMember` likePieces
-    filterMoves :: [Move] -> [MoveTypes]
-    filterMoves moves = movesToMoveTypes $ filter filterFunction emptyBoardMoves
+    output = movesToMoveTypes $ filter filterFunction emptyBoardMvs
 
 filterPawnMoves :: PawnMoves -> Position -> [MoveTypes]
 filterPawnMoves (PM f1 f2 tks enPs pr prTks) pos =
@@ -140,8 +137,8 @@ filterKingMoves (KM moves kingSide queenSide) pos = filterMoves moves pos ++ kin
 filterAllMoves :: Moves -> Position -> [MoveTypes]
 filterAllMoves (Moves moves) pos = filterMoves moves pos
 filterAllMoves (Sliders moves) pos = filterSlidingMoves moves pos
-filterAllMoves (QueenMoves bishopMoves rookMoves) pos =
-  filterSlidingMoves bishopMoves pos ++ filterSlidingMoves rookMoves pos
+filterAllMoves (QueenMoves bishopMvs rookMvs) pos =
+  filterSlidingMoves bishopMvs pos ++ filterSlidingMoves rookMvs pos
 filterAllMoves (PawnMoves whiteMoves blackMoves) pos =
   case view (fen . nextToMove) pos of
     White -> filterPawnMoves whiteMoves pos
@@ -162,7 +159,7 @@ getEmptyBoardMoves :: PieceOnSquare -> Moves
 getEmptyBoardMoves (PieceOnSquare tpe sq) = emptyBoardMoves tpe sq
 
 getValidMoves :: PieceColour -> Position -> [(PieceOnSquare, [MoveTypes])]
-getValidMoves col pos = [(piece, filterAllMoves moves pos) | piece <- likePieces, let moves = getEmptyBoardMoves piece]
+getValidMoves col pos = [(pce, filterAllMoves moves pos) | pce <- likePieces, let moves = getEmptyBoardMoves pce]
   where
     likePieces =
       case col of

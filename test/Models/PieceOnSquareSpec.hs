@@ -9,7 +9,6 @@ import Models.Rank
 import Models.Square
 import Test.Hspec
 import Test.Hspec.QuickCheck
-import Test.QuickCheck.Gen
 import Text.Read
 
 spec = do

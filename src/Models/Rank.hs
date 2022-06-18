@@ -43,11 +43,13 @@ instance Read Rank where
   readListPrec = readListPrecDefault
   readList = readListDefault
 
+predRank :: Rank -> Rank
 predRank rank =
   case rank of
     R1 -> R1
     _ -> pred rank
 
+succRank :: Rank -> Rank
 succRank rank =
   case rank of
     R8 -> R8

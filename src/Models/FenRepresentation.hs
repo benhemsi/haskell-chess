@@ -5,14 +5,11 @@ module Models.FenRepresentation where
 
 import Control.Lens
 import Models.CastlingPrivileges
-import Models.Piece
 import Models.PieceColour
 import Models.PieceList
 import Models.Square (Square)
 import Test.QuickCheck
-import Text.ParserCombinators.ReadPrec
 import Text.RawString.QQ (r)
-import Text.Read
 
 data FenRepresentation =
   FenRepresentation
@@ -25,6 +22,7 @@ data FenRepresentation =
 
 makeLenses ''FenRepresentation
 
+fenPattern :: String
 fenPattern =
   [r|^\s*(([KQRBNPkqrbnp1-8]{1,8}+\/){7})([KQRBNPkqrbnp1-8]{1,8})\s+(w|b)\s+((K?Q?k?q?)|-)\s+([a-h][36]|-)\s+(0|[1-9]\d*)\s+(0|[1-9]\d*)$|]
 

@@ -3,8 +3,6 @@
 module Models.Move where
 
 import Control.Lens
-import Data.Foldable (toList)
-import qualified Data.Set as Set
 import Models.Square
 
 data Move =

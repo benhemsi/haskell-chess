@@ -7,9 +7,7 @@ module Models.PieceOnSquare where
 import Control.Lens
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
-import Models.Move
 import Models.Piece
-import Models.PieceType
 import Models.Square
 import Test.QuickCheck
 import Text.Read
@@ -34,7 +32,7 @@ initialPass pl = initialPassRec [minBound .. maxBound] (sort pl)
       if _square p == sq
         then (show . _piece) p ++ initialPassRec sqs ps
         else '1' : initialPassRec sqs (p : ps)
-    initialPassRec (sq:sqs) [] = '1' : initialPassRec sqs []
+    initialPassRec (_:sqs) [] = '1' : initialPassRec sqs []
     initialPassRec [] _ = ""
 
 -- Takes a string produced by initialPass and returns a valid FEN piece placement
@@ -87,9 +85,9 @@ instance Show PieceOnSquare where
 instance Read PieceOnSquare where
   readPrec = do
     Ident (f:r) <- lexP
-    let piece = readMaybe [f]
-        square = readMaybe r
-    case (piece, square) of
+    let pce = readMaybe [f]
+        sq = readMaybe r
+    case (pce, sq) of
       (Just p, Just sq) -> return (PieceOnSquare p sq)
       _ -> pfail
   readListPrec = do

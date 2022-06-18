@@ -41,11 +41,13 @@ instance Read File where
   readListPrec = readListPrecDefault
   readList = readListDefault
 
+predFile :: File -> File
 predFile file =
   case file of
     Fa -> Fa
     _ -> pred file
 
+succFile :: File -> File
 succFile file =
   case file of
     Fh -> Fh

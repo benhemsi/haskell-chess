@@ -3,17 +3,9 @@
 module Evaluation.EvaluationBoard where
 
 import Control.Lens
-import Data.Array
-import Data.List (groupBy)
-import qualified Data.Map as Map
-import qualified Data.Set as Set
 import Models.Board
-import Models.Move
 import Models.PieceColour
 import Models.PieceList
-import Models.Position
-import Models.Square
-import Moves.MoveLogic
 
 data EvaluationSquare =
   EvaluationSquare

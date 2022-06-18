@@ -23,13 +23,13 @@ makeLenses ''FullPieceList
 
 buildBaseFullPieceList :: PieceList -> FullPieceList
 buildBaseFullPieceList pl =
-  FullPieceList whitePieces blackPieces whiteSquares blackSquares (Square Fa R1) (Square Fa R1)
+  FullPieceList whitePcs blackPcs whiteSquares blackSquares (Square Fa R1) (Square Fa R1)
   where
     filterByColour colour = filter (\p -> view (piece . pieceColour) p == colour)
-    whitePieces = filterByColour White pl
-    blackPieces = filterByColour Black pl
-    whiteSquares = Set.fromList $ map (view square) whitePieces
-    blackSquares = Set.fromList $ map (view square) blackPieces
+    whitePcs = filterByColour White pl
+    blackPcs = filterByColour Black pl
+    whiteSquares = Set.fromList $ map (view square) whitePcs
+    blackSquares = Set.fromList $ map (view square) blackPcs
 
 getPieceList :: PieceColour -> FullPieceList -> PieceList
 getPieceList colour =

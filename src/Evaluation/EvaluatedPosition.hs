@@ -19,7 +19,6 @@ import Models.Position
 import Models.Square
 import Moves.MoveLogic
 import Piece.King
-import Piece.Pawn
 
 data EvaluatedPosition =
   EvaluatedPosition
@@ -31,12 +30,12 @@ data EvaluatedPosition =
 makeLenses ''EvaluatedPosition
 
 getSquareAttackers :: [(PieceOnSquare, [MoveTypes])] -> Map.Map Square PieceList
-getSquareAttackers moves = grouped
+getSquareAttackers piecesWithMoves = grouped
   where
     exploded = do
-      (piece, moves) <- moves
-      Just attackedSq <- map attackedSquare moves
-      return (attackedSq, [piece])
+      (pce, mvs) <- piecesWithMoves
+      Just attackedSq <- map attackedSquare mvs
+      return (attackedSq, [pce])
     grouped = Map.fromListWith (++) exploded
 
 getEvaluationBoard :: Position -> EvaluationBoard
@@ -59,18 +58,14 @@ class Evaluable p where
   offensiveEvaluationWeighting :: p -> GamePhase -> Double
   defensiveEvaluationWeighting :: p -> GamePhase -> Double
   evaluate :: p -> PieceColour -> Square -> FullPieceList -> EvaluationBoard -> GamePhase -> Evaluation
-  evaluate piece colour sq fullPL evalBoard gamePhase = output
+  evaluate pce colour sq fullPL evalBoard gamePhase = output
     where
-      offence = offensiveEvaluation piece colour sq fullPL evalBoard
-      defence = defensiveEvaluation piece colour sq fullPL evalBoard
-      offenceEvaluation = offensiveEvaluationWeighting piece gamePhase * view positionEvaluation offence
-      defenceEvaluation = defensiveEvaluationWeighting piece gamePhase * view positionEvaluation defence
+      offence = offensiveEvaluation pce colour sq fullPL evalBoard
+      defence = defensiveEvaluation pce colour sq fullPL evalBoard
+      offenceEvaluation = offensiveEvaluationWeighting pce gamePhase * view positionEvaluation offence
+      defenceEvaluation = defensiveEvaluationWeighting pce gamePhase * view positionEvaluation defence
       output = Evaluation (offenceEvaluation - defenceEvaluation) colour
 
--- instance Evaluable Pawn where
---   evaluate _ colour (Square f r) fullPL evalBoard = output
---     where
---       output = mempty
 instance Evaluable King where
   defensiveEvaluationWeighting _ gamePhase =
     case gamePhase of
@@ -82,17 +77,13 @@ instance Evaluable King where
       Opening -> 0
       MiddleGame -> 0
       EndGame -> 10
-  defensiveEvaluation _ colour sq fullPL evalBoard = Evaluation (fromIntegral countOfNearbyAttackers) colour
+  defensiveEvaluation _ colour sq _ evalBoard = Evaluation (fromIntegral countOfNearbyAttackers) colour
     where
       squaresToCheck = mapMaybe attackedSquare (flattenMoves (emptyBoardMoves K sq))
       evaluationSquares = map (evalBoard !) squaresToCheck
       countOfNearbyAttackers = sum $ map (countAttackers colour) evaluationSquares
-  offensiveEvaluation _ colour sq fullPL evalBoard = output
-    where
-      squaresToCheck = mapMaybe attackedSquare (flattenMoves (emptyBoardMoves K sq))
-      evaluationSquares = map (evalBoard !) squaresToCheck
-      countOfNearbyAttackers = sum $ map (countAttackers colour) evaluationSquares
-      output = mempty
+  offensiveEvaluation _ _ _ _ _ = mempty
+
 
 evaluatePosition :: Position -> Evaluation
 evaluatePosition pos = output

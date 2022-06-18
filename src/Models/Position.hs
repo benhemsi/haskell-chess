@@ -3,11 +3,9 @@
 module Models.Position where
 
 import Control.Lens
-import qualified Data.Set as Set
 import Models.CastlingPrivileges
 import Models.FenRepresentation
 import Models.FullPieceList
-import Models.Move
 import Models.PieceColour
 import Models.PieceList
 import Models.Square

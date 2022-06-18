@@ -3,8 +3,6 @@
 module Evaluation.Evaluation where
 
 import Control.Lens
-import Control.Monad.State
-import Evaluation.EvaluationBoard
 import Models.PieceColour
 
 data Evaluation =
@@ -18,6 +16,8 @@ makeLenses ''Evaluation
 instance Semigroup Evaluation where
   Evaluation x White <> Evaluation y White = Evaluation (max x y) White
   Evaluation x Black <> Evaluation y Black = Evaluation (min x y) Black
+  Evaluation _ White <> Evaluation _ Black = Evaluation 0 White
+  Evaluation _ Black <> Evaluation _ White = Evaluation 0 Black
 
 instance Monoid Evaluation where
   mempty = Evaluation 0 White

@@ -6,9 +6,7 @@
 module Models.CastlingPrivileges where
 
 import Control.Lens
-import qualified Data.Set as Set
 import Models.File
-import Models.FullPieceList
 import Models.Move
 import Models.PieceColour
 import Models.Rank
@@ -47,17 +45,17 @@ instance Read CastlingPrivileges where
   readList = readListDefault
 
 getKingSideCastle :: PieceColour -> Castle
-getKingSideCastle colour = Castle (Move (Square Fe rank) (Square Fg rank)) (Move (Square Fh rank) (Square Ff rank))
+getKingSideCastle colour = Castle (Move (Square Fe rnk) (Square Fg rnk)) (Move (Square Fh rnk) (Square Ff rnk))
   where
-    rank =
+    rnk =
       case colour of
         White -> R1
         Black -> R8
 
 getQueenSideCastle :: PieceColour -> Castle
-getQueenSideCastle colour = Castle (Move (Square Fe rank) (Square Fc rank)) (Move (Square Fa rank) (Square Fd rank))
+getQueenSideCastle colour = Castle (Move (Square Fe rnk) (Square Fc rnk)) (Move (Square Fa rnk) (Square Fd rnk))
   where
-    rank =
+    rnk =
       case colour of
         White -> R1
         Black -> R8
