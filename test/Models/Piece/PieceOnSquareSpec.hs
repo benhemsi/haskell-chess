@@ -1,4 +1,4 @@
-module Models.PieceOnSquareSpec where
+module Models.Piece.PieceOnSquareSpec where
 
 import Models.Board
 import Models.Piece

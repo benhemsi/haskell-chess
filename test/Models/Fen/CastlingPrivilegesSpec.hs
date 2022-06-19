@@ -1,6 +1,6 @@
-module Models.CastlingPrivilegesSpec where
+module Models.Fen.CastlingPrivilegesSpec where
 
-import Models.CastlingPrivileges
+import Models.Fen
 import Test.Hspec
 import Test.Hspec.QuickCheck
 

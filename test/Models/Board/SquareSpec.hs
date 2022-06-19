@@ -1,4 +1,4 @@
-module Models.FileSpec where
+module Models.Board.SquareSpec where
 
 import Models.Board
 import Test.Hspec
@@ -7,7 +7,7 @@ import Text.Read
 
 spec = do
   describe "read" $ do
-    prop "is inverse to show" $ \x -> (read . show) x `shouldBe` (x :: File)
+    prop "is inverse to show" $ \x -> (read . show) x `shouldBe` (x :: Square)
     it "throw an error for anything else" $ do
-      let result = readMaybe "wb" :: Maybe File
+      let result = readMaybe "wb" :: Maybe Square
       result `shouldBe` Nothing

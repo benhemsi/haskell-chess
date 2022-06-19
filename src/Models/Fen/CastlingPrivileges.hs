@@ -3,7 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 {-# HLINT ignore "Use <$>" #-}
-module Models.CastlingPrivileges where
+module Models.Fen.CastlingPrivileges where
 
 import Control.Lens
 import Models.Board

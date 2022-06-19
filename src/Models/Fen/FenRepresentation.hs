@@ -1,11 +1,11 @@
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Models.FenRepresentation where
+module Models.Fen.FenRepresentation where
 
 import Control.Lens
 import Models.Board
-import Models.CastlingPrivileges
+import Models.Fen.CastlingPrivileges
 import Models.Piece
 import Test.QuickCheck
 import Text.RawString.QQ (r)

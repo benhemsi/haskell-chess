@@ -1,4 +1,4 @@
-module Models.RankSpec where
+module Models.Board.RankSpec where
 
 import Models.Board
 import Test.Hspec

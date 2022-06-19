@@ -4,8 +4,7 @@ module Models.Position where
 
 import Control.Lens
 import Models.Board
-import Models.CastlingPrivileges
-import Models.FenRepresentation
+import Models.Fen
 import Models.Piece
 
 data Position =

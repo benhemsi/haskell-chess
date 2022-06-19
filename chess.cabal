@@ -35,8 +35,9 @@ library
       Models.Board.File
       Models.Board.Rank
       Models.Board.Square
-      Models.CastlingPrivileges
-      Models.FenRepresentation
+      Models.Fen
+      Models.Fen.CastlingPrivileges
+      Models.Fen.FenRepresentation
       Models.GameEnd
       Models.GameState
       Models.Move
@@ -105,15 +106,15 @@ test-suite chess-test
   main-is: Spec.hs
   other-modules:
       Evaluation.EvaluationBoardSpec
-      Models.CastlingPrivilegesSpec
-      Models.FenRepresentationSpec
-      Models.FileSpec
-      Models.PieceColourSpec
-      Models.PieceOnSquareSpec
-      Models.PieceSpec
-      Models.PieceTypeSpec
-      Models.RankSpec
-      Models.SquareSpec
+      Models.Board.FileSpec
+      Models.Board.RankSpec
+      Models.Board.SquareSpec
+      Models.Fen.CastlingPrivilegesSpec
+      Models.Fen.FenRepresentationSpec
+      Models.Piece.PieceColourSpec
+      Models.Piece.PieceOnSquareSpec
+      Models.Piece.PieceSpec
+      Models.Piece.PieceTypeSpec
       Moves.MoveFilteringSpec
       Piece.BishopSpec
       Piece.KingSpec

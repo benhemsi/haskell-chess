@@ -8,7 +8,7 @@ import qualified Data.Map as Map
 import Data.Maybe (isJust)
 import qualified Data.Set as Set
 import Models.Board
-import Models.FenRepresentation
+import Models.Fen
 import Models.Move
 import Models.Piece
 import Models.Position

@@ -1,4 +1,4 @@
-module Models.PieceSpec where
+module Models.Piece.PieceSpec where
 
 import Models.Piece
 import Test.Hspec

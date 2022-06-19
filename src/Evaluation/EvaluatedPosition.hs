@@ -10,7 +10,7 @@ import Evaluation.Evaluation
 import Evaluation.EvaluationBoard
 import Evaluation.GamePhase
 import Models.Board
-import Models.FenRepresentation
+import Models.Fen
 import Models.Move
 import Models.Piece
 import Models.Position

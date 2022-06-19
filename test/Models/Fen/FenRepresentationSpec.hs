@@ -1,6 +1,6 @@
-module Models.FenRepresentationSpec where
+module Models.Fen.FenRepresentationSpec where
 
-import Models.FenRepresentation
+import Models.Fen
 import Test.Hspec
 
 spec = do

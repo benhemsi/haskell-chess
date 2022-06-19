@@ -1,4 +1,4 @@
-module Models.PieceColourSpec where
+module Models.Piece.PieceColourSpec where
 
 import Models.Piece
 import Test.Hspec

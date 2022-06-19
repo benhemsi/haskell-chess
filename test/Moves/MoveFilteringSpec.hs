@@ -5,7 +5,7 @@ module Moves.MoveFilteringSpec where
 import Control.Lens
 import qualified Data.Set as Set
 import Models.Board
-import Models.FenRepresentation
+import Models.Fen
 import Models.Move
 import Models.Piece
 import Models.Position
