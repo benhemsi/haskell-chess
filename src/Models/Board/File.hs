@@ -1,4 +1,4 @@
-module Models.Square.File where
+module Models.Board.File where
 
 import Data.Ix
 import Test.QuickCheck

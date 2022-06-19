@@ -7,8 +7,8 @@ module Models.PieceOnSquare where
 import Control.Lens
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
+import Models.Board
 import Models.Piece
-import Models.Square
 import Test.QuickCheck
 import Text.Read
 

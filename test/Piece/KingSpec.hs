@@ -1,8 +1,8 @@
 module Piece.KingSpec where
 
 import qualified Data.Set as Set
+import Models.Board
 import Models.Move
-import Models.Square
 import Moves.MoveFiltering
 import Piece.King
 import Test.Hspec

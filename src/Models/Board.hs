@@ -1,25 +1,11 @@
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeFamilies #-}
-
 module Models.Board
-  ( Board
+  ( module Models.Board.Board
+  , module Models.Board.File
+  , module Models.Board.Rank
+  , module Models.Board.Square
   ) where
 
-import Data.Array
-import Data.Distributive
-import Data.Functor.Rep
-import Models.Square
-
-type Board = Array Square
-
-instance Distributive Board where
-  collect f fa = arr
-    where
-      repF :: (a -> Board b) -> Square -> a -> b
-      repF f = flip ((!) . f)
-      arr = array (minBound, maxBound) [(i, fb) | i <- range (minBound, maxBound), let fb = fmap (repF f i) fa]
-
-instance Representable Board where
-  type Rep Board = Square
-  tabulate f = array (minBound, maxBound) [(i, f i) | i <- range (minBound, maxBound)]
-  index = (!)
+import Models.Board.Board
+import Models.Board.File
+import Models.Board.Rank
+import Models.Board.Square

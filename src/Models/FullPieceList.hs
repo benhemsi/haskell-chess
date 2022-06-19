@@ -4,11 +4,11 @@ module Models.FullPieceList where
 
 import Control.Lens
 import qualified Data.Set as Set
+import Models.Board
 import Models.Piece
 import Models.PieceColour
 import Models.PieceList
 import Models.PieceOnSquare
-import Models.Square
 
 data FullPieceList =
   FullPieceList

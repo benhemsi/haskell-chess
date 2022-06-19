@@ -1,10 +1,10 @@
 module Models.PieceOnSquareSpec where
 
+import Models.Board
 import Models.Piece
 import Models.PieceColour
 import Models.PieceOnSquare
 import Models.PieceType
-import Models.Square
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Text.Read

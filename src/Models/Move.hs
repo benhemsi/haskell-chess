@@ -3,7 +3,7 @@
 module Models.Move where
 
 import Control.Lens
-import Models.Square
+import Models.Board
 
 data Move =
   Move

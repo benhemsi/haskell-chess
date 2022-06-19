@@ -2,8 +2,8 @@
 
 module Piece.BishopSpec where
 
+import Models.Board
 import Models.Move
-import Models.Square
 import Moves.MoveFiltering
 import Piece.Bishop
 import Test.Hspec

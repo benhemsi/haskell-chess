@@ -1,13 +1,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Models.Square.Square where
+module Models.Board.Square where
 
 import Control.Lens
 import Data.Ix
 import Data.List (elemIndex)
 import qualified Data.Set as Set
-import Models.Square.File
-import Models.Square.Rank
+import Models.Board.File
+import Models.Board.Rank
 import Test.QuickCheck
 import Text.Read
 

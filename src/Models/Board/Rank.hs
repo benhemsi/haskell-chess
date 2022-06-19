@@ -1,4 +1,4 @@
-module Models.Square.Rank where
+module Models.Board.Rank where
 
 import Data.Ix
 import Test.QuickCheck

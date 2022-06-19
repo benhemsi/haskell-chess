@@ -1,7 +1,7 @@
 module Piece.Rook where
 
+import Models.Board
 import Models.Move
-import Models.Square
 import Models.Weighted
 
 data Rook =

@@ -2,8 +2,8 @@ module Piece.Pawn where
 
 import Control.Lens
 import Data.Foldable (Foldable(toList))
+import Models.Board
 import Models.Move
-import Models.Square
 import Models.Weighted
 
 data Pawn =

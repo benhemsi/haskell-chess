@@ -7,13 +7,13 @@ import Data.Foldable (toList)
 import qualified Data.Map as Map
 import Data.Maybe (isJust)
 import qualified Data.Set as Set
+import Models.Board
 import Models.FenRepresentation
 import Models.FullPieceList
 import Models.Move
 import Models.PieceColour
 import Models.PieceOnSquare
 import Models.Position
-import Models.Square
 
 class MoveFiltering mvs where
   filterMoves :: mvs -> Position -> [MoveTypes]

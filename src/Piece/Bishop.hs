@@ -2,8 +2,8 @@
 
 module Piece.Bishop where
 
+import Models.Board
 import Models.Move
-import Models.Square
 import Models.Weighted
 
 data Bishop =

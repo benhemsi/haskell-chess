@@ -1,6 +1,6 @@
 module Models.FileSpec where
 
-import Models.Square
+import Models.Board
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Text.Read

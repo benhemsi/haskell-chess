@@ -1,7 +1,7 @@
 module Piece.RookSpec where
 
+import Models.Board
 import Models.Move
-import Models.Square
 import Moves.MoveFiltering
 import Piece.Rook
 import Test.Hspec

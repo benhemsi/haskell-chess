@@ -31,6 +31,10 @@ library
       Evaluation.GamePhase
       Models.AllMoves
       Models.Board
+      Models.Board.Board
+      Models.Board.File
+      Models.Board.Rank
+      Models.Board.Square
       Models.CastlingPrivileges
       Models.FenRepresentation
       Models.FullPieceList
@@ -44,10 +48,6 @@ library
       Models.PieceType
       Models.Position
       Models.PositionWithMoves
-      Models.Square
-      Models.Square.File
-      Models.Square.Rank
-      Models.Square.Square
       Models.Weighted
       Moves.MoveFiltering
       Moves.MoveTree

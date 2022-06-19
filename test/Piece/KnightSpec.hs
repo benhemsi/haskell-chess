@@ -1,7 +1,7 @@
 module Piece.KnightSpec where
 
+import Models.Board
 import Models.Move
-import Models.Square
 import Moves.MoveFiltering
 import Piece.Knight
 import Test.Hspec

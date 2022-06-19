@@ -9,6 +9,7 @@ import Data.Maybe (mapMaybe)
 import Evaluation.Evaluation
 import Evaluation.EvaluationBoard
 import Evaluation.GamePhase
+import Models.Board
 import Models.FenRepresentation
 import Models.FullPieceList
 import Models.Move
@@ -16,7 +17,6 @@ import Models.PieceColour
 import Models.PieceList
 import Models.PieceOnSquare
 import Models.Position
-import Models.Square
 import Moves.MoveFiltering
 import Piece.King
 
