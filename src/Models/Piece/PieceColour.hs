@@ -1,4 +1,4 @@
-module Models.PieceColour where
+module Models.Piece.PieceColour where
 
 import Test.QuickCheck
 import Text.Read

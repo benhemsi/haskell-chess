@@ -1,6 +1,6 @@
 module Models.GameEnd where
 
-import Models.PieceColour
+import Models.Piece
 
 data GameEnd
   = Checkmate PieceColour

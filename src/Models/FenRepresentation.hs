@@ -6,8 +6,7 @@ module Models.FenRepresentation where
 import Control.Lens
 import Models.Board
 import Models.CastlingPrivileges
-import Models.PieceColour
-import Models.PieceList
+import Models.Piece
 import Test.QuickCheck
 import Text.RawString.QQ (r)
 

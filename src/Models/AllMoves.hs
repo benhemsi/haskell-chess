@@ -5,7 +5,7 @@ module Models.AllMoves where
 import Control.Lens
 import qualified Data.Map as Map
 import Models.Move
-import Models.PieceOnSquare
+import Models.Piece
 
 data AllMoves =
   AllMoves

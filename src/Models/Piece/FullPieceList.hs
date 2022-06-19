@@ -1,20 +1,20 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Models.FullPieceList where
+module Models.Piece.FullPieceList where
 
 import Control.Lens
 import qualified Data.Set as Set
 import Models.Board
-import Models.Piece
-import Models.PieceColour
-import Models.PieceList
-import Models.PieceOnSquare
+import Models.Piece.Piece
+import Models.Piece.PieceColour
+import Models.Piece.PieceList
+import Models.Piece.PieceOnSquare
 
 data FullPieceList =
   FullPieceList
     { _whitePieces, _blackPieces :: PieceList
     , _whiteOccupiedSquares, _blackOccupiedSquares :: Squares
-    , _whiteKing, _blackKing :: Square
+    , _whiteKingSquare, _blackKingSquare :: Square
     }
 
 makeLenses ''FullPieceList

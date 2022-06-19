@@ -1,8 +1,8 @@
-module Models.PieceList where
+module Models.Piece.PieceList where
 
 import Models.Board
-import Models.Piece
-import Models.PieceOnSquare
+import Models.Piece.Piece
+import Models.Piece.PieceOnSquare
 
 type PieceList = [PieceOnSquare]
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE ExistentialQuantification #-}
 
-module Models.PieceType where
+module Models.Piece.PieceType where
 
 import Models.Move
 import Models.Weighted

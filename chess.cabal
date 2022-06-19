@@ -37,15 +37,16 @@ library
       Models.Board.Square
       Models.CastlingPrivileges
       Models.FenRepresentation
-      Models.FullPieceList
       Models.GameEnd
       Models.GameState
       Models.Move
       Models.Piece
-      Models.PieceColour
-      Models.PieceList
-      Models.PieceOnSquare
-      Models.PieceType
+      Models.Piece.FullPieceList
+      Models.Piece.Piece
+      Models.Piece.PieceColour
+      Models.Piece.PieceList
+      Models.Piece.PieceOnSquare
+      Models.Piece.PieceType
       Models.Position
       Models.PositionWithMoves
       Models.Weighted

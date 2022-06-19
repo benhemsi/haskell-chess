@@ -9,10 +9,8 @@ import Data.Maybe (isJust)
 import qualified Data.Set as Set
 import Models.Board
 import Models.FenRepresentation
-import Models.FullPieceList
 import Models.Move
-import Models.PieceColour
-import Models.PieceOnSquare
+import Models.Piece
 import Models.Position
 
 class MoveFiltering mvs where

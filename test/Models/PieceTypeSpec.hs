@@ -1,6 +1,6 @@
 module Models.PieceTypeSpec where
 
-import Models.PieceType
+import Models.Piece
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Text.Read

@@ -11,11 +11,8 @@ import Evaluation.EvaluationBoard
 import Evaluation.GamePhase
 import Models.Board
 import Models.FenRepresentation
-import Models.FullPieceList
 import Models.Move
-import Models.PieceColour
-import Models.PieceList
-import Models.PieceOnSquare
+import Models.Piece
 import Models.Position
 import Moves.MoveFiltering
 import Piece.King

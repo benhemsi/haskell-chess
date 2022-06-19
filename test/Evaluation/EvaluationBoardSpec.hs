@@ -3,11 +3,7 @@ module Evaluation.EvaluationBoardSpec where
 import qualified Data.Set as Set
 import Evaluation.EvaluationBoard
 import Models.Board
-import Models.FullPieceList
 import Models.Piece
-import Models.PieceColour
-import Models.PieceOnSquare
-import Models.PieceType
 import Models.Position (Position)
 import Test.Hspec
 

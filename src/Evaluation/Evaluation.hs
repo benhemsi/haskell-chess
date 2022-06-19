@@ -3,7 +3,7 @@
 module Evaluation.Evaluation where
 
 import Control.Lens
-import Models.PieceColour
+import Models.Piece
 
 data Evaluation =
   Evaluation

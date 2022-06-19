@@ -4,8 +4,7 @@ module Evaluation.EvaluationBoard where
 
 import Control.Lens
 import Models.Board
-import Models.PieceColour
-import Models.PieceList
+import Models.Piece
 
 data EvaluationSquare =
   EvaluationSquare

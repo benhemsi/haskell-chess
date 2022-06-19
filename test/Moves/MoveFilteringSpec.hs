@@ -8,9 +8,6 @@ import Models.Board
 import Models.FenRepresentation
 import Models.Move
 import Models.Piece
-import Models.PieceColour
-import Models.PieceOnSquare
-import Models.PieceType
 import Models.Position
 import Moves.MoveFiltering
 import Piece.Bishop

@@ -6,9 +6,7 @@ import Control.Lens
 import Models.Board
 import Models.CastlingPrivileges
 import Models.FenRepresentation
-import Models.FullPieceList
-import Models.PieceColour
-import Models.PieceList
+import Models.Piece
 
 data Position =
   Position

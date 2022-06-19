@@ -8,7 +8,7 @@ module Models.CastlingPrivileges where
 import Control.Lens
 import Models.Board
 import Models.Move
-import Models.PieceColour
+import Models.Piece
 import Test.QuickCheck
 import Text.RawString.QQ (r)
 import Text.Read

@@ -2,13 +2,13 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 {-# HLINT ignore "Use <$>" #-}
-module Models.PieceOnSquare where
+module Models.Piece.PieceOnSquare where
 
 import Control.Lens
 import Data.List (intercalate, sort)
 import Data.List.Split (chunksOf, splitOn)
 import Models.Board
-import Models.Piece
+import Models.Piece.Piece
 import Test.QuickCheck
 import Text.Read
 

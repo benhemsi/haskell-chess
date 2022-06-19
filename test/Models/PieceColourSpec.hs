@@ -1,6 +1,6 @@
 module Models.PieceColourSpec where
 
-import Models.PieceColour
+import Models.Piece
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Text.Read
