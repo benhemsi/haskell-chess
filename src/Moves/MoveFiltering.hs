@@ -19,13 +19,11 @@ class MoveFiltering mvs where
 instance MoveFiltering SlidingMoves where
   filterMoves (SlidingMoves a b c d) pos = movesToMoveTypes $ foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
     where
-      likePieces = getLikeOccupiedSquares pos
-      oppoPieces = getOppoOccupiedSquares pos
       recursiveFilter :: [Move] -> [Move] -> [Move]
       recursiveFilter [] curr = curr
       recursiveFilter (move:moves) curr
-        | _end move `Set.member` likePieces = curr
-        | _end move `Set.member` oppoPieces = move : curr
+        | _end move `Set.member` view likeOccupiedSquares pos = curr
+        | _end move `Set.member` view oppoOccupiedSquares pos = move : curr
         | otherwise = recursiveFilter moves (move : curr)
       foldMoves :: [Move] -> [Move]
       foldMoves moves = recursiveFilter moves []
@@ -33,18 +31,16 @@ instance MoveFiltering SlidingMoves where
 instance MoveFiltering [Move] where
   filterMoves emptyBoardMvs pos = output
     where
-      likePieces = getLikeOccupiedSquares pos
       filterFunction :: Move -> Bool
-      filterFunction (Move _ endSq) = endSq `Set.notMember` likePieces
+      filterFunction (Move _ endSq) = endSq `Set.notMember` view likeOccupiedSquares pos
       output = movesToMoveTypes $ filter filterFunction emptyBoardMvs
 
 instance MoveFiltering PawnMoves where
   filterMoves (PM f1 f2 tks enPs pr prTks) pos =
     movesToMoveTypes (forwardMoves ++ takingMoves) ++ enPassentMove ++ promotionMoves ++ promotionTks
     where
-      likePieces = getLikeOccupiedSquares pos
-      oppoPieces = getOppoOccupiedSquares pos
-      allPieces = likePieces `Set.union` oppoPieces
+      oppoSquares = view oppoOccupiedSquares pos
+      allPieces = view likeOccupiedSquares pos `Set.union` oppoSquares
       filterMove :: Maybe Move -> [Move]
       filterMove Nothing = []
       filterMove (Just move) = [move | _end move `Set.notMember` allPieces]
@@ -53,25 +49,25 @@ instance MoveFiltering PawnMoves where
         case (forward1, f2) of
           ([], _) -> forward1
           _ -> forward1 ++ filterMove f2
-      takingMoves = filter (\move -> _end move `Set.member` oppoPieces) tks
+      takingMoves = filter (\move -> _end move `Set.member` oppoSquares) tks
       enPassentMove =
         case view (fen . enPassentSquare) pos of
           Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
           Nothing -> []
       promotionMoves = toList $ fmap (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
-      promotionTks = map PP $ filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoPieces) prTks
+      promotionTks = map PP $ filter (\(PawnPromotion mv) -> _end mv `Set.member` oppoSquares) prTks
 
 instance MoveFiltering KingMoves where
   filterMoves (KM moves kingSide queenSide) pos = filterMoves moves pos ++ kingSideMove ++ queenSideMove
     where
       attackedSquares = getOppoAttackedSquares pos
-      occupiedSquares = getLikeOccupiedSquares pos `Set.union` getOppoOccupiedSquares pos
+      occupiedSquares = view likeOccupiedSquares pos `Set.union` view oppoOccupiedSquares pos
       rankToCheck =
         case view (fen . nextToMove) pos of
           White -> R1
           Black -> R8
       kingSideMove =
-        if isJust kingSide && getKingSidePrivileges pos
+        if isJust kingSide && view kingSidePrivileges pos
           then let filesToCheck = [Ff, Fg]
                    squaresToCheck = Set.fromList $ map (`Square` rankToCheck) filesToCheck
                    allSquaresToCheck = Set.union occupiedSquares attackedSquares
@@ -81,7 +77,7 @@ instance MoveFiltering KingMoves where
                      else []
           else []
       queenSideMove =
-        if isJust queenSide && getQueenSidePrivileges pos
+        if isJust queenSide && view queenSidePrivileges pos
           then let filesToCheckIfAttacked = [Fc, Fd]
                    filesToCheckIfOccupied = Fb : filesToCheckIfAttacked
                    squaresToCheckIfOccupied = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfOccupied
@@ -138,8 +134,8 @@ getAttackedSquares (PawnMoves w b) pos = squares
 getOppoAttackedSquares :: Position -> Squares
 getOppoAttackedSquares pos = Set.fromList squares
   where
-    oppoPieces = getOppoPieces pos
-    squares = concatMap ((`getAttackedSquares` pos) . getEmptyBoardMoves) oppoPieces
+    opponentPieces = view oppoPieces pos
+    squares = concatMap ((`getAttackedSquares` pos) . getEmptyBoardMoves) opponentPieces
 
 movesToMoveTypes :: [Move] -> [MoveTypes]
 movesToMoveTypes = map Mv
@@ -148,10 +144,9 @@ isTakingMove :: Position -> MoveTypes -> Bool
 isTakingMove pos move = output
   where
     attackedSq = attackedSquare move
-    oppoPieces = getOppoOccupiedSquares pos
     output =
       case attackedSq of
-        Just sq -> sq `Set.member` oppoPieces
+        Just sq -> sq `Set.member` view oppoOccupiedSquares pos
         Nothing -> False
 
 getEmptyBoardMoves :: PieceOnSquare -> Moves
@@ -159,12 +154,7 @@ getEmptyBoardMoves (PieceOnSquare tpe sq) = emptyBoardMoves tpe sq
 
 getValidMoves :: PieceColour -> Position -> Map.Map PieceOnSquare [MoveTypes]
 getValidMoves col pos =
-  Map.fromList [(pce, filterMoves moves pos) | pce <- likePieces, let moves = getEmptyBoardMoves pce]
-  where
-    likePieces =
-      case col of
-        White -> view (pieceList . whitePieces) pos
-        Black -> view (pieceList . blackPieces) pos
+  Map.fromList [(pce, filterMoves moves pos) | pce <- view likePieces pos, let moves = getEmptyBoardMoves pce]
 
 getLikeValidMoves :: Position -> Map.Map PieceOnSquare [MoveTypes]
 getLikeValidMoves pos = getValidMoves (view (fen . nextToMove) pos) pos

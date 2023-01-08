@@ -17,7 +17,7 @@ data FenRepresentation =
     , _castlingPrivileges :: CastlingPrivileges
     , _enPassentSquare :: Maybe Square
     , _halfMoveClock, _fullMoveClock :: Int
-    }
+    } deriving (Eq)
 
 makeLenses ''FenRepresentation
 

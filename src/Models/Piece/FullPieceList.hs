@@ -15,7 +15,7 @@ data FullPieceList =
     { _whitePieces, _blackPieces :: PieceList
     , _whiteOccupiedSquares, _blackOccupiedSquares :: Squares
     , _whiteKingSquare, _blackKingSquare :: Square
-    }
+    } deriving (Eq, Show)
 
 makeLenses ''FullPieceList
 

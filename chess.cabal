@@ -115,6 +115,7 @@ test-suite chess-test
       Models.Piece.PieceOnSquareSpec
       Models.Piece.PieceSpec
       Models.Piece.PieceTypeSpec
+      Models.PositionSpec
       Moves.MoveFilteringSpec
       Piece.BishopSpec
       Piece.KingSpec
