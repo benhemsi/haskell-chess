@@ -32,6 +32,7 @@ dependencies:
 - raw-strings-qq
 - regex-tdfa
 - split
+- validation
 
 library:
   source-dirs: src

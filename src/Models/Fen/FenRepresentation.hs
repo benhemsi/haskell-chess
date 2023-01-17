@@ -1,4 +1,3 @@
-{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Models.Fen.FenRepresentation where
@@ -8,7 +7,6 @@ import Models.Board
 import Models.Fen.CastlingPrivileges
 import Models.Piece
 import Test.QuickCheck
-import Text.RawString.QQ (r)
 
 data FenRepresentation =
   FenRepresentation
@@ -17,13 +15,10 @@ data FenRepresentation =
     , _castlingPrivileges :: CastlingPrivileges
     , _enPassentSquare :: Maybe Square
     , _halfMoveClock, _fullMoveClock :: Int
-    } deriving (Eq)
+    }
+  deriving (Eq)
 
 makeLenses ''FenRepresentation
-
-fenPattern :: String
-fenPattern =
-  [r|^\s*(([KQRBNPkqrbnp1-8]{1,8}+\/){7})([KQRBNPkqrbnp1-8]{1,8})\s+(w|b)\s+((K?Q?k?q?)|-)\s+([a-h][36]|-)\s+(0|[1-9]\d*)\s+(0|[1-9]\d*)$|]
 
 buildBaseFenRepresentation :: PieceList -> FenRepresentation
 buildBaseFenRepresentation pl = FenRepresentation pl White (CastlingPrivileges True True True True) Nothing 0 1
