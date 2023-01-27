@@ -1,6 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Models.Board.File where
 
+import Data.Aeson
 import Data.Ix
+import GHC.Generics
 import Test.QuickCheck
 import Text.Read
 
@@ -13,7 +17,11 @@ data File
   | Ff
   | Fg
   | Fh
-  deriving (Bounded, Enum, Eq, Ord, Ix)
+  deriving (Bounded, Enum, Eq, Ord, Ix, Generic)
+
+instance ToJSON File
+
+instance FromJSON File
 
 instance Show File where
   show Fa = "a"

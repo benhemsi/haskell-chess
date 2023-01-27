@@ -1,7 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE ExistentialQuantification #-}
 
 module Models.Piece.PieceType where
 
+import Data.Aeson
+import GHC.Generics
 import Models.Move
 import Models.Weighted
 import Piece.Bishop
@@ -20,7 +23,7 @@ data PieceType
   | Bishop
   | Knight
   | Pawn
-  deriving (Eq, Enum, Bounded)
+  deriving (Eq, Enum, Bounded, Generic)
 
 data PieceExi =
   forall p. (Moveable p, Weighted p, Show p, Read p) =>
@@ -33,6 +36,10 @@ evalPiece Rook = PieceExi R
 evalPiece Bishop = PieceExi B
 evalPiece Knight = PieceExi N
 evalPiece Pawn = PieceExi P
+
+instance ToJSON PieceType
+
+instance FromJSON PieceType
 
 instance Moveable PieceExi where
   emptyBoardMoves (PieceExi p) = emptyBoardMoves p

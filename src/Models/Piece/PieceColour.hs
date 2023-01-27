@@ -1,12 +1,20 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Models.Piece.PieceColour where
 
+import Data.Aeson
+import GHC.Generics
 import Test.QuickCheck
 import Text.Read
 
 data PieceColour
   = White
   | Black
-  deriving (Eq, Enum)
+  deriving (Eq, Enum, Generic)
+
+instance ToJSON PieceColour
+
+instance FromJSON PieceColour
 
 instance Show PieceColour where
   show White = "w"

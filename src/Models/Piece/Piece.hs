@@ -1,9 +1,12 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Models.Piece.Piece where
 
 import Control.Lens hiding (elements)
+import Data.Aeson
 import Data.Char (isUpper, toLower, toUpper)
+import GHC.Generics
 import Models.Move
 import Models.Piece.PieceColour
 import Models.Piece.PieceType
@@ -15,9 +18,13 @@ data Piece =
     { _pieceColour :: PieceColour
     , _pieceType :: PieceType
     }
-  deriving (Eq)
+  deriving (Eq, Generic)
 
 makeLenses ''Piece
+
+instance ToJSON Piece
+
+instance FromJSON Piece
 
 instance Show Piece where
   show (Piece pieceClr pieceTpe) =

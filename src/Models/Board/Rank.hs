@@ -1,6 +1,10 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Models.Board.Rank where
 
+import qualified Data.Aeson as Aeson
 import Data.Ix
+import qualified GHC.Generics as Generic
 import Test.QuickCheck
 import Text.Read
 import Text.Read.Lex (numberToInteger)
@@ -14,7 +18,11 @@ data Rank
   | R6
   | R7
   | R8
-  deriving (Bounded, Enum, Eq, Ord, Ix)
+  deriving (Bounded, Enum, Eq, Ord, Ix, Generic.Generic)
+
+instance Aeson.ToJSON Rank
+
+instance Aeson.FromJSON Rank
 
 instance Show Rank where
   show R1 = "1"

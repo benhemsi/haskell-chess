@@ -1,8 +1,11 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Models.Fen.FenRepresentation where
 
 import Control.Lens
+import Data.Aeson
+import GHC.Generics
 import Models.Board
 import Models.Fen.CastlingPrivileges
 import Models.Piece
@@ -16,9 +19,13 @@ data FenRepresentation =
     , _enPassentSquare :: Maybe Square
     , _halfMoveClock, _fullMoveClock :: Int
     }
-  deriving (Eq)
+  deriving (Eq, Generic)
 
 makeLenses ''FenRepresentation
+
+instance ToJSON FenRepresentation
+
+instance FromJSON FenRepresentation
 
 buildBaseFenRepresentation :: PieceList -> FenRepresentation
 buildBaseFenRepresentation pl = FenRepresentation pl White (CastlingPrivileges True True True True) Nothing 0 1

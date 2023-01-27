@@ -1,11 +1,14 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Models.Board.Square where
 
 import Control.Lens
+import qualified Data.Aeson as Aeson
 import Data.Ix
 import Data.List (elemIndex)
 import qualified Data.Set as Set
+import qualified GHC.Generics as Generic
 import Models.Board.File
 import Models.Board.Rank
 import Test.QuickCheck
@@ -16,9 +19,13 @@ data Square =
     { _file :: File
     , _rank :: Rank
     }
-  deriving (Eq)
+  deriving (Eq, Generic.Generic)
 
 makeLenses ''Square
+
+instance Aeson.ToJSON Square
+
+instance Aeson.FromJSON Square
 
 type Squares = Set.Set Square
 

@@ -7,6 +7,7 @@ import qualified Data.Map as Map
 import Data.Validation
 import Models.Board
 import Models.Fen.CastlingPrivileges
+import Models.Fen.FenError
 import Models.Fen.FenParser
 import Models.Fen.FenRepresentation
 import Models.Piece
@@ -103,7 +104,7 @@ spec = do
       actual `shouldBe`
         Left
           (CombinedFenError $
-           (IncorrectRowNumber 1) NE.:|
+           IncorrectRowNumber 1 NE.:|
            [ InvalidNextToMove "a"
            , InvalidCastlingPrivileges "a"
            , InvalidEnPassentSquare "a"

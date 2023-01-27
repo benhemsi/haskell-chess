@@ -37,6 +37,7 @@ library
       Models.Board.Square
       Models.Fen
       Models.Fen.CastlingPrivileges
+      Models.Fen.FenError
       Models.Fen.FenParser
       Models.Fen.FenRepresentation
       Models.GameEnd
@@ -67,6 +68,7 @@ library
   build-depends:
       QuickCheck
     , adjunctions
+    , aeson
     , array
     , base >=4.7 && <5
     , containers
@@ -90,6 +92,7 @@ executable chess-exe
   build-depends:
       QuickCheck
     , adjunctions
+    , aeson
     , array
     , base >=4.7 && <5
     , chess
@@ -134,6 +137,7 @@ test-suite chess-test
   build-depends:
       QuickCheck
     , adjunctions
+    , aeson
     , array
     , base >=4.7 && <5
     , chess

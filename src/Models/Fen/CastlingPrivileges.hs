@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -6,6 +7,8 @@
 module Models.Fen.CastlingPrivileges where
 
 import Control.Lens
+import qualified Data.Aeson as Aeson
+import qualified GHC.Generics as Generic
 import Models.Board
 import Models.Move
 import Models.Piece
@@ -18,9 +21,13 @@ data CastlingPrivileges =
   CastlingPrivileges
     { _whiteKingSide, _whiteQueenSide, _blackKingSide, _blackQueenSide :: Bool
     }
-  deriving (Eq)
+  deriving (Eq, Generic.Generic)
 
 makeLenses ''CastlingPrivileges
+
+instance Aeson.ToJSON CastlingPrivileges
+
+instance Aeson.FromJSON CastlingPrivileges
 
 instance Show CastlingPrivileges where
   show (CastlingPrivileges wk wq bk bq) =
