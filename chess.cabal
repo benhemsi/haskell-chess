@@ -71,15 +71,19 @@ library
     , aeson
     , array
     , base >=4.7 && <5
+    , bytestring
     , containers
     , distributive
     , hspec
+    , http-types
     , lens
     , mtl
     , raw-strings-qq
     , regex-tdfa
     , split
     , validation
+    , wai
+    , warp
   default-language: Haskell2010
 
 executable chess-exe
@@ -95,16 +99,20 @@ executable chess-exe
     , aeson
     , array
     , base >=4.7 && <5
+    , bytestring
     , chess
     , containers
     , distributive
     , hspec
+    , http-types
     , lens
     , mtl
     , raw-strings-qq
     , regex-tdfa
     , split
     , validation
+    , wai
+    , warp
   default-language: Haskell2010
 
 test-suite chess-test
@@ -140,14 +148,18 @@ test-suite chess-test
     , aeson
     , array
     , base >=4.7 && <5
+    , bytestring
     , chess
     , containers
     , distributive
     , hspec
+    , http-types
     , lens
     , mtl
     , raw-strings-qq
     , regex-tdfa
     , split
     , validation
+    , wai
+    , warp
   default-language: Haskell2010
