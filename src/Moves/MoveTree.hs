@@ -2,7 +2,9 @@
 
 module Moves.MoveTree where
 
+import Control.Lens
 import Data.Foldable
+import qualified Data.Map as Map
 
 data MoveTree a
   = EmptyTree
@@ -49,3 +51,19 @@ instance Semigroup a => Semigroup (MoveTree a) where
 
 instance Semigroup a => Monoid (MoveTree a) where
   mempty = EmptyTree
+
+-- makeMove :: Position -> MoveTypes -> Position
+-- makeMove pos mv = 
+--   let (startSq, endSq) = case mv of 
+--                            Mv (Move start end) -> (start, end)
+--       pl = pos^.fen.pieces
+changeKey :: Ord k => k -> k -> Map.Map k a -> Map.Map k a
+changeKey startKey endKey startingMap =
+  let (value, deletionMap) = Map.updateLookupWithKey (\_ _ -> Nothing) startKey startingMap
+      outputMap =
+        case value of
+          Nothing -> deletionMap
+          Just x -> Map.insert endKey x deletionMap
+   in outputMap
+-- updateFen :: MoveTypes -> FenRepresentation -> FenRepresentation
+-- updateFen (Mv (Move startSq endSq)) startingFen = 

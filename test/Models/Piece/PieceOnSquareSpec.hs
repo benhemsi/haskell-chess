@@ -1,5 +1,6 @@
 module Models.Piece.PieceOnSquareSpec where
 
+import qualified Data.Map as Map
 import Models.Board
 import Models.Piece
 import Test.Hspec
@@ -12,12 +13,3 @@ spec = do
     it "not read in anything else" $ do
       let result = readMaybe "Pp" :: Maybe PieceOnSquare
       result `shouldBe` Nothing
-  describe "showList" $ do
-    it "initialPass should work" $ do
-      initialPass [PieceOnSquare (Piece White King) (Square Fa R1)] `shouldBe` 'K' : ['1' | _ <- [1 .. 63]]
-    it "secondaryPass should work" $ do secondaryPass ('K' : ['1' | _ <- [1 .. 63]]) `shouldBe` "8/8/8/8/8/8/8/K7"
-    it "should work" $ do showList [PieceOnSquare (Piece White King) (Square Fa R1)] "" `shouldBe` "8/8/8/8/8/8/8/K7"
-  describe "readList" $ do
-    it "secondaryPass' should work" $ do secondaryPass' "8/8/8/8/8/8/8/K7" `shouldBe` 'K' : ['1' | _ <- [1 .. 63]]
-    it "initialPass' should work" $ do
-      initialPass' ('K' : ['1' | _ <- [1 .. 63]]) `shouldBe` [PieceOnSquare (Piece White King) (Square Fa R1)]

@@ -127,6 +127,7 @@ test-suite chess-test
       Models.Fen.FenParserSpec
       Models.Fen.FenRepresentationSpec
       Models.Piece.PieceColourSpec
+      Models.Piece.PieceListSpec
       Models.Piece.PieceOnSquareSpec
       Models.Piece.PieceSpec
       Models.Piece.PieceTypeSpec

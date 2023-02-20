@@ -79,6 +79,4 @@ startingSquare (Cst (Castle mv _)) = _start mv
 
 attackedSquare :: MoveTypes -> Maybe Square
 attackedSquare (Mv mv) = Just (_end mv)
-attackedSquare (EnP (EnPassent mv _)) = Just (_end mv)
-attackedSquare (PP (PawnPromotion mv)) = Just (_end mv)
-attackedSquare (Cst _) = Nothing
+attackedSquare _ = Nothing

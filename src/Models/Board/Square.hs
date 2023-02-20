@@ -27,6 +27,10 @@ instance Aeson.ToJSON Square
 
 instance Aeson.FromJSON Square
 
+instance Aeson.ToJSONKey Square
+
+instance Aeson.FromJSONKey Square
+
 type Squares = Set.Set Square
 
 instance Show Square where

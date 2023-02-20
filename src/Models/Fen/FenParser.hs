@@ -13,15 +13,10 @@ import Models.Fen.CastlingPrivileges
 import Models.Fen.FenError
 import Models.Fen.FenRepresentation
 import Models.Piece
+import Models.Piece.PieceList
 import Text.RawString.QQ (r)
 import Text.Read
 import Text.Regex.TDFA
-
-vp :: Semigroup e => Validation e a -> Validation e b -> Validation e (a, b)
-Failure e1 `vp` Failure e2 = Failure (e1 <> e2)
-Failure e1 `vp` _ = Failure e1
-_ `vp` Failure e2 = Failure e2
-Success x `vp` Success y = Success (x, y)
 
 parseFen :: String -> Either FenError FenRepresentation
 parseFen s = do
@@ -33,9 +28,8 @@ parseFen s = do
       parsedEnp = parseEnPassentSquare enp
       parsedHalf = parseMoveClock half
       parsedFull = parseMoveClock full
-      combined = parsedPl `vp` parsedN2mv `vp` parsedCst `vp` parsedEnp `vp` parsedHalf `vp` parsedFull
-  (((((vpl, vn2mv), vcst), venp), vhalf), vfull) <- toEither combined
-  return $ FenRepresentation vpl vn2mv vcst venp vhalf vfull
+      combined = FenRepresentation <$> parsedPl <*> parsedN2mv <*> parsedCst <*> parsedEnp <*> parsedHalf <*> parsedFull
+  toEither combined
 
 validateWhiteSpace :: String -> Either FenError [String]
 validateWhiteSpace s =
@@ -65,7 +59,7 @@ parsePieces s =
       validateSquareNumber = toEither . foldr1 (<*) . map checkNumberOfSquares
       validCharacters = Set.fromList "KQRBNPkqrbnp12345678/"
       regex = [r|^(([KQRBNPkqrbnp1-8]{1,8}\/){7})([KQRBNPkqrbnp1-8]{1,8})$|]
-      regexEither :: Either FenError [PieceOnSquare]
+      regexEither :: Either FenError PieceList
       regexEither =
         if s =~ regex
           then Right $ (initialPass' . secondaryPass') s

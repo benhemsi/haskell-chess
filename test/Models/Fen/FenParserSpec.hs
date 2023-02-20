@@ -16,15 +16,15 @@ import Test.Hspec.QuickCheck
 
 spec = do
   describe "parsePieces" $ do
-    prop "correctly parse an arbitrary list" $ \pl ->
+    prop "correctly parse an arbitrary list" $ \pl sq ->
       let deduplicatedPieces :: PieceList
-          deduplicatedPieces = Map.elems $ Map.fromList $ map (\p -> (view square p, p)) pl
+          deduplicatedPieces = Map.fromList $ map (\p -> (sq, p)) pl
           Success actual = (parsePieces . show) deduplicatedPieces
-       in actual `shouldMatchList` deduplicatedPieces
+       in actual `shouldBe` deduplicatedPieces
     it "correctly parse the starting piece list" $ do
       let expected = view pieces startingFenRepresentation
           Success actual = parsePieces "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
-      actual `shouldMatchList` expected
+      actual `shouldBe` expected
     it "return an error if there are the wrong number of rows" $ do
       let expected = Failure (IncorrectRowNumber 2)
           actual = parsePieces "rnbqkbnr/pppppppp"
@@ -90,7 +90,7 @@ spec = do
     it "correctly parse the starting FEN" $ do
       let Right (FenRepresentation pl n2mv cst enp half full) =
             parseFen "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-      pl `shouldMatchList` view pieces startingFenRepresentation
+      pl `shouldBe` view pieces startingFenRepresentation
       n2mv `shouldBe` view nextToMove startingFenRepresentation
       cst `shouldBe` view castlingPrivileges startingFenRepresentation
       enp `shouldBe` view enPassentSquare startingFenRepresentation

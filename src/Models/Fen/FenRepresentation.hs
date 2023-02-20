@@ -5,6 +5,7 @@ module Models.Fen.FenRepresentation where
 
 import Control.Lens
 import Data.Aeson
+import qualified Data.Map as Map
 import GHC.Generics
 import Models.Board
 import Models.Fen.CastlingPrivileges
@@ -53,4 +54,4 @@ instance Arbitrary FenRepresentation where
     enPassent <- arbitrary
     halfMoveClock <- arbitrary
     fullMoveClock <- arbitrary
-    return $ FenRepresentation pieces nextToMove castlingPrivileges enPassent halfMoveClock fullMoveClock
+    return $ FenRepresentation (Map.fromList pieces) nextToMove castlingPrivileges enPassent halfMoveClock fullMoveClock

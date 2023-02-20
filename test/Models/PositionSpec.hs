@@ -1,8 +1,9 @@
 module Models.PositionSpec where
-  
+
 import Control.Lens
-import Models.Position
+import qualified Data.Map as Map
 import Models.Piece
+import Models.Position
 import Test.Hspec
 
 pos = buildBasePosition startingPieceList
@@ -10,16 +11,14 @@ pos = buildBasePosition startingPieceList
 spec = do
   describe "likePieces" $ do
     it "fetch like pieces" $ do
-      view likePieces pos `shouldBe` filter (\p -> view (piece.pieceColour) p == White) startingPieceList
-    it "obey the view set law" $ do
-      view likePieces (set likePieces [] pos) `shouldBe` []
-    it "obey the set view law" $ do
-      set likePieces (view likePieces pos) pos `shouldBe` pos
+      view likePieces pos `shouldBe` Map.filter (\p -> view pieceColour p == White) startingPieceList
+    it "obey the view set law" $ do view likePieces (set likePieces Map.empty pos) `shouldBe` Map.empty
+    it "obey the set view law" $ do set likePieces (view likePieces pos) pos `shouldBe` pos
     it "obey the set set law" $ do
-      set likePieces [] (set likePieces startingPieceList pos) `shouldBe` set likePieces [] pos
+      set likePieces Map.empty (set likePieces startingPieceList pos) `shouldBe` set likePieces Map.empty pos
   describe "oppoPieces" $ do
     it "fetch oppo pieces" $ do
-      view oppoPieces pos `shouldBe` filter (\p -> view (piece.pieceColour) p == Black) startingPieceList
+      view oppoPieces pos `shouldBe` Map.filter (\p -> view pieceColour p == Black) startingPieceList
   describe "switchNextToMove" $ do
     it "work with the lenses" $ do
       view likePieces pos `shouldBe` view oppoPieces (switchNextToMove pos)
