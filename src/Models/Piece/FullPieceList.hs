@@ -11,6 +11,7 @@ import Models.Piece.Piece
 import Models.Piece.PieceColour
 import Models.Piece.PieceList
 import Models.Piece.PieceOnSquare
+import Models.Piece.PieceType
 
 data FullPieceList =
   FullPieceList
@@ -21,12 +22,14 @@ data FullPieceList =
 
 makeLenses ''FullPieceList
 
-buildBaseFullPieceList :: PieceList -> FullPieceList
-buildBaseFullPieceList pl = FullPieceList whitePcs blackPcs (Square Fa R1) (Square Fa R1)
+buildFullPieceList :: PieceList -> FullPieceList
+buildFullPieceList pl = FullPieceList whitePcs blackPcs (whiteKing ^. _1) (blackKing ^. _1)
   where
     filterByColour colour = Map.filter (\p -> view pieceColour p == colour)
     whitePcs = filterByColour White pl
     blackPcs = filterByColour Black pl
+    whiteKing = head $ filter (\p -> p ^. _2 . pieceType == King) (Map.assocs whitePcs)
+    blackKing = head $ filter (\p -> p ^. _2 . pieceType == King) (Map.assocs blackPcs)
 
 whiteOccupiedSquares :: Getter FullPieceList Squares
 whiteOccupiedSquares = whitePieces . occupiedSquares

@@ -5,6 +5,11 @@ module Moves.MoveTree where
 import Control.Lens
 import Data.Foldable
 import qualified Data.Map as Map
+import Models.Board
+import Models.Fen.FenRepresentation
+import Models.Move
+import Models.Piece
+import Models.Position
 
 data MoveTree a
   = EmptyTree
@@ -52,11 +57,44 @@ instance Semigroup a => Semigroup (MoveTree a) where
 instance Semigroup a => Monoid (MoveTree a) where
   mempty = EmptyTree
 
--- makeMove :: Position -> MoveTypes -> Position
--- makeMove pos mv = 
---   let (startSq, endSq) = case mv of 
---                            Mv (Move start end) -> (start, end)
---       pl = pos^.fen.pieces
+makeMove :: MoveTypes -> Position -> Position
+makeMove mv pos =
+  let (startSq, endSq) =
+        case mv of
+          Mv (Move start end) -> (start, end)
+      startingColour = pos ^. fen . nextToMove
+      fullMoveIncrement =
+        case startingColour of
+          Black -> (+ 1)
+          White -> id
+      fullMoveUpdate = over (fen . fullMoveClock) fullMoveIncrement
+      startingPieceType = ((pos ^. likePieces) Map.! startSq) ^. pieceType
+      halfMoveIncrement =
+        if startingPieceType == Pawn || Map.member endSq (pos ^. oppoPieces)
+          then const 0
+          else (+ 1)
+      halfMoveUpdate = over (fen . halfMoveClock) halfMoveIncrement
+      startRankEnum = fromEnum (startSq ^. rank)
+      endRankEnum = fromEnum (endSq ^. rank)
+      enPassentSq =
+        if startingPieceType == Pawn && abs (startRankEnum - endRankEnum) == 2
+          then let enPRank = toEnum ((startRankEnum + endRankEnum) `div` 2)
+                in Just $ Square (startSq ^. file) enPRank
+          else Nothing
+      enPassentUpdate = set (fen . enPassentSquare) enPassentSq
+      pceColourUpdate = over (fen . nextToMove) oppoColour
+      piecesUpdate = over (fen . pieces) (changeKey startSq endSq)
+      likePiecesUpdate = over likePieces (changeKey startSq endSq)
+      oppoPiecesUpdate = over oppoPieces (Map.delete endSq)
+      kingSqUpdate =
+        if startingPieceType == King
+          then set likeKingSquare endSq
+          else id
+      fullUpdate =
+        pceColourUpdate . piecesUpdate . likePiecesUpdate . oppoPiecesUpdate . fullMoveUpdate . halfMoveUpdate .
+        enPassentUpdate
+   in fullUpdate pos
+
 changeKey :: Ord k => k -> k -> Map.Map k a -> Map.Map k a
 changeKey startKey endKey startingMap =
   let (value, deletionMap) = Map.updateLookupWithKey (\_ _ -> Nothing) startKey startingMap
@@ -65,5 +103,3 @@ changeKey startKey endKey startingMap =
           Nothing -> deletionMap
           Just x -> Map.insert endKey x deletionMap
    in outputMap
--- updateFen :: MoveTypes -> FenRepresentation -> FenRepresentation
--- updateFen (Mv (Move startSq endSq)) startingFen = 

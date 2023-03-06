@@ -18,7 +18,7 @@ data Position =
 makeLenses ''Position
 
 buildBasePosition :: PieceList -> Position
-buildBasePosition pl = Position (buildBaseFenRepresentation pl) (buildBaseFullPieceList pl)
+buildBasePosition pl = Position (buildBaseFenRepresentation pl) (buildFullPieceList pl)
 
 likePieces :: Lens' Position PieceList
 likePieces = likeLens (pieceList . whitePieces) (pieceList . blackPieces)

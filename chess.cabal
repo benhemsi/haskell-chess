@@ -133,6 +133,7 @@ test-suite chess-test
       Models.Piece.PieceTypeSpec
       Models.PositionSpec
       Moves.MoveFilteringSpec
+      Moves.MoveTreeSpec
       Piece.BishopSpec
       Piece.KingSpec
       Piece.KnightSpec
