@@ -84,8 +84,8 @@ instance MoveFiltering KingMoves where
                    squaresToCheckIfOccupied = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfOccupied
                    squaresToCheckIfAttacked = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfAttacked
                    cond =
-                     squaresToCheckIfOccupied `Set.disjoint` occupiedSquares &&
-                     squaresToCheckIfAttacked `Set.disjoint` attackedSquares
+                     squaresToCheckIfOccupied `Set.disjoint` occupiedSquares && squaresToCheckIfAttacked `Set.disjoint`
+                     attackedSquares
                 in if cond
                      then toList $ fmap Cst queenSide
                      else []
@@ -133,10 +133,10 @@ isTakingMove pos move = output
         Just sq -> sq `Set.member` view oppoOccupiedSquares pos
         Nothing -> False
 
-getValidMoves :: Lens' Position PieceList -> Position -> Map.Map PieceOnSquare [MoveTypes]
+getValidMoves :: Lens' Position (Map.Map Square PieceType) -> Position -> Map.Map PieceOnSquare [MoveTypes]
 getValidMoves plLens pos =
   Map.fromList
-    [ (PieceOnSquare pce sq, filterMoves moves pos)
+    [ (PieceOnSquare (Piece (pos ^. fen . nextToMove) pce) sq, filterMoves moves pos)
     | (sq, pce) <- Map.assocs $ view plLens pos
     , let moves = emptyBoardMoves pce sq
     ]
@@ -150,8 +150,8 @@ getOppoValidMoves = getValidMoves oppoPieces
 -- This should return all squares which a king can't move to. This includes all squares a night can hop, all sliding moves up to and including the final piece, all king moves, and pawn taking moves.
 getAttackedSquares :: Position -> Moves -> Squares
 getAttackedSquares pos (PawnMoves whiteMoves blackMoves) =
-  Set.fromList $
-  flattenAttackedSquares (map Mv (takes pawnMoves)) ++ map (\(PawnPromotion mv) -> _end mv) (promotionTakes pawnMoves)
+  Set.fromList $ flattenAttackedSquares (map Mv (takes pawnMoves)) ++
+  map (\(PawnPromotion mv) -> _end mv) (promotionTakes pawnMoves)
   where
     pawnMoves =
       case view (fen . nextToMove) pos of

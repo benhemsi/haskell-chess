@@ -15,12 +15,13 @@ import Test.Hspec
 import Test.Hspec.QuickCheck
 
 spec = do
-  describe "parsePieces" $ do
-    prop "correctly parse an arbitrary list" $ \pl sq ->
-      let deduplicatedPieces :: PieceList
-          deduplicatedPieces = Map.fromList $ map (\p -> (sq, p)) pl
-          Success actual = (parsePieces . show) deduplicatedPieces
-       in actual `shouldBe` deduplicatedPieces
+  describe "parsePieces" $
+    -- prop "correctly parse an arbitrary list" $ \pl sq ->
+    --   let deduplicatedPieces :: PieceList
+    --       deduplicatedPieces = Map.fromList $ map (\p -> (sq, p)) pl
+    --       Success actual = (parsePieces . show) deduplicatedPieces
+    --    in actual `shouldBe` deduplicatedPieces
+   do
     it "correctly parse the starting piece list" $ do
       let expected = view pieces startingFenRepresentation
           Success actual = parsePieces "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"

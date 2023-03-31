@@ -1,49 +1,80 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE OverlappingInstances #-}
 
 module Models.Piece.PieceList where
 
 import Control.Lens
+import Data.Aeson
 import Data.List (intercalate, sort, sortBy)
 import Data.List.Split (chunksOf, splitOn)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Debug.Trace (trace)
+import GHC.Generics hiding (R1)
 import Models.Board
 import Models.Piece.Piece
+import Models.Piece.PieceColour
+import Models.Piece.PieceType
 import Test.QuickCheck
 import Text.Read
 
-type PieceList = Map.Map Square Piece
+data PieceList =
+  PieceList
+    { _whitePieces, _blackPieces :: Map.Map Square PieceType
+    , _whiteKingSquare, _blackKingSquare :: Square
+    }
+  deriving (Eq, Generic)
+
+makeLenses ''PieceList
+
+instance ToJSON PieceList
+
+instance FromJSON PieceList
+
+buildPieceList :: Map.Map Square Piece -> PieceList
+buildPieceList pl = PieceList whitePcs blackPcs (whiteKing ^. _1) (blackKing ^. _1)
+  where
+    filterByColour colour = fmap _pieceType . Map.filter ((colour ==) . _pieceColour)
+    whitePcs = filterByColour White pl
+    blackPcs = filterByColour Black pl
+    whiteKing = head $ filter (\p -> p ^. _2 == King) (Map.assocs whitePcs)
+    blackKing = head $ filter (\p -> p ^. _2 == King) (Map.assocs blackPcs)
 
 startingPieceList :: PieceList
-startingPieceList = Map.unions [pawns, knights, bishops, rooks, queens, kings]
+startingPieceList = PieceList whitePcs blackPcs whiteKing blackKing
   where
-    getPieces :: Piece -> Rank -> [File] -> PieceList
+    getPieces :: PieceType -> Rank -> [File] -> Map.Map Square PieceType
     getPieces pce rnk files = Map.fromList [(Square fle rnk, pce) | fle <- files]
-    whitePawns = getPieces whitePawn R2 [Fa .. Fh]
-    blackPawns = getPieces blackPawn R7 [Fa .. Fh]
-    pawns = whitePawns `Map.union` blackPawns
-    whiteKnights = getPieces whiteKnight R1 [Fb, Fg]
-    blackKnights = getPieces blackKnight R8 [Fb, Fg]
-    knights = whiteKnights `Map.union` blackKnights
-    whiteBishops = getPieces whiteBishop R1 [Fc, Ff]
-    blackBishops = getPieces blackBishop R8 [Fc, Ff]
-    bishops = whiteBishops `Map.union` blackBishops
-    whiteRooks = getPieces whiteRook R1 [Fa, Fh]
-    blackRooks = getPieces blackRook R8 [Fa, Fh]
-    rooks = whiteRooks `Map.union` blackRooks
-    whiteQueens = getPieces whiteQueen R1 [Fd]
-    blackQueens = getPieces blackQueen R8 [Fd]
-    queens = whiteQueens `Map.union` blackQueens
-    whiteKings = getPieces whiteKing R1 [Fe]
-    blackKings = getPieces blackKing R8 [Fe]
-    kings = whiteKings `Map.union` blackKings
+    whitePawns = getPieces Pawn R2 [Fa .. Fh]
+    blackPawns = getPieces Pawn R7 [Fa .. Fh]
+    whiteKnights = getPieces Knight R1 [Fb, Fg]
+    blackKnights = getPieces Knight R8 [Fb, Fg]
+    whiteBishops = getPieces Bishop R1 [Fc, Ff]
+    blackBishops = getPieces Bishop R8 [Fc, Ff]
+    whiteRooks = getPieces Rook R1 [Fa, Fh]
+    blackRooks = getPieces Rook R8 [Fa, Fh]
+    whiteQueens = getPieces Queen R1 [Fd]
+    blackQueens = getPieces Queen R8 [Fd]
+    whiteKing = Square Fe R1
+    blackKing = Square Fe R8
+    whitePcs = Map.unions [whitePawns, whiteKnights, whiteBishops, whiteRooks, whiteQueens]
+    blackPcs = Map.unions [blackPawns, blackKnights, blackBishops, blackRooks, blackQueens]
+
+whiteOccupiedSquares :: Getter PieceList Squares
+whiteOccupiedSquares a2fa pl = pl <$ a2fa (Set.insert (pl ^. whiteKingSquare) $ Map.keysSet (pl ^. whitePieces))
+
+blackOccupiedSquares :: Getter PieceList Squares
+blackOccupiedSquares a2fa pl = pl <$ a2fa (Set.insert (pl ^. blackKingSquare) $ Map.keysSet (pl ^. blackPieces))
 
 -- Takes a PieceList and returns a string with '1' for each empty square and show Piece for each occupied square
 initialPass :: PieceList -> String
-initialPass pl = initialPassRec [minBound .. maxBound] (Map.assocs pl)
+initialPass pl = initialPassRec [minBound .. maxBound] (Map.assocs mapOfPieces)
   where
+    kings = Map.fromList [(pl ^. whiteKingSquare, Piece White King), (pl ^. blackKingSquare, Piece Black King)]
+    mapOfPieces =
+      fmap (Piece White) (pl ^. whitePieces) `Map.union` fmap (Piece Black) (pl ^. blackPieces) `Map.union` kings
     initialPassRec (sq:sqs) (p:ps) =
       if fst p == sq
         then show (snd p) ++ initialPassRec sqs ps
@@ -69,11 +100,16 @@ secondaryPass s = intercalate "/" fenRanks
 
 -- Inverse of initialPass
 initialPass' :: String -> PieceList
-initialPass' s = getPieces
+initialPass' s = PieceList whitePcs blackPcs whiteKing blackKing
   where
     zipped :: Map.Map Square Char
     zipped = Map.fromList $ zip [minBound .. maxBound] s
-    getPieces = Map.mapMaybe (\c -> readMaybe [c]) zipped
+    allPieces = Map.mapMaybe (\c -> readMaybe [c]) zipped
+    getPieceType = view pieceType
+    whitePcs = fmap getPieceType $ Map.filter (\p -> p ^. pieceColour == White && p ^. pieceType /= King) allPieces
+    blackPcs = fmap getPieceType $ Map.filter (\p -> p ^. pieceColour == Black && p ^. pieceType /= King) allPieces
+    whiteKing = head $ Map.keys $ Map.filter (Piece White King ==) allPieces
+    blackKing = head $ Map.keys $ Map.filter (Piece Black King ==) allPieces
 
 -- Inverse of secondaryPass
 secondaryPass' :: String -> String
@@ -87,12 +123,13 @@ secondaryPass' s = concat (reverse out)
     explode curr [] = curr
     out = map (reverse . explode []) splitString
 
-occupiedSquares :: Getter PieceList Squares
-occupiedSquares a2fa pl = pl <$ a2fa (Map.keysSet pl)
-
 instance Show PieceList where
   show = secondaryPass . initialPass
--- instance Read PieceList where
---   readPrec = do
---     Ident s <- lexP
---     return $ trace ("hello" ++ s) (initialPass' $ secondaryPass' s)
+
+instance Arbitrary PieceList where
+  arbitrary = do
+    whiteKing <- arbitrary
+    blackKing <- arbitrary
+    whitePcs <- arbitrary
+    blackPcs <- arbitrary
+    return $ PieceList whitePcs blackPcs whiteKing blackKing

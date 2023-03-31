@@ -48,10 +48,10 @@ instance Show FenRepresentation where
 instance Arbitrary FenRepresentation where
   arbitrary = do
     int <- chooseInt (2, 32)
-    pieces <- vector int
+    pl <- arbitrary
     nextToMove <- arbitrary
     castlingPrivileges <- arbitrary
     enPassent <- arbitrary
     halfMoveClock <- arbitrary
     fullMoveClock <- arbitrary
-    return $ FenRepresentation (Map.fromList pieces) nextToMove castlingPrivileges enPassent halfMoveClock fullMoveClock
+    return $ FenRepresentation pl nextToMove castlingPrivileges enPassent halfMoveClock fullMoveClock

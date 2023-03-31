@@ -44,7 +44,6 @@ library
       Models.GameState
       Models.Move
       Models.Piece
-      Models.Piece.FullPieceList
       Models.Piece.Piece
       Models.Piece.PieceColour
       Models.Piece.PieceList

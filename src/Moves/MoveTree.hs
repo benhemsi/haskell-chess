@@ -68,7 +68,7 @@ makeMove mv pos =
           Black -> (+ 1)
           White -> id
       fullMoveUpdate = over (fen . fullMoveClock) fullMoveIncrement
-      startingPieceType = ((pos ^. likePieces) Map.! startSq) ^. pieceType
+      startingPieceType = (pos ^. likePieces) Map.! startSq
       halfMoveIncrement =
         if startingPieceType == Pawn || Map.member endSq (pos ^. oppoPieces)
           then const 0
@@ -83,7 +83,6 @@ makeMove mv pos =
           else Nothing
       enPassentUpdate = set (fen . enPassentSquare) enPassentSq
       pceColourUpdate = over (fen . nextToMove) oppoColour
-      piecesUpdate = over (fen . pieces) (changeKey startSq endSq)
       likePiecesUpdate = over likePieces (changeKey startSq endSq)
       oppoPiecesUpdate = over oppoPieces (Map.delete endSq)
       kingSqUpdate =
@@ -91,15 +90,14 @@ makeMove mv pos =
           then set likeKingSquare endSq
           else id
       fullUpdate =
-        pceColourUpdate . piecesUpdate . likePiecesUpdate . oppoPiecesUpdate . fullMoveUpdate . halfMoveUpdate .
-        enPassentUpdate
+        pceColourUpdate . likePiecesUpdate . oppoPiecesUpdate . fullMoveUpdate . halfMoveUpdate . enPassentUpdate
    in fullUpdate pos
 
 changeKey :: Ord k => k -> k -> Map.Map k a -> Map.Map k a
-changeKey startKey endKey startingMap =
-  let (value, deletionMap) = Map.updateLookupWithKey (\_ _ -> Nothing) startKey startingMap
-      outputMap =
-        case value of
-          Nothing -> deletionMap
-          Just x -> Map.insert endKey x deletionMap
-   in outputMap
+changeKey startKey endKey = Map.mapKeys updateFunction
+  where
+    updateFunction =
+      \k ->
+        if k == startKey
+          then endKey
+          else k
