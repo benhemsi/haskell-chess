@@ -12,6 +12,7 @@ data FenError
   | InvalidCastlingPrivileges String
   | InvalidEnPassentSquare String
   | InvalidMoveClock String
+  | IncorrectNumberOfKings Int Int
   | CombinedFenError (NE.NonEmpty FenError)
   deriving (Eq)
 
@@ -44,4 +45,7 @@ instance Show FenError where
     s ++ "' is invalid."
   show (InvalidMoveClock s) =
     "Invalid move clock. The move clock must be a positive integer. The provided string '" ++ s ++ "' is invalid."
+  show (IncorrectNumberOfKings whiteN blackN) =
+    "Incorrect number of kings. There must be one white king and one black king. There was " ++
+    show whiteN ++ " white kings and " ++ show blackN ++ " black kings."
   show (CombinedFenError errors) = foldl' (\curr err -> curr ++ "\n" ++ show err) "" (toList errors)

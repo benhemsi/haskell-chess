@@ -4,6 +4,7 @@ module Models.Fen.FenParser where
 
 import Data.Char
 import Data.Foldable
+import Data.List (intercalate)
 import qualified Data.List.NonEmpty as NE
 import Data.List.Split
 import qualified Data.Set as Set
@@ -41,12 +42,13 @@ validateWhiteSpace s =
 
 parsePieces :: String -> Validation FenError PieceList
 parsePieces s =
-  let splitString = splitOn "/" s
-      len = length splitString
-      eitherSplitString =
+  let checkNumberOfRows str =
         if len == 8
           then Right splitString
           else Left (IncorrectRowNumber len)
+        where
+          splitString = splitOn "/" str
+          len = length splitString
       convertCharToNum c =
         if isDigit c
           then digitToInt c
@@ -56,18 +58,27 @@ parsePieces s =
          in if squareN == 8
               then Success str
               else Failure $ IncorrectSquaresPerRow squareN
-      validateSquareNumber = toEither . foldr1 (<*) . map checkNumberOfSquares
+      validateSquareNumber = toEither . fmap (intercalate "/") . traverse checkNumberOfSquares
       validCharacters = Set.fromList "KQRBNPkqrbnp12345678/"
       regex = [r|^(([KQRBNPkqrbnp1-8]{1,8}\/){7})([KQRBNPkqrbnp1-8]{1,8})$|]
-      regexEither :: Either FenError PieceList
-      regexEither =
-        if s =~ regex
-          then Right $ (initialPass' . secondaryPass') s
-          else Left (InvalidPieceListCharacters $ filter (`Set.notMember` validCharacters) s)
+      checkRegex str =
+        if str =~ regex
+          then Right str
+          else Left (InvalidPieceListCharacters $ filter (`Set.notMember` validCharacters) str)
+      checkKingNumber str =
+        let whiteKingN = length $ filter (== 'K') str
+            blackKingN = length $ filter (== 'k') str
+            out =
+              if whiteKingN /= 1 || blackKingN /= 1
+                then Left (IncorrectNumberOfKings whiteKingN blackKingN)
+                else Right str
+         in out
       outputEither = do
-        validatedRows <- eitherSplitString
-        _ <- validateSquareNumber validatedRows
-        regexEither
+        validatedRows <- checkNumberOfRows s
+        validatedSquareN <- validateSquareNumber validatedRows
+        validatedRegex <- checkRegex validatedSquareN
+        validatedKingN <- checkKingNumber validatedRegex
+        return $ (initialPass' . secondaryPass') validatedKingN
    in fromEither outputEither
 
 parseUsingRead :: Read a => (String -> FenError) -> String -> Validation FenError a

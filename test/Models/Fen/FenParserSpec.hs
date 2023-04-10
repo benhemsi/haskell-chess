@@ -38,6 +38,10 @@ spec = do
       let expected = Failure (InvalidPieceListCharacters "f")
           actual = parsePieces "fnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"
       actual `shouldBe` expected
+    it "return an error if there is an incorrect king count" $ do
+      let expected = Failure (IncorrectNumberOfKings 2 2)
+          actual = parsePieces "rnbqkbnr/pppppkpp/8/8/8/8/PPPKPPPP/RNBQKBNR"
+      actual `shouldBe` expected
   describe "parseNextToMove" $ do
     it "correctly parse w" $ do
       let actual = parseNextToMove "w"
