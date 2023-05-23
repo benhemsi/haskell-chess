@@ -41,6 +41,8 @@ library
       Chess.GameEnd
       Chess.GameState
       Chess.Move
+      Chess.Moves.MoveFiltering
+      Chess.Moves.MoveTree
       Chess.Piece
       Chess.Piece.Piece
       Chess.Piece.PieceColour
@@ -50,8 +52,6 @@ library
       Chess.Position
       Chess.PositionWithMoves
       Chess.Weighted
-      Moves.MoveFiltering
-      Moves.MoveTree
       Piece.Bishop
       Piece.King
       Piece.Knight
@@ -123,14 +123,14 @@ test-suite chess-test
       Chess.Fen.CastlingPrivilegesSpec
       Chess.Fen.FenParserSpec
       Chess.Fen.FenRepresentationSpec
+      Chess.Moves.MoveFilteringSpec
+      Chess.Moves.MoveTreeSpec
       Chess.Piece.PieceColourSpec
       Chess.Piece.PieceListSpec
       Chess.Piece.PieceOnSquareSpec
       Chess.Piece.PieceSpec
       Chess.Piece.PieceTypeSpec
       Chess.PositionSpec
-      Moves.MoveFilteringSpec
-      Moves.MoveTreeSpec
       Piece.BishopSpec
       Piece.KingSpec
       Piece.KnightSpec

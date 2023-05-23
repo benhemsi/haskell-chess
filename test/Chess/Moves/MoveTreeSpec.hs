@@ -1,4 +1,4 @@
-module Moves.MoveTreeSpec where
+module Chess.Moves.MoveTreeSpec where
 
 import Control.Lens
 import Chess.Board
@@ -6,7 +6,7 @@ import Chess.Fen
 import Chess.Move
 import Chess.Piece
 import Chess.Position
-import Moves.MoveTree
+import Chess.Moves.MoveTree
 import Test.Hspec
 
 spec = do

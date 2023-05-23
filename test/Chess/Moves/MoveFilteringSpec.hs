@@ -1,6 +1,6 @@
 {-# LANGUAGE ParallelListComp #-}
 
-module Moves.MoveFilteringSpec where
+module Chess.Moves.MoveFilteringSpec where
 
 import Control.Lens
 import qualified Data.Map as Map
@@ -10,7 +10,7 @@ import Chess.Fen
 import Chess.Move
 import Chess.Piece
 import Chess.Position
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.Bishop
 import Piece.King
 import Piece.Knight
@@ -54,7 +54,7 @@ spec = do
             [(Mv . Move start) (Square Fa r) | r <- [R2 .. R8]] ++ [(Mv . Move start) (Square f R1) | f <- [Fb .. Fg]]
           position = buildTestPosition $ Map.singleton (Square Fg R1) (Piece Black King)
       filterMoves moves position `shouldMatchList` expected
-  describe "[Moves]" $ do
+  describe "[Chess.Moves]" $ do
     it "correctly filter knight moves excluding like pieces" $ do
       let start = Square Fb R2
           likePieceSq = Square Fc R4

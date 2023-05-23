@@ -3,7 +3,7 @@ module Piece.KingSpec where
 import qualified Data.Set as Set
 import Chess.Board
 import Chess.Move
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.King
 import Test.Hspec
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveTraversable #-}
 
-module Moves.MoveTree where
+module Chess.Moves.MoveTree where
 
 import Control.Lens
 import Data.Foldable

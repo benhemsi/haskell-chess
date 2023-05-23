@@ -2,7 +2,7 @@ module Piece.KnightSpec where
 
 import Chess.Board
 import Chess.Move
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.Knight
 import Test.Hspec
 

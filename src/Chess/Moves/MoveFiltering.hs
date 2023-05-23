@@ -1,18 +1,18 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RankNTypes #-}
 
-module Moves.MoveFiltering where
+module Chess.Moves.MoveFiltering where
 
-import Control.Lens
-import Data.Foldable (toList)
-import qualified Data.Map as Map
-import Data.Maybe (isJust)
-import qualified Data.Set as Set
 import Chess.Board
 import Chess.Fen
 import Chess.Move
 import Chess.Piece
 import Chess.Position
+import Control.Lens
+import Data.Foldable (toList)
+import qualified Data.Map as Map
+import Data.Maybe (isJust)
+import qualified Data.Set as Set
 
 class MoveFiltering mvs where
   filterMoves :: mvs -> Position -> [MoveTypes]

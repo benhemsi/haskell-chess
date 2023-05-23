@@ -2,7 +2,7 @@ module Piece.PawnSpec where
 
 import Chess.Board
 import Chess.Move
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.Pawn
 import Test.Hspec
 

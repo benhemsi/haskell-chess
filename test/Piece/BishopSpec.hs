@@ -4,7 +4,7 @@ module Piece.BishopSpec where
 
 import Chess.Board
 import Chess.Move
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.Bishop
 import Test.Hspec
 

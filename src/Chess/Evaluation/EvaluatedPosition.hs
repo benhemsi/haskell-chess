@@ -14,7 +14,7 @@ import Control.Lens
 import Data.Array
 import qualified Data.Map as Map
 import Data.Maybe (mapMaybe)
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.King
 
 data EvaluatedPosition =

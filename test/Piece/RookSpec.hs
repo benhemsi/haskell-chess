@@ -2,7 +2,7 @@ module Piece.RookSpec where
 
 import Chess.Board
 import Chess.Move
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.Rook
 import Test.Hspec
 

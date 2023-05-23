@@ -2,8 +2,8 @@
 
 module Chess.Move where
 
-import Control.Lens
 import Chess.Board
+import Control.Lens
 
 data Move =
   Move

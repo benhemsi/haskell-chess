@@ -4,7 +4,7 @@ module Piece.QueenSpec where
 
 import Chess.Board
 import Chess.Move
-import Moves.MoveFiltering
+import Chess.Moves.MoveFiltering
 import Piece.Queen
 import Test.Hspec
 
