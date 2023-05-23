@@ -1,9 +1,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module Evaluation.Evaluation where
+module Chess.Evaluation.Evaluation where
 
-import Control.Lens
 import Chess.Piece
+import Control.Lens
 
 data Evaluation =
   Evaluation

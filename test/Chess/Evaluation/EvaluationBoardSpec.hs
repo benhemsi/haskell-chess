@@ -1,10 +1,10 @@
-module Evaluation.EvaluationBoardSpec where
+module Chess.Evaluation.EvaluationBoardSpec where
 
-import qualified Data.Set as Set
-import Evaluation.EvaluationBoard
 import Chess.Board
+import Chess.Evaluation.EvaluationBoard
 import Chess.Piece
 import Chess.Position (Position)
+import qualified Data.Set as Set
 import Test.Hspec
 
 spec = do
@@ -12,7 +12,7 @@ spec = do
       -- let 
       --   whitePiece = PieceOnSquare (Piece White Rook)  (Square Fa R1)
       --   blackPiece = PieceOnSquare (Piece Black Rook) (Square Fh R8)
-      --   evaluationBoard = buildEvaluationBoard (FullPieceList [whitePiece] [blackPiece] Set.empty Set.empty Set.empty Set.empty)
+      --   evaluationBoard = buildChess.EvaluationBoard (FullPieceList [whitePiece] [blackPiece] Set.empty Set.empty Set.empty Set.empty)
       -- getAttackers (Square Fa R8) White evaluationBoard `shouldMatchList` [whitePiece]
       -- getAttackers (Square Fa R8) Black evaluationBoard `shouldMatchList` [blackPiece]
       -- checkIfSquareAttacked (Square Fa R8) Black evaluationBoard `shouldBe` True

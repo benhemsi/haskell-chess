@@ -1,4 +1,4 @@
-module Evaluation.GamePhase where
+module Chess.Evaluation.GamePhase where
 
 data GamePhase
   = Opening

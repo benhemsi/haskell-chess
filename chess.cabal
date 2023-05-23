@@ -29,6 +29,10 @@ library
       Chess.Board.File
       Chess.Board.Rank
       Chess.Board.Square
+      Chess.Evaluation.EvaluatedPosition
+      Chess.Evaluation.Evaluation
+      Chess.Evaluation.EvaluationBoard
+      Chess.Evaluation.GamePhase
       Chess.Fen
       Chess.Fen.CastlingPrivileges
       Chess.Fen.FenError
@@ -46,10 +50,6 @@ library
       Chess.Position
       Chess.PositionWithMoves
       Chess.Weighted
-      Evaluation.EvaluatedPosition
-      Evaluation.Evaluation
-      Evaluation.EvaluationBoard
-      Evaluation.GamePhase
       Moves.MoveFiltering
       Moves.MoveTree
       Piece.Bishop
@@ -119,6 +119,7 @@ test-suite chess-test
       Chess.Board.FileSpec
       Chess.Board.RankSpec
       Chess.Board.SquareSpec
+      Chess.Evaluation.EvaluationBoardSpec
       Chess.Fen.CastlingPrivilegesSpec
       Chess.Fen.FenParserSpec
       Chess.Fen.FenRepresentationSpec
@@ -128,7 +129,6 @@ test-suite chess-test
       Chess.Piece.PieceSpec
       Chess.Piece.PieceTypeSpec
       Chess.PositionSpec
-      Evaluation.EvaluationBoardSpec
       Moves.MoveFilteringSpec
       Moves.MoveTreeSpec
       Piece.BishopSpec
