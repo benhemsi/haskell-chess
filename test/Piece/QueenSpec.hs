@@ -2,8 +2,8 @@
 
 module Piece.QueenSpec where
 
-import Models.Board
-import Models.Move
+import Chess.Board
+import Chess.Move
 import Moves.MoveFiltering
 import Piece.Queen
 import Test.Hspec

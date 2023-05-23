@@ -2,9 +2,9 @@ module Piece.Pawn where
 
 import Control.Lens
 import Data.Foldable (Foldable(toList))
-import Models.Board
-import Models.Move
-import Models.Weighted
+import Chess.Board
+import Chess.Move
+import Chess.Weighted
 
 data Pawn =
   P

@@ -3,8 +3,8 @@
 module Evaluation.EvaluationBoard where
 
 import Control.Lens
-import Models.Board
-import Models.Piece
+import Chess.Board
+import Chess.Piece
 
 data EvaluationSquare =
   EvaluationSquare

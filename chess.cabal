@@ -23,33 +23,33 @@ source-repository head
 
 library
   exposed-modules:
+      Chess.AllMoves
+      Chess.Board
+      Chess.Board.Board
+      Chess.Board.File
+      Chess.Board.Rank
+      Chess.Board.Square
+      Chess.Fen
+      Chess.Fen.CastlingPrivileges
+      Chess.Fen.FenError
+      Chess.Fen.FenParser
+      Chess.Fen.FenRepresentation
+      Chess.GameEnd
+      Chess.GameState
+      Chess.Move
+      Chess.Piece
+      Chess.Piece.Piece
+      Chess.Piece.PieceColour
+      Chess.Piece.PieceList
+      Chess.Piece.PieceOnSquare
+      Chess.Piece.PieceType
+      Chess.Position
+      Chess.PositionWithMoves
+      Chess.Weighted
       Evaluation.EvaluatedPosition
       Evaluation.Evaluation
       Evaluation.EvaluationBoard
       Evaluation.GamePhase
-      Models.AllMoves
-      Models.Board
-      Models.Board.Board
-      Models.Board.File
-      Models.Board.Rank
-      Models.Board.Square
-      Models.Fen
-      Models.Fen.CastlingPrivileges
-      Models.Fen.FenError
-      Models.Fen.FenParser
-      Models.Fen.FenRepresentation
-      Models.GameEnd
-      Models.GameState
-      Models.Move
-      Models.Piece
-      Models.Piece.Piece
-      Models.Piece.PieceColour
-      Models.Piece.PieceList
-      Models.Piece.PieceOnSquare
-      Models.Piece.PieceType
-      Models.Position
-      Models.PositionWithMoves
-      Models.Weighted
       Moves.MoveFiltering
       Moves.MoveTree
       Piece.Bishop
@@ -116,19 +116,19 @@ test-suite chess-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      Chess.Board.FileSpec
+      Chess.Board.RankSpec
+      Chess.Board.SquareSpec
+      Chess.Fen.CastlingPrivilegesSpec
+      Chess.Fen.FenParserSpec
+      Chess.Fen.FenRepresentationSpec
+      Chess.Piece.PieceColourSpec
+      Chess.Piece.PieceListSpec
+      Chess.Piece.PieceOnSquareSpec
+      Chess.Piece.PieceSpec
+      Chess.Piece.PieceTypeSpec
+      Chess.PositionSpec
       Evaluation.EvaluationBoardSpec
-      Models.Board.FileSpec
-      Models.Board.RankSpec
-      Models.Board.SquareSpec
-      Models.Fen.CastlingPrivilegesSpec
-      Models.Fen.FenParserSpec
-      Models.Fen.FenRepresentationSpec
-      Models.Piece.PieceColourSpec
-      Models.Piece.PieceListSpec
-      Models.Piece.PieceOnSquareSpec
-      Models.Piece.PieceSpec
-      Models.Piece.PieceTypeSpec
-      Models.PositionSpec
       Moves.MoveFilteringSpec
       Moves.MoveTreeSpec
       Piece.BishopSpec

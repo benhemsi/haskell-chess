@@ -1,8 +1,8 @@
 module Piece.Knight where
 
-import Models.Board
-import Models.Move
-import Models.Weighted
+import Chess.Board
+import Chess.Move
+import Chess.Weighted
 
 data Knight =
   N

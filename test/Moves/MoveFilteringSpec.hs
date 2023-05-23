@@ -5,11 +5,11 @@ module Moves.MoveFilteringSpec where
 import Control.Lens
 import qualified Data.Map as Map
 import qualified Data.Set as Set
-import Models.Board
-import Models.Fen
-import Models.Move
-import Models.Piece
-import Models.Position
+import Chess.Board
+import Chess.Fen
+import Chess.Move
+import Chess.Piece
+import Chess.Position
 import Moves.MoveFiltering
 import Piece.Bishop
 import Piece.King

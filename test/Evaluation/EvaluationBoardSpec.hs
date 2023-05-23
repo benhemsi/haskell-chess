@@ -2,9 +2,9 @@ module Evaluation.EvaluationBoardSpec where
 
 import qualified Data.Set as Set
 import Evaluation.EvaluationBoard
-import Models.Board
-import Models.Piece
-import Models.Position (Position)
+import Chess.Board
+import Chess.Piece
+import Chess.Position (Position)
 import Test.Hspec
 
 spec = do

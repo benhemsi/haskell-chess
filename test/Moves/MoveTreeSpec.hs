@@ -1,11 +1,11 @@
 module Moves.MoveTreeSpec where
 
 import Control.Lens
-import Models.Board
-import Models.Fen
-import Models.Move
-import Models.Piece
-import Models.Position
+import Chess.Board
+import Chess.Fen
+import Chess.Move
+import Chess.Piece
+import Chess.Position
 import Moves.MoveTree
 import Test.Hspec
 

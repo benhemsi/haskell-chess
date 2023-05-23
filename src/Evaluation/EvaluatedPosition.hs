@@ -9,11 +9,11 @@ import Data.Maybe (mapMaybe)
 import Evaluation.Evaluation
 import Evaluation.EvaluationBoard
 import Evaluation.GamePhase
-import Models.Board
-import Models.Fen
-import Models.Move
-import Models.Piece
-import Models.Position
+import Chess.Board
+import Chess.Fen
+import Chess.Move
+import Chess.Piece
+import Chess.Position
 import Moves.MoveFiltering
 import Piece.King
 

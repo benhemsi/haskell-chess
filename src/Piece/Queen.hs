@@ -1,7 +1,7 @@
 module Piece.Queen where
 
-import Models.Move
-import Models.Weighted
+import Chess.Move
+import Chess.Weighted
 import Piece.Bishop
 import Piece.Rook
 

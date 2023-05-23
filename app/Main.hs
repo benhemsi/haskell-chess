@@ -4,7 +4,7 @@ module Main where
 
 import Data.Aeson
 import Data.ByteString.Lazy.Char8
-import Models.Fen.FenParser
+import Chess.Fen.FenParser
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp (run)

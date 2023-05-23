@@ -8,11 +8,11 @@ import Data.Foldable (toList)
 import qualified Data.Map as Map
 import Data.Maybe (isJust)
 import qualified Data.Set as Set
-import Models.Board
-import Models.Fen
-import Models.Move
-import Models.Piece
-import Models.Position
+import Chess.Board
+import Chess.Fen
+import Chess.Move
+import Chess.Piece
+import Chess.Position
 
 class MoveFiltering mvs where
   filterMoves :: mvs -> Position -> [MoveTypes]

@@ -5,11 +5,11 @@ module Moves.MoveTree where
 import Control.Lens
 import Data.Foldable
 import qualified Data.Map as Map
-import Models.Board
-import Models.Fen.FenRepresentation
-import Models.Move
-import Models.Piece
-import Models.Position
+import Chess.Board
+import Chess.Fen.FenRepresentation
+import Chess.Move
+import Chess.Piece
+import Chess.Position
 
 data MoveTree a
   = EmptyTree
