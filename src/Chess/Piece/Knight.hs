@@ -1,4 +1,4 @@
-module Piece.Knight where
+module Chess.Piece.Knight where
 
 import Chess.Board
 import Chess.Move

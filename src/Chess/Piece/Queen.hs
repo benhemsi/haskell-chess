@@ -1,9 +1,9 @@
-module Piece.Queen where
+module Chess.Piece.Queen where
 
 import Chess.Move
+import Chess.Piece.Bishop
+import Chess.Piece.Rook
 import Chess.Weighted
-import Piece.Bishop
-import Piece.Rook
 
 data Queen =
   Q

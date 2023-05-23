@@ -3,16 +3,16 @@
 
 module Chess.Piece.PieceType where
 
+import Chess.Move
+import Chess.Piece.Bishop
+import Chess.Piece.King
+import Chess.Piece.Knight
+import Chess.Piece.Pawn
+import Chess.Piece.Queen
+import Chess.Piece.Rook
+import Chess.Weighted
 import Data.Aeson
 import GHC.Generics
-import Chess.Move
-import Chess.Weighted
-import Piece.Bishop
-import Piece.King
-import Piece.Knight
-import Piece.Pawn
-import Piece.Queen
-import Piece.Rook
 import Test.QuickCheck
 import Text.Read
 

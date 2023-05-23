@@ -1,10 +1,10 @@
-module Piece.Pawn where
+module Chess.Piece.Pawn where
 
-import Control.Lens
-import Data.Foldable (Foldable(toList))
 import Chess.Board
 import Chess.Move
 import Chess.Weighted
+import Control.Lens
+import Data.Foldable (Foldable(toList))
 
 data Pawn =
   P

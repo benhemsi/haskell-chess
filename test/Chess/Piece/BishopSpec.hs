@@ -1,11 +1,11 @@
 {-# LANGUAGE ParallelListComp #-}
 
-module Piece.BishopSpec where
+module Chess.Piece.BishopSpec where
 
 import Chess.Board
 import Chess.Move
 import Chess.Moves.MoveFiltering
-import Piece.Bishop
+import Chess.Piece.Bishop
 import Test.Hspec
 
 spec = do

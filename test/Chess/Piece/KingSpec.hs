@@ -1,10 +1,10 @@
-module Piece.KingSpec where
+module Chess.Piece.KingSpec where
 
-import qualified Data.Set as Set
 import Chess.Board
 import Chess.Move
 import Chess.Moves.MoveFiltering
-import Piece.King
+import Chess.Piece.King
+import qualified Data.Set as Set
 import Test.Hspec
 
 spec = do

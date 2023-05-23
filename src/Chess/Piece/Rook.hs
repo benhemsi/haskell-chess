@@ -1,4 +1,4 @@
-module Piece.Rook where
+module Chess.Piece.Rook where
 
 import Chess.Board
 import Chess.Move

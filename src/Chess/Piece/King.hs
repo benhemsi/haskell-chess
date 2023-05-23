@@ -1,9 +1,9 @@
-module Piece.King where
+module Chess.Piece.King where
 
-import Control.Lens
 import Chess.Board
 import Chess.Move
 import Chess.Weighted
+import Control.Lens
 
 data King =
   K

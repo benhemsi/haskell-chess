@@ -1,11 +1,11 @@
 {-# LANGUAGE ParallelListComp #-}
 
-module Piece.QueenSpec where
+module Chess.Piece.QueenSpec where
 
 import Chess.Board
 import Chess.Move
 import Chess.Moves.MoveFiltering
-import Piece.Queen
+import Chess.Piece.Queen
 import Test.Hspec
 
 spec = do

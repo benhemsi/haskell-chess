@@ -1,6 +1,6 @@
 {-# LANGUAGE ParallelListComp #-}
 
-module Piece.Bishop where
+module Chess.Piece.Bishop where
 
 import Chess.Board
 import Chess.Move

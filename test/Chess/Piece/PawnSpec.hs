@@ -1,9 +1,9 @@
-module Piece.PawnSpec where
+module Chess.Piece.PawnSpec where
 
 import Chess.Board
 import Chess.Move
 import Chess.Moves.MoveFiltering
-import Piece.Pawn
+import Chess.Piece.Pawn
 import Test.Hspec
 
 spec = do

@@ -8,14 +8,14 @@ import Chess.Evaluation.EvaluationBoard
 import Chess.Evaluation.GamePhase
 import Chess.Fen
 import Chess.Move
+import Chess.Moves.MoveFiltering
 import Chess.Piece
+import Chess.Piece.King
 import Chess.Position
 import Control.Lens
 import Data.Array
 import qualified Data.Map as Map
 import Data.Maybe (mapMaybe)
-import Chess.Moves.MoveFiltering
-import Piece.King
 
 data EvaluatedPosition =
   EvaluatedPosition

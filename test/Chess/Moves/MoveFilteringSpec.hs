@@ -2,20 +2,20 @@
 
 module Chess.Moves.MoveFilteringSpec where
 
-import Control.Lens
-import qualified Data.Map as Map
-import qualified Data.Set as Set
 import Chess.Board
 import Chess.Fen
 import Chess.Move
-import Chess.Piece
-import Chess.Position
 import Chess.Moves.MoveFiltering
-import Piece.Bishop
-import Piece.King
-import Piece.Knight
-import Piece.Pawn
-import Piece.Rook
+import Chess.Piece
+import Chess.Piece.Bishop
+import Chess.Piece.King
+import Chess.Piece.Knight
+import Chess.Piece.Pawn
+import Chess.Piece.Rook
+import Chess.Position
+import Control.Lens
+import qualified Data.Map as Map
+import qualified Data.Set as Set
 import Test.Hspec
 
 buildTestPosition :: Map.Map Square Piece -> Position

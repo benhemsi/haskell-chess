@@ -44,20 +44,20 @@ library
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
       Chess.Piece
+      Chess.Piece.Bishop
+      Chess.Piece.King
+      Chess.Piece.Knight
+      Chess.Piece.Pawn
       Chess.Piece.Piece
       Chess.Piece.PieceColour
       Chess.Piece.PieceList
       Chess.Piece.PieceOnSquare
       Chess.Piece.PieceType
+      Chess.Piece.Queen
+      Chess.Piece.Rook
       Chess.Position
       Chess.PositionWithMoves
       Chess.Weighted
-      Piece.Bishop
-      Piece.King
-      Piece.Knight
-      Piece.Pawn
-      Piece.Queen
-      Piece.Rook
   other-modules:
       Paths_chess
   hs-source-dirs:
@@ -125,18 +125,18 @@ test-suite chess-test
       Chess.Fen.FenRepresentationSpec
       Chess.Moves.MoveFilteringSpec
       Chess.Moves.MoveTreeSpec
+      Chess.Piece.BishopSpec
+      Chess.Piece.KingSpec
+      Chess.Piece.KnightSpec
+      Chess.Piece.PawnSpec
       Chess.Piece.PieceColourSpec
       Chess.Piece.PieceListSpec
       Chess.Piece.PieceOnSquareSpec
       Chess.Piece.PieceSpec
       Chess.Piece.PieceTypeSpec
+      Chess.Piece.QueenSpec
+      Chess.Piece.RookSpec
       Chess.PositionSpec
-      Piece.BishopSpec
-      Piece.KingSpec
-      Piece.KnightSpec
-      Piece.PawnSpec
-      Piece.QueenSpec
-      Piece.RookSpec
       Paths_chess
   hs-source-dirs:
       test
