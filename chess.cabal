@@ -43,6 +43,7 @@ library
       Chess.Move
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
+      Chess.OpeningTable.OpeningTable
       Chess.Piece
       Chess.Piece.Bishop
       Chess.Piece.King
@@ -75,9 +76,11 @@ library
     , http-types
     , lens
     , mtl
+    , persistent
     , raw-strings-qq
     , regex-tdfa
     , split
+    , text
     , validation
     , wai
     , warp
@@ -104,9 +107,11 @@ executable chess-exe
     , http-types
     , lens
     , mtl
+    , persistent
     , raw-strings-qq
     , regex-tdfa
     , split
+    , text
     , validation
     , wai
     , warp
@@ -155,9 +160,11 @@ test-suite chess-test
     , http-types
     , lens
     , mtl
+    , persistent
     , raw-strings-qq
     , regex-tdfa
     , split
+    , text
     , validation
     , wai
     , warp

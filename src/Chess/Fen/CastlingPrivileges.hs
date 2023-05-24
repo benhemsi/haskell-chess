@@ -6,12 +6,12 @@
 {-# HLINT ignore "Use <$>" #-}
 module Chess.Fen.CastlingPrivileges where
 
-import Control.Lens
-import qualified Data.Aeson as Aeson
-import qualified GHC.Generics as Generic
 import Chess.Board
 import Chess.Move
 import Chess.Piece
+import Control.Lens
+import qualified Data.Aeson as Aeson
+import qualified GHC.Generics as Generic
 import Test.QuickCheck
 import Text.RawString.QQ (r)
 import Text.Read

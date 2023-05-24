@@ -3,14 +3,14 @@
 
 module Chess.Board.Square where
 
+import Chess.Board.File
+import Chess.Board.Rank
 import Control.Lens
 import qualified Data.Aeson as Aeson
 import Data.Ix
 import Data.List (elemIndex)
 import qualified Data.Set as Set
 import qualified GHC.Generics as Generic
-import Chess.Board.File
-import Chess.Board.Rank
 import Test.QuickCheck
 import Text.Read
 
