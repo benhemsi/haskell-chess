@@ -19,21 +19,23 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/chess#readme>
 
 dependencies:
-- base >= 4.7 && < 5
-- bytestring
+- adjunctions
 - aeson
 - array
-- adjunctions
+- base >= 4.7 && < 5
+- bytestring
 - containers
 - distributive
 - hspec
 - http-types
 - lens
 - mtl
+- persistent
 - QuickCheck
 - raw-strings-qq
 - regex-tdfa
 - split
+- text
 - validation
 - wai
 - warp
