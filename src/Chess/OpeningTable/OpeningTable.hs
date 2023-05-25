@@ -1,25 +1,28 @@
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE QuasiQuotes #-}
-{-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE ExplicitForAll #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverlappingInstances #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE StandaloneDeriving #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 module Chess.OpeningTable.OpeningTable where
 
 import Chess.Board.Square
-import Chess.Fen.CastlingPrivileges
-import Chess.Piece.PieceColour
+import Chess.Fen
+import Chess.Piece
 import Control.Lens
+import Control.Monad.Trans.Reader
+import Database.Persist as PS
 import qualified Database.Persist.TH as PTH
 import Text.Read
 
@@ -27,7 +30,7 @@ PTH.share
   [PTH.mkPersist PTH.sqlSettings {PTH.mpsGenerateLenses = True}, PTH.mkMigrate "migrateAll"]
   [PTH.persistLowerCase|
   OpeningPosition sql=opening_table
-    pieceList String
+    pieceList PieceList
     nextToMove PieceColour
     whiteKingSideCastle Bool
     whiteQueenSideCastle Bool
@@ -55,6 +58,8 @@ instance {-# OVERLAPPING #-} Read EnPassentSquare where
 
 PTH.derivePersistField "EnPassentSquare"
 
+PTH.derivePersistField "PieceList"
+
 openingPositionCastlingPrivileges :: Lens' OpeningPosition CastlingPrivileges
 openingPositionCastlingPrivileges cp2Fcp openingPos =
   let cp =
@@ -73,3 +78,18 @@ openingPositionCastlingPrivileges cp2Fcp openingPos =
           , (openingPositionBlackQueenSideCastle, d)
           ]
    in setF <$> cp2Fcp cp
+
+fenToOpeningPositionKey :: FenRepresentation -> Key OpeningPosition
+fenToOpeningPositionKey (FenRepresentation pl colour cst enP _ _) =
+  OpeningPositionKey
+    pl
+    colour
+    (cst ^. whiteKingSide)
+    (cst ^. whiteQueenSide)
+    (cst ^. blackKingSide)
+    (cst ^. blackQueenSide)
+    enP
+
+getFenEvaluation fen = do
+  openingPos <- PS.get $ fenToOpeningPositionKey fen
+  return $ _openingPositionEvaluation <$> openingPos

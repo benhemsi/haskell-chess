@@ -36,6 +36,7 @@ dependencies:
 - regex-tdfa
 - split
 - text
+- transformers
 - validation
 - wai
 - warp

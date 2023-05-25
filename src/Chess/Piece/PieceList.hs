@@ -5,6 +5,10 @@
 
 module Chess.Piece.PieceList where
 
+import Chess.Board
+import Chess.Piece.Piece
+import Chess.Piece.PieceColour
+import Chess.Piece.PieceType
 import Control.Lens
 import Data.Aeson
 import Data.List (intercalate, sort, sortBy)
@@ -13,10 +17,6 @@ import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Debug.Trace (trace)
 import GHC.Generics hiding (R1)
-import Chess.Board
-import Chess.Piece.Piece
-import Chess.Piece.PieceColour
-import Chess.Piece.PieceType
 import Test.QuickCheck
 import Text.Read
 
@@ -125,6 +125,14 @@ secondaryPass' s = concat (reverse out)
 
 instance Show PieceList where
   show = secondaryPass . initialPass
+
+instance Read PieceList where
+  readPrec = do
+    Ident s <- lexP
+    return $ initialPass' (secondaryPass' s)
+
+instance Ord PieceList where
+  a <= b = show a <= show b
 
 instance Arbitrary PieceList where
   arbitrary = do
