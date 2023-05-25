@@ -81,6 +81,7 @@ library
     , regex-tdfa
     , split
     , text
+    , transformers
     , validation
     , wai
     , warp
@@ -112,6 +113,7 @@ executable chess-exe
     , regex-tdfa
     , split
     , text
+    , transformers
     , validation
     , wai
     , warp
@@ -165,6 +167,7 @@ test-suite chess-test
     , regex-tdfa
     , split
     , text
+    , transformers
     , validation
     , wai
     , warp
