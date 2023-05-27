@@ -2,14 +2,15 @@
 
 module Chess.Moves.MoveTree where
 
-import Control.Lens
-import Data.Foldable
-import qualified Data.Map as Map
 import Chess.Board
+import Chess.Fen.EnPassentSquare
 import Chess.Fen.FenRepresentation
 import Chess.Move
 import Chess.Piece
 import Chess.Position
+import Control.Lens
+import Data.Foldable
+import qualified Data.Map as Map
 
 data MoveTree a
   = EmptyTree
@@ -76,12 +77,12 @@ makeMove mv pos =
       halfMoveUpdate = over (fen . halfMoveClock) halfMoveIncrement
       startRankEnum = fromEnum (startSq ^. rank)
       endRankEnum = fromEnum (endSq ^. rank)
-      enPassentSq =
+      enPSq =
         if startingPieceType == Pawn && abs (startRankEnum - endRankEnum) == 2
           then let enPRank = toEnum ((startRankEnum + endRankEnum) `div` 2)
                 in Just $ Square (startSq ^. file) enPRank
           else Nothing
-      enPassentUpdate = set (fen . enPassentSquare) enPassentSq
+      enPassentUpdate = set (fen . enPassentSquare . enPassentSq) enPSq
       pceColourUpdate = over (fen . nextToMove) oppoColour
       likePiecesUpdate = over likePieces (changeKey startSq endSq)
       oppoPiecesUpdate = over oppoPieces (Map.delete endSq)

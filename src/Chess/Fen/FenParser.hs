@@ -2,6 +2,13 @@
 
 module Chess.Fen.FenParser where
 
+import Chess.Board
+import Chess.Fen.CastlingPrivileges
+import Chess.Fen.EnPassentSquare
+import Chess.Fen.FenError
+import Chess.Fen.FenRepresentation
+import Chess.Piece
+import Chess.Piece.PieceList
 import Data.Char
 import Data.Foldable
 import Data.List (intercalate)
@@ -9,12 +16,6 @@ import qualified Data.List.NonEmpty as NE
 import Data.List.Split
 import qualified Data.Set as Set
 import Data.Validation
-import Chess.Board
-import Chess.Fen.CastlingPrivileges
-import Chess.Fen.FenError
-import Chess.Fen.FenRepresentation
-import Chess.Piece
-import Chess.Piece.PieceList
 import Text.RawString.QQ (r)
 import Text.Read
 import Text.Regex.TDFA
@@ -93,9 +94,8 @@ parseNextToMove = parseUsingRead InvalidNextToMove
 parseCastlingPrivileges :: String -> Validation FenError CastlingPrivileges
 parseCastlingPrivileges = parseUsingRead InvalidCastlingPrivileges
 
-parseEnPassentSquare :: String -> Validation FenError (Maybe Square)
-parseEnPassentSquare ['-'] = Success Nothing
-parseEnPassentSquare s = fmap Just (parseUsingRead InvalidEnPassentSquare s)
+parseEnPassentSquare :: String -> Validation FenError EnPassentSquare
+parseEnPassentSquare = parseUsingRead InvalidEnPassentSquare
 
 parseMoveClock :: String -> Validation FenError Int
 parseMoveClock s =

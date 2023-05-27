@@ -1,12 +1,12 @@
 module Chess.Moves.MoveTreeSpec where
 
-import Control.Lens
 import Chess.Board
 import Chess.Fen
 import Chess.Move
+import Chess.Moves.MoveTree
 import Chess.Piece
 import Chess.Position
-import Chess.Moves.MoveTree
+import Control.Lens
 import Test.Hspec
 
 spec = do
@@ -16,7 +16,7 @@ spec = do
           expectedUpdates =
             [ over oppoPieces (changeKey (Square Fd R2) (Square Fd R4))
             , set (fen . nextToMove) Black
-            , set (fen . enPassentSquare) (Just $ Square Fd R3)
+            , set (fen . enPassentSquare . enPassentSq) (Just $ Square Fd R3)
             ]
           expected = foldr (\f p -> f p) (buildBasePosition startingPieceList) expectedUpdates
       actual `shouldBe` expected

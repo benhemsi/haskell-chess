@@ -150,7 +150,7 @@ spec = do
           moves = emptyBoardMoves P start
           expected = [EnP $ EnPassent (Move start enPassentSq) (Square Fc R5)]
           position = buildTestPosition $ Map.fromList [(sq, Piece Black Pawn) | sq <- oppoPieceSquares]
-          positionWithEnPassent = set (fen . enPassentSquare) (Just enPassentSq) position
+          positionWithEnPassent = set (fen . enPassentSquare) (EnPSq $ Just enPassentSq) position
       filterMoves moves positionWithEnPassent `shouldMatchList` expected
     it "correctly exclude en passent when FEN representation does not have the en passent square" $ do
       let start = Square Fb R5
@@ -162,10 +162,10 @@ spec = do
     it "correctly exclude en passent when FEN representation has the en passent square but the pawn cannot move there" $ do
       let start = Square Fb R4
           oppoPieceSq = Square Fb R5
-          enPassentSq = Square Fc R6
+          enPSq = Square Fc R6
           moves = emptyBoardMoves P start
           position = buildTestPosition $ Map.singleton oppoPieceSq (Piece Black Pawn)
-          positionWithEnPassent = set (fen . enPassentSquare) (Just enPassentSq) position
+          positionWithEnPassent = set (fen . enPassentSquare . enPassentSq) (Just enPSq) position
       filterMoves moves positionWithEnPassent `shouldSatisfy` null
     it "correctly include promotion moves" $ do
       let start = Square Fb R7

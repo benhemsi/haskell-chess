@@ -52,7 +52,7 @@ instance MoveFiltering PawnMoves where
           _ -> forward1 ++ filterMove f2
       takingMoves = filter (\move -> _end move `Set.member` oppoSquares) tks
       enPassentMove =
-        case view (fen . enPassentSquare) pos of
+        case view (fen . enPassentSquare . enPassentSq) pos of
           Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
           Nothing -> []
       promotionMoves = toList $ fmap (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)

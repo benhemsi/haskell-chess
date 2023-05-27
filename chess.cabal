@@ -35,6 +35,7 @@ library
       Chess.Evaluation.GamePhase
       Chess.Fen
       Chess.Fen.CastlingPrivileges
+      Chess.Fen.EnPassentSquare
       Chess.Fen.FenError
       Chess.Fen.FenParser
       Chess.Fen.FenRepresentation
