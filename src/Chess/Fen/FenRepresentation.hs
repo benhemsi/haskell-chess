@@ -3,13 +3,14 @@
 
 module Chess.Fen.FenRepresentation where
 
+import Chess.Board
+import Chess.Fen.CastlingPrivileges
+import Chess.Fen.EnPassentSquare
+import Chess.Piece
 import Control.Lens
 import Data.Aeson
 import qualified Data.Map as Map
 import GHC.Generics
-import Chess.Board
-import Chess.Fen.CastlingPrivileges
-import Chess.Piece
 import Test.QuickCheck
 
 data FenRepresentation =
@@ -17,7 +18,7 @@ data FenRepresentation =
     { _pieces :: PieceList
     , _nextToMove :: PieceColour
     , _castlingPrivileges :: CastlingPrivileges
-    , _enPassentSquare :: Maybe Square
+    , _enPassentSquare :: EnPassentSquare
     , _halfMoveClock, _fullMoveClock :: Int
     }
   deriving (Eq, Generic)
@@ -29,7 +30,7 @@ instance ToJSON FenRepresentation
 instance FromJSON FenRepresentation
 
 buildBaseFenRepresentation :: PieceList -> FenRepresentation
-buildBaseFenRepresentation pl = FenRepresentation pl White (CastlingPrivileges True True True True) Nothing 0 1
+buildBaseFenRepresentation pl = FenRepresentation pl White (CastlingPrivileges True True True True) (EnPSq Nothing) 0 1
 
 startingFenRepresentation :: FenRepresentation
 startingFenRepresentation = buildBaseFenRepresentation startingPieceList
@@ -39,11 +40,7 @@ instance Show FenRepresentation where
     show pieces ++
     " " ++
     show nextToMove ++
-    " " ++
-    show castlingPrivileges ++ " " ++ showEnPassent enPassent ++ " " ++ show halfMoveClock ++ " " ++ show fullMoveClock
-    where
-      showEnPassent (Just sq) = show sq
-      showEnPassent Nothing = "-"
+    " " ++ show castlingPrivileges ++ " " ++ show enPassent ++ " " ++ show halfMoveClock ++ " " ++ show fullMoveClock
 
 instance Arbitrary FenRepresentation where
   arbitrary = do

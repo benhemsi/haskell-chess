@@ -1,12 +1,10 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DerivingStrategies #-}
-{-# LANGUAGE ExplicitForAll #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverlappingInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE RecordWildCards #-}
@@ -22,8 +20,11 @@ import Chess.Fen
 import Chess.Piece
 import Control.Lens
 import Control.Monad.Trans.Reader
+import qualified Data.Text as T
 import Database.Persist as PS
+import Database.Persist.Sql
 import qualified Database.Persist.TH as PTH
+import GHC.Generics (Generic)
 import Text.Read
 
 PTH.share
@@ -40,23 +41,6 @@ PTH.share
     evaluation Double
     Primary pieceList nextToMove whiteKingSideCastle whiteQueenSideCastle blackKingSideCastle blackQueenSideCastle enPassent
 |]
-
-type EnPassentSquare = Maybe Square
-
-instance {-# OVERLAPPING #-} Show EnPassentSquare where
-  show (Just sq) = show sq
-  show Nothing = "-"
-
-instance {-# OVERLAPPING #-} Read EnPassentSquare where
-  readPrec = do
-    Ident s <- lexP
-    if s == "-"
-      then return Nothing
-      else case readMaybe s of
-             Nothing -> pfail
-             sq -> return sq
-
-PTH.derivePersistField "EnPassentSquare"
 
 PTH.derivePersistField "PieceList"
 

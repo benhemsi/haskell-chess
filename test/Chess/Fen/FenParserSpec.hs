@@ -1,18 +1,20 @@
 module Chess.Fen.FenParserSpec where
 
+import Chess.Board
+import Chess.Fen.CastlingPrivileges
+import Chess.Fen.EnPassentSquare
+import Chess.Fen.FenError
+import Chess.Fen.FenParser
+import Chess.Fen.FenRepresentation
+import Chess.Piece
 import Control.Lens
 import Data.List
 import qualified Data.List.NonEmpty as NE
 import qualified Data.Map as Map
 import Data.Validation
-import Chess.Board
-import Chess.Fen.CastlingPrivileges
-import Chess.Fen.FenError
-import Chess.Fen.FenParser
-import Chess.Fen.FenRepresentation
-import Chess.Piece
 import Test.Hspec
 import Test.Hspec.QuickCheck
+import Text.Read
 
 spec = do
   describe "parsePieces" $
@@ -65,19 +67,22 @@ spec = do
   describe "parseEnPassentSquare" $ do
     it "correctly parse a3" $ do
       let actual = parseEnPassentSquare "a3"
-      actual `shouldBe` Success (Just (Square Fa R3))
+      actual `shouldBe` Success (EnPSq $ Just (Square Fa R3))
     it "correctly parse a6" $ do
       let actual = parseEnPassentSquare "a6"
-      actual `shouldBe` Success (Just (Square Fa R6))
+      actual `shouldBe` Success (EnPSq $ Just (Square Fa R6))
     it "correctly parse h3" $ do
       let actual = parseEnPassentSquare "h3"
-      actual `shouldBe` Success (Just (Square Fh R3))
+      actual `shouldBe` Success (EnPSq $ Just (Square Fh R3))
     it "correctly parse a6" $ do
       let actual = parseEnPassentSquare "h6"
-      actual `shouldBe` Success (Just (Square Fh R6))
+      actual `shouldBe` Success (EnPSq $ Just (Square Fh R6))
+    it "correctly parse -" $ do
+      let actual = readMaybe "-" :: Maybe EnPassentSquare
+      actual `shouldBe` Just (EnPSq Nothing)
     it "correctly parse -" $ do
       let actual = parseEnPassentSquare "-"
-      actual `shouldBe` Success Nothing
+      actual `shouldBe` Success (EnPSq Nothing)
     it "return an error for other strings" $ do
       let actual = parseEnPassentSquare "ah6"
       actual `shouldBe` Failure (InvalidEnPassentSquare "ah6")
