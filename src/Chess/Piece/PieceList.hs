@@ -15,6 +15,7 @@ import Data.List (intercalate, sort, sortBy)
 import Data.List.Split (chunksOf, splitOn)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import qualified Database.Persist.TH as PTH
 import Debug.Trace (trace)
 import GHC.Generics hiding (R1)
 import Test.QuickCheck
@@ -32,6 +33,8 @@ makeLenses ''PieceList
 instance ToJSON PieceList
 
 instance FromJSON PieceList
+
+PTH.derivePersistField "PieceList"
 
 buildPieceList :: Map.Map Square Piece -> PieceList
 buildPieceList pl = PieceList whitePcs blackPcs (whiteKing ^. _1) (blackKing ^. _1)

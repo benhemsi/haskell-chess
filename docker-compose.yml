@@ -14,7 +14,7 @@ services:
     build:
       context: .
       args:
-        BINARY_PATH: .stack-work/install/x86_64-linux-tinfo6/3e8262f63fe32efb8f698f489b0cca67f52ac710d0084caa03b0f552ad65a94a/8.10.7/bin/chess-exe
+        BINARY_PATH: .stack-work/install/x86_64-linux-tinfo6/99b239cf070f65f8fd7a3f80e8b11fa42584c86a5de5391cf1129f46c20794f3/9.2.7/bin/chess-exe
     image: ben/chess
     command: /chess/chess-app/chess-exe
     ports:

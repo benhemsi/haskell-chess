@@ -42,8 +42,6 @@ PTH.share
     Primary pieceList nextToMove whiteKingSideCastle whiteQueenSideCastle blackKingSideCastle blackQueenSideCastle enPassent
 |]
 
-PTH.derivePersistField "PieceList"
-
 openingPositionCastlingPrivileges :: Lens' OpeningPosition CastlingPrivileges
 openingPositionCastlingPrivileges cp2Fcp openingPos =
   let cp =
