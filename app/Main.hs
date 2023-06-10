@@ -2,9 +2,9 @@
 
 module Main where
 
+import Chess.Fen.FenParser
 import Data.Aeson
 import Data.ByteString.Lazy.Char8
-import Chess.Fen.FenParser
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp (run)
