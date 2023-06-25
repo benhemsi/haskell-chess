@@ -41,9 +41,11 @@ instance FromJSON EnPassentSquare
 
 instance PersistField EnPassentSquare where
   toPersistValue (EnPSq (Just sq)) = PersistInt64 (fromIntegral $ fromEnum sq)
-  toPersistValue (EnPSq Nothing) = PersistNull
-  fromPersistValue (PersistInt64 n) = Right (EnPSq $ Just $ toEnum $ fromIntegral n)
-  fromPersistValue PersistNull = Right (EnPSq Nothing)
+  toPersistValue (EnPSq Nothing) = PersistInt64 (-1)
+  fromPersistValue (PersistInt64 n) =
+    if n < 0
+      then Right (EnPSq Nothing)
+      else Right (EnPSq $ Just $ toEnum $ fromIntegral n)
   fromPersistValue x =
     Left $
     "Error when trying to deserialize a EnPassentSquare: expected PersistInt64 or PersistNull, received: " <>

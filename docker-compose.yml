@@ -19,3 +19,4 @@ services:
     command: /chess/chess-app/chess-exe
     ports:
       - "3000:3000"
+    depends_on: [postgres]

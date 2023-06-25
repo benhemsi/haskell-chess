@@ -72,6 +72,22 @@ fenToOpeningPositionKey (FenRepresentation pl colour cst enP _ _) =
     (cst ^. blackQueenSide)
     enP
 
+fenWithEvalToOpeningPosition :: FenRepresentation -> Double -> (Key OpeningPosition, OpeningPosition)
+fenWithEvalToOpeningPosition fen evaluation = (key, openingPos)
+  where
+    key = fenToOpeningPositionKey fen
+    openingPos =
+      OpeningPosition
+        { _openingPositionPieceList = fen ^. pieces
+        , _openingPositionNextToMove = fen ^. nextToMove
+        , _openingPositionWhiteKingSideCastle = fen ^. castlingPrivileges . whiteKingSide
+        , _openingPositionWhiteQueenSideCastle = fen ^. castlingPrivileges . whiteQueenSide
+        , _openingPositionBlackKingSideCastle = fen ^. castlingPrivileges . blackKingSide
+        , _openingPositionBlackQueenSideCastle = fen ^. castlingPrivileges . blackQueenSide
+        , _openingPositionEnPassent = fen ^. enPassentSquare
+        , _openingPositionEvaluation = evaluation
+        }
+
 getFenEvaluation fen = do
   openingPos <- PS.get $ fenToOpeningPositionKey fen
   return $ _openingPositionEvaluation <$> openingPos
