@@ -29,6 +29,7 @@ dependencies:
 - hspec
 - http-types
 - lens
+- monad-logger
 - mtl
 - persistent
 - persistent-postgresql
