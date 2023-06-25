@@ -14,6 +14,7 @@ services:
     build:
       context: .
     image: ben/chess
+    container_name: chess
     command: /chess/chess-app/chess-exe
     ports:
       - "3000:3000"
