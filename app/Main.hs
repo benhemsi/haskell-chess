@@ -39,8 +39,6 @@ application req respond =
 
 main = do
   threadDelay 1000000
-  putStrLn "Adding table"
   runAction connString (runMigration migrateAll)
   let (key, openingPos) = fenWithEvalToOpeningPosition startingFenRepresentation 0.0
-  putStrLn "Inserting row"
   runAction connString (insertKey key openingPos)
