@@ -45,6 +45,7 @@ library
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
       Chess.OpeningTable.OpeningTable
+      Chess.OpeningTable.OpeningTableApi
       Chess.OpeningTable.OpeningTablePostgres
       Chess.Piece
       Chess.Piece.Bishop
@@ -83,6 +84,9 @@ library
     , persistent-postgresql
     , raw-strings-qq
     , regex-tdfa
+    , servant
+    , servant-client
+    , servant-server
     , split
     , text
     , transformers
@@ -117,6 +121,9 @@ executable chess-exe
     , persistent-postgresql
     , raw-strings-qq
     , regex-tdfa
+    , servant
+    , servant-client
+    , servant-server
     , split
     , text
     , transformers
@@ -173,6 +180,9 @@ test-suite chess-test
     , persistent-postgresql
     , raw-strings-qq
     , regex-tdfa
+    , servant
+    , servant-client
+    , servant-server
     , split
     , text
     , transformers
