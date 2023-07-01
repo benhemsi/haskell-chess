@@ -36,6 +36,9 @@ dependencies:
 - QuickCheck
 - raw-strings-qq
 - regex-tdfa
+- servant
+- servant-client
+- servant-server
 - split
 - text
 - transformers
