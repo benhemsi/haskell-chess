@@ -1,10 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Main where
+module Chess.OpeningTable.OpeningTableApp where
 
 import Chess.Fen (startingFenRepresentation)
 import Chess.Fen.FenParser
 import Chess.OpeningTable.OpeningTable
+import Chess.OpeningTable.OpeningTableApi
 import Control.Concurrent (threadDelay)
 import Control.Monad.Logger
 import Control.Monad.Reader (runReaderT)
@@ -42,3 +43,4 @@ main = do
   runAction connString (runMigration migrateAll)
   let (key, openingPos) = fenWithEvalToOpeningPosition startingFenRepresentation 0.0
   runAction connString (insertKey key openingPos)
+  run 3000 openingTableApp

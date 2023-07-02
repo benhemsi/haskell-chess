@@ -10,12 +10,23 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5432:5432"
+  opening-table:
+    build: 
+      context: .
+      dockerfile: ./app/Chess/OpeningTable/Dockerfile
+    image: ben/opening-table
+    container_name: opening-table
+    command: /chess/chess-app/opening-table-exe
+    ports:
+      - "3000:3000"
+    depends_on: [postgres]
   chess:
     build:
       context: .
+      dockerfile: ./app/Chess/Dockerfile
     image: ben/chess
     container_name: chess
     command: /chess/chess-app/chess-exe
     ports:
-      - "3000:3000"
-    depends_on: [postgres]
+      - "3001:3001"
+    depends_on: [postgres, opening-table]
