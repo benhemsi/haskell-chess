@@ -76,6 +76,7 @@ library
     , containers
     , distributive
     , hspec
+    , http-client
     , http-types
     , lens
     , monad-logger
@@ -96,12 +97,13 @@ library
   default-language: Haskell2010
 
 executable chess-exe
-  main-is: Main.hs
+  main-is: Chess/ChessApp.hs
   other-modules:
+      Chess.OpeningTable.OpeningTableApp
       Paths_chess
   hs-source-dirs:
       app
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Chess.ChessApp
   build-depends:
       QuickCheck
     , adjunctions
@@ -113,6 +115,46 @@ executable chess-exe
     , containers
     , distributive
     , hspec
+    , http-client
+    , http-types
+    , lens
+    , monad-logger
+    , mtl
+    , persistent
+    , persistent-postgresql
+    , raw-strings-qq
+    , regex-tdfa
+    , servant
+    , servant-client
+    , servant-server
+    , split
+    , text
+    , transformers
+    , validation
+    , wai
+    , warp
+  default-language: Haskell2010
+
+executable opening-table-exe
+  main-is: Chess/OpeningTable/OpeningTableApp.hs
+  other-modules:
+      Chess.ChessApp
+      Paths_chess
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -main-is Chess.OpeningTable.OpeningTableApp
+  build-depends:
+      QuickCheck
+    , adjunctions
+    , aeson
+    , array
+    , base >=4.7 && <5
+    , bytestring
+    , chess
+    , containers
+    , distributive
+    , hspec
+    , http-client
     , http-types
     , lens
     , monad-logger
@@ -172,6 +214,7 @@ test-suite chess-test
     , containers
     , distributive
     , hspec
+    , http-client
     , http-types
     , lens
     , monad-logger
