@@ -6,24 +6,18 @@ import Chess.Fen (startingFenRepresentation)
 import Chess.Fen.FenParser
 import Chess.OpeningTable.OpeningTable
 import Chess.OpeningTable.OpeningTableApi
+import Chess.OpeningTable.OpeningTablePostgres
 import Control.Concurrent (threadDelay)
 import Control.Monad.Logger
 import Control.Monad.Reader (runReaderT)
 import Data.Aeson
 import Data.ByteString.Lazy.Char8 hiding (putStrLn)
 import Database.Persist (insertKey)
-import Database.Persist.Postgresql (ConnectionString, SqlPersistT, runMigration, withPostgresqlConn)
+import Database.Persist.Postgresql as PS (get, runMigration)
 import Network.HTTP.Types
 import Network.Wai
 import Network.Wai.Handler.Warp (run)
 import System.Exit
-
-connString :: ConnectionString
-connString = "host=postgres port=5432 user=postgres dbname=postgres password=postgres"
-
-runAction :: ConnectionString -> SqlPersistT (LoggingT IO) a -> IO a
-runAction connectionString action =
-  runStdoutLoggingT $ withPostgresqlConn connectionString $ \backend -> runReaderT action backend
 
 application req respond =
   if requestMethod req == methodPut
@@ -43,4 +37,6 @@ main = do
   runAction connString (runMigration migrateAll)
   let (key, openingPos) = fenWithEvalToOpeningPosition startingFenRepresentation 0.0
   runAction connString (insertKey key openingPos)
+  eval <- runAction connString (PS.get $ fenToOpeningPositionKey startingFenRepresentation)
+  print $ fmap _openingPositionEvaluation eval
   run 3000 openingTableApp
