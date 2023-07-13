@@ -21,7 +21,7 @@ data FenRepresentation =
     , _enPassentSquare :: EnPassentSquare
     , _halfMoveClock, _fullMoveClock :: Int
     }
-  deriving (Eq, Generic)
+  deriving (Eq, Generic, Ord)
 
 makeLenses ''FenRepresentation
 
