@@ -61,16 +61,16 @@ executables:
     - -main-is Chess.OpeningTable.OpeningTableApp
     dependencies:
     - chess
-  chess-exe:
-    main:                Chess/ChessApp.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    - -main-is Chess.ChessApp
-    dependencies:
-    - chess
+  # chess-exe:
+  #   main:                Chess/ChessApp.hs
+  #   source-dirs:         app
+  #   ghc-options:
+  #   - -threaded
+  #   - -rtsopts
+  #   - -with-rtsopts=-N
+  #   - -main-is Chess.ChessApp
+  #   dependencies:
+  #   - chess
 
 tests:
   chess-test:
