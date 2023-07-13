@@ -21,7 +21,7 @@ data CastlingPrivileges =
   CastlingPrivileges
     { _whiteKingSide, _whiteQueenSide, _blackKingSide, _blackQueenSide :: Bool
     }
-  deriving (Eq, Generic.Generic)
+  deriving (Eq, Generic.Generic, Ord)
 
 makeLenses ''CastlingPrivileges
 

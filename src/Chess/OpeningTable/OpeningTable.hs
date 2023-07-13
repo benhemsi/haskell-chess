@@ -42,25 +42,6 @@ PTH.share
     Primary pieceList nextToMove whiteKingSideCastle whiteQueenSideCastle blackKingSideCastle blackQueenSideCastle enPassent
 |]
 
-openingPositionCastlingPrivileges :: Lens' OpeningPosition CastlingPrivileges
-openingPositionCastlingPrivileges cp2Fcp openingPos =
-  let cp =
-        CastlingPrivileges
-          (openingPos ^. openingPositionWhiteKingSideCastle)
-          (openingPos ^. openingPositionWhiteQueenSideCastle)
-          (openingPos ^. openingPositionBlackKingSideCastle)
-          (openingPos ^. openingPositionBlackQueenSideCastle)
-      setF (CastlingPrivileges a b c d) =
-        foldr
-          (\(lens, value) curr -> set lens value curr)
-          openingPos
-          [ (openingPositionWhiteKingSideCastle, a)
-          , (openingPositionWhiteQueenSideCastle, b)
-          , (openingPositionBlackKingSideCastle, c)
-          , (openingPositionBlackQueenSideCastle, d)
-          ]
-   in setF <$> cp2Fcp cp
-
 fenToOpeningPositionKey :: FenRepresentation -> Key OpeningPosition
 fenToOpeningPositionKey (FenRepresentation pl colour cst enP _ _) =
   OpeningPositionKey
