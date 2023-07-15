@@ -46,6 +46,7 @@ dependencies:
 - validation
 - wai
 - warp
+- yaml
 
 library:
   source-dirs: src
