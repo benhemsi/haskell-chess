@@ -140,6 +140,7 @@ test-suite chess-test
       Chess.Board.FileSpec
       Chess.Board.RankSpec
       Chess.Board.SquareSpec
+      Chess.Evaluation.EvaluationServiceSpec
       Chess.Fen.CastlingPrivilegesSpec
       Chess.Fen.FenParserSpec
       Chess.Fen.FenRepresentationSpec
