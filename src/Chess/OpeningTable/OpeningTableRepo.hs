@@ -11,9 +11,6 @@ import Database.Persist.Postgresql
 class OpeningTableRepo m where
   lookupFen :: FenRepresentation -> m (Maybe Double)
 
-instance OpeningTableRepo MockOpeningTable where
-  lookupFen fen = MockOpeningTable ask
-
 instance OpeningTableRepo PersistSqlOpeningTable where
   lookupFen fen = PersistSqlOpeningTable output
     where
@@ -25,11 +22,6 @@ instance OpeningTableRepo IO where
   lookupFen fen = runAction connString output
     where
       PersistSqlOpeningTable output = lookupFen fen
-
-newtype MockOpeningTable a =
-  MockOpeningTable
-    { unMock :: Reader (Maybe Double) a
-    }
 
 newtype PersistSqlOpeningTable a =
   PersistSqlOpeningTable

@@ -46,6 +46,7 @@ library
       Chess.OpeningTable.OpeningTableApi
       Chess.OpeningTable.OpeningTablePostgres
       Chess.OpeningTable.OpeningTableRepo
+      Chess.OpeningTable.OpeningTableSettings
       Chess.Piece
       Chess.Piece.Bishop
       Chess.Piece.King
@@ -93,6 +94,7 @@ library
     , validation
     , wai
     , warp
+    , yaml
   default-language: Haskell2010
 
 executable opening-table-exe
@@ -131,6 +133,7 @@ executable opening-table-exe
     , validation
     , wai
     , warp
+    , yaml
   default-language: Haskell2010
 
 test-suite chess-test
@@ -191,4 +194,5 @@ test-suite chess-test
     , validation
     , wai
     , warp
+    , yaml
   default-language: Haskell2010
