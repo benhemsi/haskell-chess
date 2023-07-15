@@ -5,7 +5,6 @@ import Chess.OpeningTable.OpeningTable
 import Chess.OpeningTable.OpeningTablePostgres (connString, runAction)
 import Control.Monad.Logger
 import Control.Monad.Reader
-import qualified Data.Map as Map
 import Database.Persist.Class as PS
 import Database.Persist.Postgresql
 
@@ -13,7 +12,7 @@ class OpeningTableRepo m where
   lookupFen :: FenRepresentation -> m (Maybe Double)
 
 instance OpeningTableRepo MockOpeningTable where
-  lookupFen fen = MockOpeningTable (asks (Map.lookup fen))
+  lookupFen fen = MockOpeningTable ask
 
 instance OpeningTableRepo PersistSqlOpeningTable where
   lookupFen fen = PersistSqlOpeningTable output
@@ -29,7 +28,7 @@ instance OpeningTableRepo IO where
 
 newtype MockOpeningTable a =
   MockOpeningTable
-    { unMock :: Reader (Map.Map FenRepresentation Double) a
+    { unMock :: Reader (Maybe Double) a
     }
 
 newtype PersistSqlOpeningTable a =
