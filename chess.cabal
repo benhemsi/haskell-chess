@@ -29,10 +29,8 @@ library
       Chess.Board.File
       Chess.Board.Rank
       Chess.Board.Square
-      Chess.Evaluation.EvaluatedPosition
-      Chess.Evaluation.Evaluation
-      Chess.Evaluation.EvaluationBoard
-      Chess.Evaluation.GamePhase
+      Chess.Evaluation.EvaluationApi
+      Chess.Evaluation.EvaluationService
       Chess.Fen
       Chess.Fen.CastlingPrivileges
       Chess.Fen.EnPassentSquare
@@ -142,7 +140,6 @@ test-suite chess-test
       Chess.Board.FileSpec
       Chess.Board.RankSpec
       Chess.Board.SquareSpec
-      Chess.Evaluation.EvaluationBoardSpec
       Chess.Fen.CastlingPrivilegesSpec
       Chess.Fen.FenParserSpec
       Chess.Fen.FenRepresentationSpec
