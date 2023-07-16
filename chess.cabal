@@ -43,6 +43,7 @@ library
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
       Chess.OpeningTable.OpeningTableAccessor
+      Chess.OpeningTable.OpeningTableBuilder
       Chess.OpeningTable.OpeningTableInserter
       Chess.OpeningTable.OpeningTablePersist
       Chess.OpeningTable.OpeningTableReader
