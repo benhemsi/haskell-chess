@@ -1,0 +1,6 @@
+host: opening-table
+port: 5432
+user: postgres
+dbname: postgres
+password: postgres
+
