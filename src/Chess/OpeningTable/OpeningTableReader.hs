@@ -17,7 +17,6 @@ liftPersistSql :: PersistSqlOpeningTable a -> OpeningTableReader a
 liftPersistSql action = OpeningTableReader output
   where
     output = do
-      settings <- ask
-      let connString = getConnectionString settings
-          ioOutput = runAction connString action
+      connString <- asks getConnectionString
+      let ioOutput = runAction connString action
       lift ioOutput

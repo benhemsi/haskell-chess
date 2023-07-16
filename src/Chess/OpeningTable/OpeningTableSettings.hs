@@ -35,9 +35,3 @@ getConnectionString settings = BS.pack connString
       ]
     connString :: String
     connString = fold connStringParts
-
-readSettingsYaml :: FilePath -> IO (Either Y.ParseException OpeningTableSettings)
-readSettingsYaml filePath = do
-  content <- BS.readFile filePath
-  let parsedContent = Y.decodeEither' content :: Either Y.ParseException OpeningTableSettings
-  return parsedContent
