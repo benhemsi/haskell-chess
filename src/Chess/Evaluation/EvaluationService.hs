@@ -1,11 +1,11 @@
 module Chess.Evaluation.EvaluationService where
 
 import Chess.Fen
+import Chess.OpeningTable.OpeningTableAccessor
 
-class (Monad m) =>
+class (Monad m, OpeningTableAccessor m) =>
       EvaluationService m
   where
-  lookupFenInOpeningTable :: FenRepresentation -> m (Maybe Double)
   calculateFenEvaluation :: FenRepresentation -> m Double
   evaluateFen :: FenRepresentation -> m Double
   evaluateFen fen = do
