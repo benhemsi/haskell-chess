@@ -4,9 +4,6 @@ module Chess.OpeningTable.OpeningTableApp where
 
 import Chess.Fen (startingFenRepresentation)
 import Chess.Fen.FenParser
-import Chess.OpeningTable.OpeningTable
-import Chess.OpeningTable.OpeningTableApi
-import Chess.OpeningTable.OpeningTablePostgres
 import Control.Concurrent (threadDelay)
 import Control.Monad.Logger
 import Control.Monad.Reader (runReaderT)
@@ -32,11 +29,10 @@ application req respond =
           respond $ responseLBS status400 [("Content-Type", "text/plain")] (pack (show error))
     else respond $ responseLBS status200 [("Content-Type", "text/plain")] "FEN Parser active"
 
-main = do
-  threadDelay 1000000
-  runAction connString (runMigration migrateAll)
-  let (key, openingPos) = fenWithEvalToOpeningPosition startingFenRepresentation 0.0
-  runAction connString (insertKey key openingPos)
-  eval <- runAction connString (PS.get $ fenToOpeningPositionKey startingFenRepresentation)
-  print $ fmap _openingPositionEvaluation eval
-  run 3000 openingTableApp
+main = run 3000 application
+-- threadDelay 1000000
+-- runAction connString (runMigration migrateAll)
+-- let (key, openingPos) = fenWithEvalToOpeningPosition startingFenRepresentation 0.0
+-- runAction connString (insertKey key openingPos)
+-- eval <- runAction connString (PS.get $ fenToOpeningPositionKey startingFenRepresentation)
+-- print $ fmap _openingPositionEvaluation eval

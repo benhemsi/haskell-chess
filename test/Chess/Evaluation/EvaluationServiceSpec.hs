@@ -4,6 +4,7 @@ module Chess.Evaluation.EvaluationServiceSpec where
 
 import Chess.Evaluation.EvaluationService
 import Chess.Fen (startingFenRepresentation)
+import Chess.OpeningTable.OpeningTableAccessor
 import Control.Monad.Reader
 import Test.Hspec
 
@@ -19,8 +20,10 @@ newtype MockEvaluationService a =
     }
   deriving (Functor, Applicative, Monad)
 
-instance EvaluationService MockEvaluationService where
+instance OpeningTableAccessor MockEvaluationService where
   lookupFenInOpeningTable fen = MockEvaluationService (asks openingTableEvaluation)
+
+instance EvaluationService MockEvaluationService where
   calculateFenEvaluation fen = MockEvaluationService (asks fenEvaluation)
 
 runMock :: MockEvaluationExpectations -> Double

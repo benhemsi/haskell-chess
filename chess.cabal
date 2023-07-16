@@ -42,11 +42,12 @@ library
       Chess.Move
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
-      Chess.OpeningTable.OpeningTable
-      Chess.OpeningTable.OpeningTableApi
-      Chess.OpeningTable.OpeningTablePostgres
-      Chess.OpeningTable.OpeningTableRepo
+      Chess.OpeningTable.OpeningTableAccessor
+      Chess.OpeningTable.OpeningTableInserter
+      Chess.OpeningTable.OpeningTablePersist
+      Chess.OpeningTable.OpeningTableReader
       Chess.OpeningTable.OpeningTableSettings
+      Chess.OpeningTable.PersistSqlOpeningTable
       Chess.Piece
       Chess.Piece.Bishop
       Chess.Piece.King

@@ -13,7 +13,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Chess.OpeningTable.OpeningTable where
+module Chess.OpeningTable.OpeningTablePersist where
 
 import Chess.Board.Square
 import Chess.Fen
@@ -68,7 +68,3 @@ fenWithEvalToOpeningPosition fen evaluation = (key, openingPos)
         , _openingPositionEnPassent = fen ^. enPassentSquare
         , _openingPositionEvaluation = evaluation
         }
-
-getFenEvaluation fen = do
-  openingPos <- PS.get $ fenToOpeningPositionKey fen
-  return $ _openingPositionEvaluation <$> openingPos

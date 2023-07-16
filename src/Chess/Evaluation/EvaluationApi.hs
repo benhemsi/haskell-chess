@@ -9,8 +9,6 @@ module Chess.Evaluation.EvaluationApi where
 
 import Chess.Fen (FenRepresentation)
 import Chess.Fen.FenParser (parseFen)
-import Chess.OpeningTable.OpeningTable (getFenEvaluation)
-import Chess.OpeningTable.OpeningTablePostgres
 import Control.Arrow (left)
 import Control.Monad.Trans.Except
 import Data.ByteString.Lazy.Char8 (pack, unpack)
