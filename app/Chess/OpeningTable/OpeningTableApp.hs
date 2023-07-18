@@ -26,5 +26,6 @@ application req respond =
     else respond $ responseLBS status200 [("Content-Type", "text/plain")] "FEN Parser active"
 
 main = do
-  threadDelay 1000000
-  buildOpeningTable "/chess/config/opening-table-conf.yaml"
+  threadDelay (5 * 10 ^ 6)
+  output <- buildOpeningTable "./config/opening-table-config.yaml"
+  print output

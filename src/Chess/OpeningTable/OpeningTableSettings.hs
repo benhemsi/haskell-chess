@@ -14,7 +14,7 @@ data OpeningTableSettings =
     { host, user, dbname, password :: String
     , port :: Int
     }
-  deriving (Generic)
+  deriving (Show, Generic)
 
 instance FromJSON OpeningTableSettings
 
