@@ -6,7 +6,7 @@ import Chess.OpeningTable.OpeningTablePersist
 import Chess.OpeningTable.OpeningTableReader
 import Chess.OpeningTable.OpeningTableSettings
 import Control.Monad.Except
-import Control.Monad.Reader (ReaderT(runReaderT))
+import Control.Monad.Reader
 import qualified Data.Yaml as Y
 
 class OpeningTableBuilder m where
@@ -24,5 +24,5 @@ instance OpeningTableBuilder IO where
         let sqlToRun = do
               _ <- migrateDb
               insertFenWithEvaluation startingFenRepresentation 0.0
-        _ <- runReaderT (unRead sqlToRun) settings
+        _ <- runReaderT (getOpeningTableReader sqlToRun) settings
         return settings

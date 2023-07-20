@@ -30,6 +30,8 @@ library
       Chess.Board.Rank
       Chess.Board.Square
       Chess.Evaluation.EvaluationApi
+      Chess.Evaluation.EvaluationConfig
+      Chess.Evaluation.EvaluationReader
       Chess.Evaluation.EvaluationService
       Chess.Fen
       Chess.Fen.CastlingPrivileges
