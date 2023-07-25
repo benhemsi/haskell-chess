@@ -32,7 +32,7 @@ library
       Chess.Evaluation.EvaluationApi
       Chess.Evaluation.EvaluationConfig
       Chess.Evaluation.EvaluationReader
-      Chess.Evaluation.EvaluationService
+      Chess.Evaluation.FenEvaluationCalculator
       Chess.Fen
       Chess.Fen.CastlingPrivileges
       Chess.Fen.EnPassentSquare
@@ -147,7 +147,7 @@ test-suite chess-test
       Chess.Board.FileSpec
       Chess.Board.RankSpec
       Chess.Board.SquareSpec
-      Chess.Evaluation.EvaluationServiceSpec
+      Chess.Evaluation.FenEvaluationCalculatorSpec
       Chess.Fen.CastlingPrivilegesSpec
       Chess.Fen.FenParserSpec
       Chess.Fen.FenRepresentationSpec
