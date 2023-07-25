@@ -3,7 +3,7 @@
 module Chess.Evaluation.EvaluationReader where
 
 import Chess.Evaluation.EvaluationConfig
-import Chess.Evaluation.EvaluationService
+import Chess.Evaluation.FenEvaluationCalculator
 import Chess.Fen
 import Chess.OpeningTable.OpeningTableAccessor
 import Chess.OpeningTable.OpeningTableReader
@@ -26,7 +26,7 @@ instance OpeningTableAccessor EvaluationReader where
         let lookedUpValue = runReaderT (getOpeningTableReader (lookupFenInOpeningTable fen)) openingTableConf
         lift lookedUpValue
 
-instance EvaluationService EvaluationReader where
+instance FenEvaluationCalculator EvaluationReader where
   calculateFenEvaluation fen = EvaluationReader evaluation
     where
       evaluation = do

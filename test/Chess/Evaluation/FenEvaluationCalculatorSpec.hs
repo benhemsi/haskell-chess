@@ -1,8 +1,8 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Chess.Evaluation.EvaluationServiceSpec where
+module Chess.Evaluation.FenEvaluationCalculatorSpec where
 
-import Chess.Evaluation.EvaluationService
+import Chess.Evaluation.FenEvaluationCalculator
 import Chess.Fen (startingFenRepresentation)
 import Chess.OpeningTable.OpeningTableAccessor
 import Control.Monad.Reader
@@ -14,17 +14,17 @@ data MockEvaluationExpectations =
     , fenEvaluation :: Double
     }
 
-newtype MockEvaluationService a =
-  MockEvaluationService
+newtype MockFenEvaluationCalculator a =
+  MockFenEvaluationCalculator
     { unMock :: Reader MockEvaluationExpectations a
     }
   deriving (Functor, Applicative, Monad)
 
-instance OpeningTableAccessor MockEvaluationService where
-  lookupFenInOpeningTable fen = MockEvaluationService (asks openingTableEvaluation)
+instance OpeningTableAccessor MockFenEvaluationCalculator where
+  lookupFenInOpeningTable fen = MockFenEvaluationCalculator (asks openingTableEvaluation)
 
-instance EvaluationService MockEvaluationService where
-  calculateFenEvaluation fen = MockEvaluationService (asks fenEvaluation)
+instance FenEvaluationCalculator MockFenEvaluationCalculator where
+  calculateFenEvaluation fen = MockFenEvaluationCalculator (asks fenEvaluation)
 
 runMock :: MockEvaluationExpectations -> Double
 runMock = runReader (unMock readerToRun)
@@ -32,7 +32,7 @@ runMock = runReader (unMock readerToRun)
     readerToRun = evaluateFen startingFenRepresentation
 
 spec = do
-  describe "EvaluationService" $ do
+  describe "evaluateFen" $ do
     it "query the opening table before evaluating the position" $ do
       let expectations = MockEvaluationExpectations (Just 1.0) 2.0
           actual = runMock expectations
