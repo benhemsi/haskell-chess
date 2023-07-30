@@ -9,20 +9,13 @@ import Control.Monad.Except
 import Control.Monad.Reader
 import qualified Data.Yaml as Y
 
-class OpeningTableBuilder m where
-  buildOpeningTable :: FilePath -> m OpeningTableSettings
-
-instance OpeningTableBuilder IO where
-  buildOpeningTable settingsConfigPath = settings
-    where
-      settings = do
-        settingsConfig <- Y.decodeFileEither settingsConfigPath
-        settings <-
-          case settingsConfig of
-            Left error -> throwError (userError $ Y.prettyPrintParseException error)
-            Right value -> return value
-        let sqlToRun = do
-              _ <- migrateDb
-              insertFenWithEvaluation startingFenRepresentation 0.0
-        _ <- runReaderT (getOpeningTableReader sqlToRun) settings
-        return settings
+buildOpeningTable :: FilePath -> IO OpeningTableSettings
+buildOpeningTable settingsConfigPath = settings
+  where
+    settings = do
+      settings <- Y.decodeFileThrow settingsConfigPath
+      let sqlToRun = do
+            _ <- migrateDb
+            insertFenWithEvaluation startingFenRepresentation 0.0
+      _ <- runReaderT (getOpeningTableReader sqlToRun) settings
+      return settings

@@ -1,8 +1,12 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module Chess.Evaluation.EvaluationConfig where
 
 import Chess.OpeningTable.OpeningTableSettings (OpeningTableSettings)
 import Chess.Piece
 import Control.Lens
+import Data.Aeson (FromJSON)
+import GHC.Generics (Generic)
 
 data EvaluationConfig =
   EvaluationConfig
@@ -14,6 +18,9 @@ data PieceWeightings =
   PieceWeightings
     { pawnWeight, knightWeight, bishopWeight, rookWeight, queenWeight :: Double
     }
+  deriving (Generic, Show)
+
+instance FromJSON PieceWeightings
 
 calculatePieceWeight :: PieceWeightings -> PieceType -> Double
 calculatePieceWeight pieceWeights piece = weight
