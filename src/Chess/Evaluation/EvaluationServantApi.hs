@@ -19,7 +19,8 @@ import qualified Data.Yaml as Y
 import Servant.API
 import Servant.Server
 
-type EvaluationRestApi = "evaluate" :> "fen" :> ReqBody '[ PlainText] FenRepresentation :> Post '[ JSON] Double
+type EvaluationRestApi
+   = "evaluate" :> "fen" :> ReqBody '[ PlainText] FenRepresentation :> Post '[ JSON] Double :<|> "evaluation" :> "service" :> "health" :> Get '[ PlainText] String
 
 instance MimeUnrender PlainText FenRepresentation where
   mimeUnrender _ = left show . parseFen . unpack
@@ -32,8 +33,11 @@ convertToHandler evalConfig evalReader = liftIO ioOutput
 evalApiProxy :: Proxy EvaluationRestApi
 evalApiProxy = Proxy
 
+evaluationReaderServer :: ServerT EvaluationRestApi EvaluationReader
+evaluationReaderServer = evaluateFen :<|> return "Evalaution service healthy"
+
 evalServer :: EvaluationConfig -> Server EvaluationRestApi
-evalServer evalConfig = hoistServer evalApiProxy (convertToHandler evalConfig) evaluateFen
+evalServer evalConfig = hoistServer evalApiProxy (convertToHandler evalConfig) evaluationReaderServer
 
 runEvalServer :: FilePath -> FilePath -> IO Application
 runEvalServer openingTableSettingsPath evalConfigPath = do
