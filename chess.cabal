@@ -32,7 +32,9 @@ library
       Chess.Evaluation.EvaluationApi
       Chess.Evaluation.EvaluationConfig
       Chess.Evaluation.EvaluationReader
+      Chess.Evaluation.EvaluationServantApi
       Chess.Evaluation.FenEvaluationCalculator
+      Chess.Evaluation.PieceWeightings
       Chess.Fen
       Chess.Fen.CastlingPrivileges
       Chess.Fen.EnPassentSquare
