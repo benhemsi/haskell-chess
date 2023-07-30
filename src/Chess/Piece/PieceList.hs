@@ -1,7 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE OverlappingInstances #-}
 
 module Chess.Piece.PieceList where
 

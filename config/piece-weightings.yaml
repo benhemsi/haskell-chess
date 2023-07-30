@@ -1,0 +1,5 @@
+pawnWeight: 1
+knightWeight: 3
+bishopWeight: 3
+rookWeight: 5
+queenWeight: 9
