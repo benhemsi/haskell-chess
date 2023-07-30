@@ -1,9 +1,6 @@
 module Chess.OpeningTable.OpeningTableApp where
 
-import Chess.Evaluation.EvaluationApi
-import Chess.Evaluation.EvaluationConfig (PieceWeightings(PieceWeightings))
-import Control.Concurrent
-import qualified Data.Yaml as Y
+import Chess.Evaluation.EvaluationServantApi
 import Network.Wai.Handler.Warp
 
 main = do

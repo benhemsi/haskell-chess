@@ -4,6 +4,7 @@ module Chess.Evaluation.EvaluationReader where
 
 import Chess.Evaluation.EvaluationConfig
 import Chess.Evaluation.FenEvaluationCalculator
+import Chess.Evaluation.PieceWeightings
 import Chess.Fen
 import Chess.OpeningTable.OpeningTableAccessor
 import Chess.OpeningTable.OpeningTableReader
@@ -18,19 +19,20 @@ newtype EvaluationReader a =
     }
   deriving (Functor, Applicative, Monad)
 
+liftOpeningTableReader :: OpeningTableReader a -> EvaluationReader a
+liftOpeningTableReader openingTableAction = EvaluationReader output
+  where
+    output = do
+      openingTableConf <- asks openingTableSettings
+      let lookedUpValue = runReaderT (getOpeningTableReader openingTableAction) openingTableConf
+      lift lookedUpValue
+
 instance OpeningTableAccessor EvaluationReader where
-  lookupFenInOpeningTable fen = EvaluationReader output
-    where
-      output = do
-        openingTableConf <- asks openingTableSettings
-        let lookedUpValue = runReaderT (getOpeningTableReader (lookupFenInOpeningTable fen)) openingTableConf
-        lift lookedUpValue
+  lookupFenInOpeningTable = liftOpeningTableReader . lookupFenInOpeningTable
 
 instance FenEvaluationCalculator EvaluationReader where
   calculateFenEvaluation fen = EvaluationReader evaluation
     where
       evaluation = do
         weightings <- asks pieceWeightings
-        let whitePl = Map.elems (fen ^. pieces . whitePieces)
-            blackPl = Map.elems (fen ^. pieces . blackPieces)
-        return $ calculatePieceWeightings weightings whitePl - calculatePieceWeightings weightings blackPl
+        return $ calculateFenPieceWeightings weightings fen
