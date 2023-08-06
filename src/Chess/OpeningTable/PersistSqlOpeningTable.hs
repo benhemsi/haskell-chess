@@ -1,3 +1,6 @@
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE TemplateHaskell #-}
+
 module Chess.OpeningTable.PersistSqlOpeningTable where
 
 import Chess.OpeningTable.OpeningTableAccessor
@@ -13,16 +16,19 @@ newtype PersistSqlOpeningTable a =
   PersistSqlOpeningTable
     { unPersist :: SqlPersistT (LoggingT IO) a
     }
+  deriving (Functor, Applicative, Monad, MonadIO, MonadLogger, MonadLoggerIO)
 
-runAction :: ConnectionString -> PersistSqlOpeningTable a -> IO a
+runAction :: ConnectionString -> PersistSqlOpeningTable a -> LoggingT IO a
 runAction connString (PersistSqlOpeningTable action) =
-  runStdoutLoggingT $ withPostgresqlConn connString $ \backend -> runSqlConn action backend
+  withPostgresqlConn connString $ \backend -> runSqlConn action backend
 
 instance OpeningTableAccessor PersistSqlOpeningTable where
   lookupFenInOpeningTable fen = PersistSqlOpeningTable output
     where
       output = do
+        _ <- $(logDebugSH) fen
         openingPos <- PS.get $ fenToOpeningPositionKey fen
+        _ <- $(logDebugSH) openingPos
         return $ _openingPositionEvaluation <$> openingPos
 
 instance OpeningTableInserter PersistSqlOpeningTable where

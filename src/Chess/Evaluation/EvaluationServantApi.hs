@@ -12,6 +12,7 @@ import Chess.Fen.FenParser (parseFen)
 import Chess.OpeningTable.OpeningTableBuilder (buildOpeningTable)
 import Control.Arrow (left)
 import Control.Monad.Except
+import Control.Monad.Logger
 import Control.Monad.Reader
 import Data.ByteString.Lazy.Char8 (pack, unpack)
 import Data.Proxy
@@ -26,7 +27,7 @@ instance MimeUnrender PlainText FenRepresentation where
   mimeUnrender _ = left show . parseFen . unpack
 
 convertToHandler :: EvaluationConfig -> EvaluationReader a -> Handler a
-convertToHandler evalConfig evalReader = liftIO ioOutput
+convertToHandler evalConfig evalReader = liftIO $ runStderrLoggingT ioOutput
   where
     ioOutput = runReaderT (getEvaluationReader evalReader) evalConfig
 
