@@ -38,8 +38,9 @@ PTH.share
     blackKingSideCastle Bool
     blackQueenSideCastle Bool
     enPassent EnPassentSquare
-    evaluation Double
+    evaluation Double 
     Primary pieceList nextToMove whiteKingSideCastle whiteQueenSideCastle blackKingSideCastle blackQueenSideCastle enPassent
+    deriving Show
 |]
 
 fenToOpeningPositionKey :: FenRepresentation -> Key OpeningPosition

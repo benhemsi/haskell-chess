@@ -10,14 +10,15 @@ import Chess.OpeningTable.OpeningTableAccessor
 import Chess.OpeningTable.OpeningTableReader
 import Chess.Piece
 import Control.Lens
+import Control.Monad.Logger
 import Control.Monad.Reader
 import qualified Data.Map as Map
 
 newtype EvaluationReader a =
   EvaluationReader
-    { getEvaluationReader :: ReaderT EvaluationConfig IO a
+    { getEvaluationReader :: ReaderT EvaluationConfig (LoggingT IO) a
     }
-  deriving (Functor, Applicative, Monad)
+  deriving (Functor, Applicative, Monad, MonadIO, MonadLogger, MonadLoggerIO)
 
 liftOpeningTableReader :: OpeningTableReader a -> EvaluationReader a
 liftOpeningTableReader openingTableAction = EvaluationReader output
