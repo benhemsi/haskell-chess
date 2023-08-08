@@ -40,8 +40,8 @@ evaluationReaderServer = evaluateFen :<|> return "Evalaution service healthy"
 evalServer :: EvaluationConfig -> Server EvaluationRestApi
 evalServer evalConfig = hoistServer evalApiProxy (convertToHandler evalConfig) evaluationReaderServer
 
-runEvalServer :: FilePath -> FilePath -> IO Application
-runEvalServer openingTableSettingsPath evalConfigPath = do
+createEvalApp :: FilePath -> FilePath -> IO Application
+createEvalApp openingTableSettingsPath evalConfigPath = do
   openingTableSettings <- buildOpeningTable openingTableSettingsPath
   pieceWeightings <- Y.decodeFileThrow evalConfigPath
   let evalConfig = EvaluationConfig openingTableSettings pieceWeightings
