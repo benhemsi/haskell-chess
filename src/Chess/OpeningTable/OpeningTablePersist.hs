@@ -28,7 +28,7 @@ import GHC.Generics (Generic)
 import Text.Read
 
 PTH.share
-  [PTH.mkPersist PTH.sqlSettings {PTH.mpsGenerateLenses = True}, PTH.mkMigrate "migrateAll"]
+  [PTH.mkPersist PTH.sqlSettings, PTH.mkMigrate "migrateAll"]
   [PTH.persistLowerCase|
   OpeningPosition sql=opening_table
     pieceList PieceList
@@ -60,12 +60,12 @@ fenWithEvalToOpeningPosition fen evaluation = (key, openingPos)
     key = fenToOpeningPositionKey fen
     openingPos =
       OpeningPosition
-        { _openingPositionPieceList = fen ^. pieces
-        , _openingPositionNextToMove = fen ^. nextToMove
-        , _openingPositionWhiteKingSideCastle = fen ^. castlingPrivileges . whiteKingSide
-        , _openingPositionWhiteQueenSideCastle = fen ^. castlingPrivileges . whiteQueenSide
-        , _openingPositionBlackKingSideCastle = fen ^. castlingPrivileges . blackKingSide
-        , _openingPositionBlackQueenSideCastle = fen ^. castlingPrivileges . blackQueenSide
-        , _openingPositionEnPassent = fen ^. enPassentSquare
-        , _openingPositionEvaluation = evaluation
+        { openingPositionPieceList = fen ^. pieces
+        , openingPositionNextToMove = fen ^. nextToMove
+        , openingPositionWhiteKingSideCastle = fen ^. castlingPrivileges . whiteKingSide
+        , openingPositionWhiteQueenSideCastle = fen ^. castlingPrivileges . whiteQueenSide
+        , openingPositionBlackKingSideCastle = fen ^. castlingPrivileges . blackKingSide
+        , openingPositionBlackQueenSideCastle = fen ^. castlingPrivileges . blackQueenSide
+        , openingPositionEnPassent = fen ^. enPassentSquare
+        , openingPositionEvaluation = evaluation
         }

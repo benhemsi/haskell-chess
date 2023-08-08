@@ -26,6 +26,7 @@ dependencies:
 - bytestring
 - containers
 - distributive
+- esqueleto
 - hspec
 - http-client
 - http-types
