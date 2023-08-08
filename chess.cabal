@@ -30,6 +30,7 @@ library
       Chess.Board.Rank
       Chess.Board.Square
       Chess.Evaluation.EvaluationApi
+      Chess.Evaluation.EvaluationClient
       Chess.Evaluation.EvaluationConfig
       Chess.Evaluation.EvaluationReader
       Chess.Evaluation.EvaluationServantApi
@@ -98,6 +99,7 @@ library
     , split
     , text
     , transformers
+    , unliftio
     , validation
     , wai
     , warp
@@ -138,6 +140,7 @@ executable opening-table-exe
     , split
     , text
     , transformers
+    , unliftio
     , validation
     , wai
     , warp
@@ -200,6 +203,7 @@ test-suite chess-test
     , split
     , text
     , transformers
+    , unliftio
     , validation
     , wai
     , warp
