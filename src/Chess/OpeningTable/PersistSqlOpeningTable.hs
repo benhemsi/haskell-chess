@@ -1,5 +1,5 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Chess.OpeningTable.PersistSqlOpeningTable where
 
@@ -8,9 +8,10 @@ import Chess.OpeningTable.OpeningTableInserter
 import Chess.OpeningTable.OpeningTablePersist
 import Control.Monad.Logger
 import Control.Monad.Reader
+import Database.Esqueleto.Experimental
 import qualified Database.Persist as PS
 import Database.Persist.Class as PS
-import Database.Persist.Postgresql
+import Database.Persist.Postgresql (ConnectionString, withPostgresqlConn)
 
 newtype PersistSqlOpeningTable a =
   PersistSqlOpeningTable
@@ -23,13 +24,14 @@ runAction connString (PersistSqlOpeningTable action) =
   withPostgresqlConn connString $ \backend -> runSqlConn action backend
 
 instance OpeningTableAccessor PersistSqlOpeningTable where
-  lookupFenInOpeningTable fen = PersistSqlOpeningTable output
+  lookupFenInOpeningTable fen = PersistSqlOpeningTable (fmap unValue <$> selectStatement)
     where
-      output = do
-        _ <- $(logDebugSH) fen
-        openingPos <- PS.get $ fenToOpeningPositionKey fen
-        _ <- $(logDebugSH) openingPos
-        return $ _openingPositionEvaluation <$> openingPos
+      selectStatement :: SqlPersistT (LoggingT IO) (Maybe (Value Double))
+      selectStatement =
+        selectOne $ do
+          positions <- from $ table @OpeningPosition
+          where_ (positions ^. OpeningPositionId ==. val (fenToOpeningPositionKey fen))
+          pure (positions ^. OpeningPositionEvaluation)
 
 instance OpeningTableInserter PersistSqlOpeningTable where
   migrateDb = PersistSqlOpeningTable (runMigration migrateAll)

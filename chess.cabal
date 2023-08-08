@@ -81,6 +81,7 @@ library
     , bytestring
     , containers
     , distributive
+    , esqueleto
     , hspec
     , http-client
     , http-types
@@ -120,6 +121,7 @@ executable opening-table-exe
     , chess
     , containers
     , distributive
+    , esqueleto
     , hspec
     , http-client
     , http-types
@@ -181,6 +183,7 @@ test-suite chess-test
     , chess
     , containers
     , distributive
+    , esqueleto
     , hspec
     , http-client
     , http-types
