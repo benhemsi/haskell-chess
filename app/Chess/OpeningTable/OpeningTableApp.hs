@@ -1,6 +1,6 @@
 module Chess.OpeningTable.OpeningTableApp where
 
-import Chess.Evaluation.EvaluationServantApi
+import Chess.Evaluation.EvaluationService
 import Network.Wai.Handler.Warp
 
 main = do

@@ -15,7 +15,7 @@ import Database.Persist.Postgresql (ConnectionString, withPostgresqlConn)
 
 newtype PersistSqlOpeningTable a =
   PersistSqlOpeningTable
-    { unPersist :: SqlPersistT (LoggingT IO) a
+    { getSqlPersistT :: SqlPersistT (LoggingT IO) a
     }
   deriving (Functor, Applicative, Monad, MonadIO, MonadLogger, MonadLoggerIO)
 

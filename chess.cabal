@@ -32,8 +32,8 @@ library
       Chess.Evaluation.EvaluationApi
       Chess.Evaluation.EvaluationClient
       Chess.Evaluation.EvaluationConfig
-      Chess.Evaluation.EvaluationReader
-      Chess.Evaluation.EvaluationServantApi
+      Chess.Evaluation.EvaluationRestApi
+      Chess.Evaluation.EvaluationService
       Chess.Evaluation.FenEvaluationCalculator
       Chess.Evaluation.PieceWeightings
       Chess.Fen
@@ -51,7 +51,7 @@ library
       Chess.OpeningTable.OpeningTableBuilder
       Chess.OpeningTable.OpeningTableInserter
       Chess.OpeningTable.OpeningTablePersist
-      Chess.OpeningTable.OpeningTableReader
+      Chess.OpeningTable.OpeningTableService
       Chess.OpeningTable.OpeningTableSettings
       Chess.OpeningTable.PersistSqlOpeningTable
       Chess.Piece
@@ -154,7 +154,7 @@ test-suite chess-test
       Chess.Board.FileSpec
       Chess.Board.RankSpec
       Chess.Board.SquareSpec
-      Chess.Evaluation.FenEvaluationCalculatorSpec
+      Chess.Evaluation.EvaluationServiceSpec
       Chess.Fen.CastlingPrivilegesSpec
       Chess.Fen.FenParserSpec
       Chess.Fen.FenRepresentationSpec
