@@ -1,7 +1,9 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
-module Chess.Evaluation.FenEvaluationCalculatorSpec where
+module Chess.Evaluation.EvaluationServiceSpec where
 
+import Chess.Evaluation.EvaluationApi
+import Chess.Evaluation.EvaluationService
 import Chess.Evaluation.FenEvaluationCalculator
 import Chess.Fen (startingFenRepresentation)
 import Chess.OpeningTable.OpeningTableAccessor
@@ -29,10 +31,10 @@ instance FenEvaluationCalculator MockFenEvaluationCalculator where
 runMock :: MockEvaluationExpectations -> Double
 runMock = runReader (unMock readerToRun)
   where
-    readerToRun = evaluateFen startingFenRepresentation
+    readerToRun = evaluateFenWithOpeningTable startingFenRepresentation
 
 spec = do
-  describe "evaluateFen" $ do
+  describe "evaluateFenWithOpeningTable" $ do
     it "query the opening table before evaluating the position" $ do
       let expectations = MockEvaluationExpectations (Just 1.0) 2.0
           actual = runMock expectations

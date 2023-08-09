@@ -6,7 +6,7 @@ module Chess.OpeningTable.OpeningTableBuilder where
 import Chess.Fen (startingFenRepresentation)
 import Chess.OpeningTable.OpeningTableInserter
 import Chess.OpeningTable.OpeningTablePersist
-import Chess.OpeningTable.OpeningTableReader
+import Chess.OpeningTable.OpeningTableService
 import Chess.OpeningTable.OpeningTableSettings
 import Control.Monad.Except
 import Control.Monad.Logger
@@ -23,5 +23,5 @@ buildOpeningTable settingsConfigPath = runStderrLoggingT settings
             _ <- migrateDb
             _ <- $(logInfo) "Inserting FENs..."
             insertFenWithEvaluation startingFenRepresentation 0.0
-      _ <- runReaderT (getOpeningTableReader sqlToRun) settings
+      _ <- runReaderT (getOpeningTableService sqlToRun) settings
       return settings

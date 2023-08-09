@@ -4,7 +4,7 @@
 module Chess.Evaluation.EvaluationClient where
 
 import Chess.Evaluation.EvaluationApi
-import Chess.Evaluation.EvaluationServantApi
+import Chess.Evaluation.EvaluationRestApi
 import Chess.Fen (FenRepresentation)
 import Control.Arrow (left)
 import Control.Monad.Logger
@@ -17,9 +17,12 @@ import UnliftIO.Exception
 
 newtype EvaluationClient a =
   EvaluationClient
-    { unClient :: ReaderT EvaluationClientConfig (LoggingT IO) a
+    { getEvaluationClient :: ReaderT EvaluationClientConfig (LoggingT IO) a
     }
   deriving (Functor, Applicative, Monad, MonadIO, MonadLogger, MonadLoggerIO)
+
+instance EvaluationApi EvaluationClient where
+  evaluateFen = postFenEval
 
 data EvaluationClientConfig =
   EvaluationClientConfig
@@ -45,11 +48,5 @@ convertToClient clientM = EvaluationClient output
 instance MimeRender PlainText FenRepresentation where
   mimeRender _ = pack . show
 
-evaluationClient :: Client EvaluationClient EvaluationRestApi
-evaluationClient = undefined
-
 postFenEval :: FenRepresentation -> EvaluationClient Double
 postFenEval :<|> _ = hoistClient evalApiProxy convertToClient (client evalApiProxy)
-
-instance EvaluationApi EvaluationClient where
-  evaluateFen = postFenEval
