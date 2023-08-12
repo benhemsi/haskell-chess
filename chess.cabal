@@ -78,6 +78,7 @@ library
     , adjunctions
     , aeson
     , array
+    , barbies
     , base >=4.7 && <5
     , bytestring
     , containers
@@ -118,6 +119,7 @@ executable opening-table-exe
     , adjunctions
     , aeson
     , array
+    , barbies
     , base >=4.7 && <5
     , bytestring
     , chess
@@ -181,6 +183,7 @@ test-suite chess-test
     , adjunctions
     , aeson
     , array
+    , barbies
     , base >=4.7 && <5
     , bytestring
     , chess
