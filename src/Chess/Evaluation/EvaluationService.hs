@@ -15,6 +15,7 @@ import Chess.Piece
 import Control.Lens
 import Control.Monad.Logger
 import Control.Monad.Reader
+import Control.Monad.State
 import qualified Data.Map as Map
 import qualified Data.Yaml as Y
 import Servant.API
@@ -22,28 +23,29 @@ import Servant.Server
 
 newtype EvaluationService a =
   EvaluationService
-    { getEvaluationService :: ReaderT EvaluationConfig (LoggingT IO) a
+    { getEvaluationService :: StateT EvaluationConfig (LoggingT IO) a
     }
-  deriving (Functor, Applicative, Monad, MonadIO, MonadLogger, MonadLoggerIO)
+  deriving (Functor, Applicative, Monad, MonadIO, MonadLogger, MonadLoggerIO, MonadState EvaluationConfig)
 
 instance OpeningTableAccessor EvaluationService where
   lookupFenInOpeningTable = liftOpeningTableReader . lookupFenInOpeningTable
 
 instance FenEvaluationCalculator EvaluationService where
-  calculateFenEvaluation fen = EvaluationService evaluation
+  calculateFenEvaluation fen = evaluation
     where
       evaluation = do
-        weightings <- asks pieceWeightings
+        weightings <- gets _pieceWeightings
         return $ calculateFenPieceWeightings weightings fen
 
 instance EvaluationApi EvaluationService where
   evaluateFen = evaluateFenWithOpeningTable
+  updatePieceWeightings newPW = modify (updatePieceWeightingsInEvalConf newPW)
 
 liftOpeningTableReader :: OpeningTableService a -> EvaluationService a
 liftOpeningTableReader openingTableAction = EvaluationService output
   where
     output = do
-      openingTableConf <- asks openingTableSettings
+      openingTableConf <- gets _openingTableSettings
       let lookedUpValue = runReaderT (getOpeningTableService openingTableAction) openingTableConf
       lift lookedUpValue
 
@@ -58,10 +60,10 @@ evaluateFenWithOpeningTable fen = do
 convertToHandler :: EvaluationConfig -> EvaluationService a -> Handler a
 convertToHandler evalConfig evalReader = liftIO $ runStderrLoggingT ioOutput
   where
-    ioOutput = runReaderT (getEvaluationService evalReader) evalConfig
+    ioOutput = evalStateT (getEvaluationService evalReader) evalConfig
 
 evaluationReaderServer :: ServerT EvaluationRestApi EvaluationService
-evaluationReaderServer = evaluateFen :<|> return "Evalaution service healthy"
+evaluationReaderServer = evaluateFen :<|> updatePieceWeightings
 
 evalServer :: EvaluationConfig -> Server EvaluationRestApi
 evalServer evalConfig = hoistServer evalApiProxy (convertToHandler evalConfig) evaluationReaderServer

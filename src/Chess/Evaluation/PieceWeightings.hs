@@ -11,7 +11,7 @@ import Chess.Fen
 import Chess.OpeningTable.OpeningTableSettings (OpeningTableSettings)
 import Chess.Piece
 import Control.Lens
-import Data.Aeson (FromJSON, parseJSON)
+import Data.Aeson (FromJSON, ToJSON, parseJSON)
 import qualified Data.Map as Map
 import GHC.Generics (Generic)
 
@@ -27,6 +27,8 @@ deriving instance
          AllBF Show f PieceWeightings_ => Show (PieceWeightings_ f)
 
 instance FromJSON (PieceWeightings_ Maybe)
+
+instance ToJSON (PieceWeightings_ Maybe)
 
 instance FromJSON PieceWeightings where
   parseJSON = fmap (pieceWeightingsWithDefault defaultPieceWeightings) . parseJSON
