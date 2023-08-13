@@ -5,6 +5,7 @@ module Chess.Evaluation.EvaluationClient where
 
 import Chess.Evaluation.EvaluationApi
 import Chess.Evaluation.EvaluationRestApi
+import Chess.Evaluation.PieceWeightings
 import Chess.Fen (FenRepresentation)
 import Control.Arrow (left)
 import Control.Monad.Logger
@@ -23,6 +24,7 @@ newtype EvaluationClient a =
 
 instance EvaluationApi EvaluationClient where
   evaluateFen = postFenEval
+  updatePieceWeightings = postPieceWeightings
 
 data EvaluationClientConfig =
   EvaluationClientConfig
@@ -49,4 +51,5 @@ instance MimeRender PlainText FenRepresentation where
   mimeRender _ = pack . show
 
 postFenEval :: FenRepresentation -> EvaluationClient Double
-postFenEval :<|> _ = hoistClient evalApiProxy convertToClient (client evalApiProxy)
+postPieceWeightings :: PieceWeightings_ Maybe -> EvaluationClient ()
+postFenEval :<|> postPieceWeightings = hoistClient evalApiProxy convertToClient (client evalApiProxy)
