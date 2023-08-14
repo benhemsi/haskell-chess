@@ -43,6 +43,7 @@ dependencies:
 - servant-client
 - servant-server
 - split
+- stm
 - text
 - transformers
 - unliftio

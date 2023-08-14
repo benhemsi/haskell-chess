@@ -98,6 +98,7 @@ library
     , servant-client
     , servant-server
     , split
+    , stm
     , text
     , transformers
     , unliftio
@@ -140,6 +141,7 @@ executable opening-table-exe
     , servant-client
     , servant-server
     , split
+    , stm
     , text
     , transformers
     , unliftio
@@ -204,6 +206,7 @@ test-suite chess-test
     , servant-client
     , servant-server
     , split
+    , stm
     , text
     , transformers
     , unliftio
