@@ -33,6 +33,8 @@ instance ToJSON (PieceWeightings_ Maybe)
 instance FromJSON PieceWeightings where
   parseJSON = fmap (pieceWeightingsWithDefault defaultPieceWeightings) . parseJSON
 
+instance ToJSON PieceWeightings
+
 defaultPieceWeightings :: PieceWeightings
 defaultPieceWeightings = PieceWeightings 1 3 3 5 9
 

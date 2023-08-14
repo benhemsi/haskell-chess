@@ -17,7 +17,7 @@ type EvaluationRestApi = EvaluateFenEndpoint :<|> UpdatePieceWeightingsEndpoint
 type EvaluateFenEndpoint = "evaluate" :> "fen" :> ReqBody '[ PlainText] FenRepresentation :> Post '[ JSON] Double
 
 type UpdatePieceWeightingsEndpoint
-   = "update" :> "piece" :> "weightings" :> ReqBody '[ JSON] (PieceWeightings_ Maybe) :> Post '[ JSON] ()
+   = "update" :> "piece" :> "weightings" :> ReqBody '[ JSON] (PieceWeightings_ Maybe) :> Post '[ JSON] PieceWeightings
 
 instance MimeUnrender PlainText FenRepresentation where
   mimeUnrender _ = left show . parseFen . unpack

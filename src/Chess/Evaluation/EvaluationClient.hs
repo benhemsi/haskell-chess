@@ -51,5 +51,5 @@ instance MimeRender PlainText FenRepresentation where
   mimeRender _ = pack . show
 
 postFenEval :: FenRepresentation -> EvaluationClient Double
-postPieceWeightings :: PieceWeightings_ Maybe -> EvaluationClient ()
+postPieceWeightings :: PieceWeightings_ Maybe -> EvaluationClient PieceWeightings
 postFenEval :<|> postPieceWeightings = hoistClient evalApiProxy convertToClient (client evalApiProxy)
