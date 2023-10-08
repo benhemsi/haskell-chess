@@ -44,6 +44,7 @@ dependencies:
 - servant-server
 - split
 - stm
+- streamly
 - text
 - transformers
 - unliftio

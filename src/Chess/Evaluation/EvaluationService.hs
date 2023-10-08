@@ -7,6 +7,7 @@ import Chess.Evaluation.EvaluationConfig
 import Chess.Evaluation.EvaluationRestApi
 import Chess.Evaluation.FenEvaluationCalculator
 import Chess.Evaluation.PieceWeightings
+import Chess.Evaluation.ServantTypeclassInstances
 import Chess.Fen
 import Chess.OpeningTable.OpeningTableAccessor
 import Chess.OpeningTable.OpeningTableBuilder
@@ -20,6 +21,8 @@ import qualified Data.Map as Map
 import qualified Data.Yaml as Y
 import Servant.API
 import Servant.Server
+import qualified Streamly.Internal.Data.Stream.IsStream as Stream
+import qualified Streamly.Prelude as Stream
 
 newtype EvaluationService a =
   EvaluationService
@@ -67,7 +70,7 @@ convertToHandler evalConfig evalReader = liftIO $ runStderrLoggingT ioOutput
     ioOutput = runReaderT (getEvaluationService evalReader) evalConfig
 
 evaluationReaderServer :: ServerT EvaluationRestApi EvaluationService
-evaluationReaderServer = evaluateFen :<|> updatePieceWeightings
+evaluationReaderServer = evaluateFen :<|> updatePieceWeightings :<|> evaluateFenStream
 
 evalServer :: EvaluationConfig -> Server EvaluationRestApi
 evalServer evalConfig = hoistServer evalApiProxy (convertToHandler evalConfig) evaluationReaderServer
@@ -79,3 +82,9 @@ createEvalApp openingTableSettingsPath evalConfigPath = do
   pwTvar <- newTVarIO pws
   let evalConfig = EvaluationConfig openingTableSettings pwTvar
   return $ serve evalApiProxy (evalServer evalConfig)
+
+evaluateFenStream :: Stream.Serial FenRepresentation -> EvaluationService Double
+evaluateFenStream stream = Stream.foldlM' (\sum fen -> fmap (sum +) (evaluateFen fen)) (pure 0) evaluationServiceStream
+  where
+    evaluationServiceStream :: Stream.SerialT EvaluationService FenRepresentation
+    evaluationServiceStream = Stream.hoist liftIO stream
