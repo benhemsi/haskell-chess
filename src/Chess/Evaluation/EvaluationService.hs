@@ -83,8 +83,24 @@ createEvalApp openingTableSettingsPath evalConfigPath = do
   let evalConfig = EvaluationConfig openingTableSettings pwTvar
   return $ serve evalApiProxy (evalServer evalConfig)
 
-evaluateFenStream :: Stream.Serial FenRepresentation -> EvaluationService Double
-evaluateFenStream stream = Stream.foldlM' (\sum fen -> fmap (sum +) (evaluateFen fen)) (pure 0) evaluationServiceStream
+evaluateFenStream :: Stream.Async FenRepresentation -> EvaluationService (Maybe MinAndMaxEval)
+evaluateFenStream stream = Stream.foldlM' updateMinAndMaxEval (pure Nothing) evaluationServiceStream
   where
     evaluationServiceStream :: Stream.SerialT EvaluationService FenRepresentation
-    evaluationServiceStream = Stream.hoist liftIO stream
+    evaluationServiceStream = Stream.hoist liftIO (Stream.fromAsync stream)
+    updateMinAndMaxEval :: Maybe MinAndMaxEval -> FenRepresentation -> EvaluationService (Maybe MinAndMaxEval)
+    updateMinAndMaxEval Nothing fen = do
+      evaluation <- evaluateFen fen
+      let evaluatedFen = (evaluation, fen)
+      return $ Just (MinAndMaxEval evaluatedFen evaluatedFen)
+    updateMinAndMaxEval (Just (MinAndMaxEval oldMin@(minEval, _) oldMax@(maxEval, _))) fen = do
+      evaluation <- evaluateFen fen
+      let newMin =
+            if evaluation < minEval
+              then (evaluation, fen)
+              else oldMin
+          newMax =
+            if evaluation > maxEval
+              then (evaluation, fen)
+              else oldMax
+      return $ Just (MinAndMaxEval newMin newMax)

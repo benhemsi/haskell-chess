@@ -1,16 +1,29 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Chess.Evaluation.ServantTypeclassInstances where
 
 import Chess.Fen
 import Chess.Fen.FenParser
 import Control.Arrow (left)
+import Data.Aeson (FromJSON, ToJSON)
 import Data.ByteString.Lazy.Char8 (pack, unpack)
+import GHC.Generics
 import Servant.API
 import qualified Servant.API.Stream as ServantStream
 import qualified Servant.Types.SourceT as ServantStream
 import qualified Streamly.Prelude as Stream
+
+data MinAndMaxEval =
+  MinAndMaxEval
+    { minFen, maxFen :: (Double, FenRepresentation)
+    }
+  deriving (Show, Generic)
+
+instance ToJSON MinAndMaxEval
+
+instance FromJSON MinAndMaxEval
 
 instance MimeRender PlainText FenRepresentation where
   mimeRender _ = pack . show

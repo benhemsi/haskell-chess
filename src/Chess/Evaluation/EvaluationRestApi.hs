@@ -4,6 +4,7 @@
 module Chess.Evaluation.EvaluationRestApi where
 
 import Chess.Evaluation.PieceWeightings
+import Chess.Evaluation.ServantTypeclassInstances (MinAndMaxEval)
 import Chess.Fen (FenRepresentation)
 import Data.Proxy
 import Servant.API
@@ -17,7 +18,7 @@ type UpdatePieceWeightingsEndpoint
    = "update" :> "piece" :> "weightings" :> ReqBody '[ JSON] (PieceWeightings_ Maybe) :> Post '[ JSON] PieceWeightings
 
 type EvaluationStreamingEndpoint
-   = "evaluate" :> "fens" :> StreamBody NewlineFraming PlainText (Stream.Serial FenRepresentation) :> Post '[ JSON] Double
+   = "evaluate" :> "fens" :> StreamBody NewlineFraming PlainText (Stream.Async FenRepresentation) :> Post '[ JSON] (Maybe MinAndMaxEval)
 
 evalApiProxy :: Proxy EvaluationRestApi
 evalApiProxy = Proxy

@@ -49,5 +49,5 @@ convertToClient clientM = EvaluationClient output
 
 postFenEval :: FenRepresentation -> EvaluationClient Double
 postPieceWeightings :: PieceWeightings_ Maybe -> EvaluationClient PieceWeightings
-postFens :: Stream.Serial FenRepresentation -> EvaluationClient Double
+postFens :: Stream.Async FenRepresentation -> EvaluationClient (Maybe MinAndMaxEval)
 postFenEval :<|> postPieceWeightings :<|> postFens = hoistClient evalApiProxy convertToClient (client evalApiProxy)
