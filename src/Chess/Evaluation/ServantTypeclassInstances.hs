@@ -7,13 +7,14 @@ module Chess.Evaluation.ServantTypeclassInstances where
 import Chess.Fen
 import Chess.Fen.FenParser
 import Control.Arrow (left)
+import Control.Monad (join)
 import Data.Aeson (FromJSON, ToJSON)
 import Data.ByteString.Lazy.Char8 (pack, unpack)
 import GHC.Generics
 import Servant.API
 import qualified Servant.API.Stream as ServantStream
 import qualified Servant.Types.SourceT as ServantStream
-import qualified Streamly.Prelude as Stream
+import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 
 data MinAndMaxEval =
   MinAndMaxEval
@@ -31,21 +32,10 @@ instance MimeRender PlainText FenRepresentation where
 instance MimeUnrender PlainText FenRepresentation where
   mimeUnrender _ = left show . parseFen . unpack
 
-class StreamlyToSourceIO m where
-  streamlyToSourceIO :: Stream.IsStream t => t m a -> SourceIO a
-
-instance StreamlyToSourceIO IO where
-  streamlyToSourceIO stream = ServantStream.SourceT ($ transform $ Stream.adapt stream)
+instance ServantStream.FromSourceIO a (Stream.Stream IO a) where
+  fromSourceIO src = join $ Stream.mapM id $ Stream.fromPure $ ServantStream.unSourceT src go
     where
-      transform = ServantStream.Effect . Stream.foldr ServantStream.Yield ServantStream.Stop
-
-instance (StreamlyToSourceIO m, Stream.IsStream t) => ServantStream.ToSourceIO a (t m a) where
-  toSourceIO = streamlyToSourceIO
-
-instance (Stream.IsStream t) => ServantStream.FromSourceIO a (t IO a) where
-  fromSourceIO src = Stream.concatMapM id $ Stream.fromPure $ ServantStream.unSourceT src go
-    where
-      go :: Stream.IsStream t => ServantStream.StepT IO a -> IO (t IO a)
+      go :: ServantStream.StepT IO a -> IO (Stream.Stream IO a)
       go step =
         case step of
           ServantStream.Stop -> return Stream.nil
@@ -54,3 +44,8 @@ instance (Stream.IsStream t) => ServantStream.FromSourceIO a (t IO a) where
           ServantStream.Yield x nextStep -> Stream.cons x <$> go nextStep
           ServantStream.Effect nextStep -> nextStep >>= go
   -- {-# SPECIALIZE INLINE fromSourceIO :: Stream.IsStream t => ServantStream.SourceIO a -> t IO a #-}
+
+instance ServantStream.ToSourceIO a (Stream.Stream IO a) where
+  toSourceIO stream = ServantStream.SourceT ($ transform stream)
+    where
+      transform = ServantStream.Effect . Stream.foldr ServantStream.Yield ServantStream.Stop

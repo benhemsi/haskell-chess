@@ -8,7 +8,7 @@ import Chess.Evaluation.ServantTypeclassInstances (MinAndMaxEval)
 import Chess.Fen (FenRepresentation)
 import Data.Proxy
 import Servant.API
-import qualified Streamly.Prelude as Stream
+import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 
 type EvaluationRestApi = EvaluateFenEndpoint :<|> UpdatePieceWeightingsEndpoint :<|> EvaluationStreamingEndpoint
 
@@ -18,7 +18,7 @@ type UpdatePieceWeightingsEndpoint
    = "update" :> "piece" :> "weightings" :> ReqBody '[ JSON] (PieceWeightings_ Maybe) :> Post '[ JSON] PieceWeightings
 
 type EvaluationStreamingEndpoint
-   = "evaluate" :> "fens" :> StreamBody NewlineFraming PlainText (Stream.Async FenRepresentation) :> Post '[ JSON] (Maybe MinAndMaxEval)
+   = "evaluate" :> "fens" :> StreamBody NewlineFraming PlainText (Stream.Stream IO FenRepresentation) :> Post '[ JSON] (Maybe MinAndMaxEval)
 
 evalApiProxy :: Proxy EvaluationRestApi
 evalApiProxy = Proxy

@@ -13,7 +13,7 @@ import Control.Monad.Reader
 import Network.HTTP.Client
 import Servant.API
 import Servant.Client
-import qualified Streamly.Prelude as Stream
+import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 import UnliftIO.Exception
 
 newtype EvaluationClient a =
@@ -49,5 +49,5 @@ convertToClient clientM = EvaluationClient output
 
 postFenEval :: FenRepresentation -> EvaluationClient Double
 postPieceWeightings :: PieceWeightings_ Maybe -> EvaluationClient PieceWeightings
-postFens :: Stream.Async FenRepresentation -> EvaluationClient (Maybe MinAndMaxEval)
+postFens :: Stream.Stream IO FenRepresentation -> EvaluationClient (Maybe MinAndMaxEval)
 postFenEval :<|> postPieceWeightings :<|> postFens = hoistClient evalApiProxy convertToClient (client evalApiProxy)

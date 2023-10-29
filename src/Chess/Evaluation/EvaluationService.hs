@@ -21,9 +21,9 @@ import qualified Data.Map as Map
 import qualified Data.Yaml as Y
 import Servant.API
 import Servant.Server
-import qualified Streamly.Internal.Data.Stream.IsStream as Stream
-import qualified Streamly.Prelude as Stream
+import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 
+-- import qualified Streamly.Prelude as Stream
 newtype EvaluationService a =
   EvaluationService
     { getEvaluationService :: ReaderT EvaluationConfig (LoggingT IO) a
@@ -83,11 +83,11 @@ createEvalApp openingTableSettingsPath evalConfigPath = do
   let evalConfig = EvaluationConfig openingTableSettings pwTvar
   return $ serve evalApiProxy (evalServer evalConfig)
 
-evaluateFenStream :: Stream.Async FenRepresentation -> EvaluationService (Maybe MinAndMaxEval)
+evaluateFenStream :: Stream.Stream IO FenRepresentation -> EvaluationService (Maybe MinAndMaxEval)
 evaluateFenStream stream = Stream.foldlM' updateMinAndMaxEval (pure Nothing) evaluationServiceStream
   where
-    evaluationServiceStream :: Stream.SerialT EvaluationService FenRepresentation
-    evaluationServiceStream = Stream.hoist liftIO (Stream.fromAsync stream)
+    evaluationServiceStream :: Stream.Stream EvaluationService FenRepresentation
+    evaluationServiceStream = Stream.hoist liftIO stream
     updateMinAndMaxEval :: Maybe MinAndMaxEval -> FenRepresentation -> EvaluationService (Maybe MinAndMaxEval)
     updateMinAndMaxEval Nothing fen = do
       evaluation <- evaluateFen fen
