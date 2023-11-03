@@ -44,7 +44,8 @@ library
       Chess.Fen.FenError
       Chess.Fen.FenParser
       Chess.Fen.FenRepresentation
-      Chess.GameEnd
+      Chess.Game.GameApi
+      Chess.Game.GameEnd
       Chess.Move
       Chess.Moves.MoveApi
       Chess.Moves.MoveFiltering

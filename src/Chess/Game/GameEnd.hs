@@ -1,4 +1,4 @@
-module Chess.GameEnd where
+module Chess.Game.GameEnd where
 
 import Chess.Piece
 
