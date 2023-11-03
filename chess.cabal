@@ -45,8 +45,8 @@ library
       Chess.Fen.FenParser
       Chess.Fen.FenRepresentation
       Chess.GameEnd
-      Chess.GameState
       Chess.Move
+      Chess.Moves.MoveApi
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
       Chess.OpeningTable.OpeningTableAccessor
@@ -68,8 +68,6 @@ library
       Chess.Piece.PieceType
       Chess.Piece.Queen
       Chess.Piece.Rook
-      Chess.Position
-      Chess.PositionWithMoves
       Chess.Weighted
   other-modules:
       Paths_chess
@@ -179,7 +177,6 @@ test-suite chess-test
       Chess.Piece.PieceTypeSpec
       Chess.Piece.QueenSpec
       Chess.Piece.RookSpec
-      Chess.PositionSpec
       Paths_chess
   hs-source-dirs:
       test

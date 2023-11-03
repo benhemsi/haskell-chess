@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Chess.Fen.FenRepresentation where
 
@@ -41,6 +42,60 @@ instance Show FenRepresentation where
     " " ++
     show nextToMove ++
     " " ++ show castlingPrivileges ++ " " ++ show enPassent ++ " " ++ show halfMoveClock ++ " " ++ show fullMoveClock
+
+likePieces :: Lens' FenRepresentation (Map.Map Square PieceType)
+likePieces = likeLens (pieces . whitePieces) (pieces . blackPieces)
+
+oppoPieces :: Lens' FenRepresentation (Map.Map Square PieceType)
+oppoPieces = oppoLens (pieces . whitePieces) (pieces . blackPieces)
+
+likeOccupiedSquares :: Getter FenRepresentation Squares
+likeOccupiedSquares = likeGetter (pieces . whiteOccupiedSquares) (pieces . blackOccupiedSquares)
+
+oppoOccupiedSquares :: Getter FenRepresentation Squares
+oppoOccupiedSquares = oppoGetter (pieces . whiteOccupiedSquares) (pieces . blackOccupiedSquares)
+
+likeKingSquare :: Lens' FenRepresentation Square
+likeKingSquare = likeLens (pieces . whiteKingSquare) (pieces . blackKingSquare)
+
+oppoKingSquare :: Lens' FenRepresentation Square
+oppoKingSquare = oppoLens (pieces . whiteKingSquare) (pieces . blackKingSquare)
+
+kingSidePrivileges :: Lens' FenRepresentation Bool
+kingSidePrivileges = likeLens (castlingPrivileges . whiteKingSide) (castlingPrivileges . blackKingSide)
+
+queenSidePrivileges :: Lens' FenRepresentation Bool
+queenSidePrivileges = likeLens (castlingPrivileges . whiteQueenSide) (castlingPrivileges . blackQueenSide)
+
+likeLens :: Lens' FenRepresentation a -> Lens' FenRepresentation a -> Lens' FenRepresentation a
+likeLens whiteLens blackLens aToFa pos =
+  let colour = view nextToMove pos
+      output =
+        case colour of
+          White -> (\x -> set whiteLens x pos) <$> aToFa (pos ^. whiteLens)
+          Black -> (\x -> set blackLens x pos) <$> aToFa (pos ^. blackLens)
+   in output
+
+oppoLens :: Lens' FenRepresentation a -> Lens' FenRepresentation a -> Lens' FenRepresentation a
+oppoLens whiteLens blackLens = likeLens blackLens whiteLens
+
+likeGetter :: Getter FenRepresentation a -> Getter FenRepresentation a -> Getter FenRepresentation a
+likeGetter whiteGetter blackGetter aToFa pos =
+  let colour = view nextToMove pos
+      output =
+        case colour of
+          White -> pos <$ aToFa (pos ^. whiteGetter)
+          Black -> pos <$ aToFa (pos ^. blackGetter)
+   in output
+
+oppoGetter :: Getter FenRepresentation a -> Getter FenRepresentation a -> Getter FenRepresentation a
+oppoGetter whiteGetter blackGetter = likeGetter blackGetter whiteGetter
+
+switchNextToMove :: FenRepresentation -> FenRepresentation
+switchNextToMove pos = outputPos
+  where
+    currentColour = view nextToMove pos
+    outputPos = set nextToMove (oppoColour currentColour) pos
 
 instance Arbitrary FenRepresentation where
   arbitrary = do
