@@ -5,6 +5,7 @@ module Chess.Evaluation.EvaluationClient where
 
 import Chess.Evaluation.EvaluationApi
 import Chess.Evaluation.EvaluationRestApi
+import Chess.Evaluation.MinAndMaxEval
 import Chess.Evaluation.PieceWeightings
 import Chess.Evaluation.ServantTypeclassInstances
 import Chess.Fen (FenRepresentation)
@@ -25,6 +26,7 @@ newtype EvaluationClient a =
 instance EvaluationApi EvaluationClient where
   evaluateFen = postFenEval
   updatePieceWeightings = postPieceWeightings
+  evaluateFens = postFens . Stream.fromFoldable
 
 data EvaluationClientConfig =
   EvaluationClientConfig

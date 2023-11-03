@@ -3,8 +3,8 @@
 
 module Chess.Evaluation.EvaluationRestApi where
 
+import Chess.Evaluation.MinAndMaxEval
 import Chess.Evaluation.PieceWeightings
-import Chess.Evaluation.ServantTypeclassInstances (MinAndMaxEval)
 import Chess.Fen (FenRepresentation)
 import Data.Proxy
 import Servant.API

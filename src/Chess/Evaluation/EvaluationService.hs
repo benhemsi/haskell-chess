@@ -6,6 +6,7 @@ import Chess.Evaluation.EvaluationApi
 import Chess.Evaluation.EvaluationConfig
 import Chess.Evaluation.EvaluationRestApi
 import Chess.Evaluation.FenEvaluationCalculator
+import Chess.Evaluation.MinAndMaxEval
 import Chess.Evaluation.PieceWeightings
 import Chess.Evaluation.ServantTypeclassInstances
 import Chess.Fen
@@ -23,7 +24,6 @@ import Servant.API
 import Servant.Server
 import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 
--- import qualified Streamly.Prelude as Stream
 newtype EvaluationService a =
   EvaluationService
     { getEvaluationService :: ReaderT EvaluationConfig (LoggingT IO) a
@@ -47,6 +47,7 @@ instance EvaluationApi EvaluationService where
     currentEvalConf <- ask
     newEvalConf <- liftIO $ atomically (updatePieceWeightingsInEvalConf newPW currentEvalConf)
     liftIO $ readTVarIO (newEvalConf ^. pieceWeightings)
+  evaluateFens = evaluateFenStream . Stream.fromFoldable
 
 liftOpeningTableReader :: OpeningTableService a -> EvaluationService a
 liftOpeningTableReader openingTableAction = EvaluationService output

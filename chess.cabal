@@ -35,6 +35,7 @@ library
       Chess.Evaluation.EvaluationRestApi
       Chess.Evaluation.EvaluationService
       Chess.Evaluation.FenEvaluationCalculator
+      Chess.Evaluation.MinAndMaxEval
       Chess.Evaluation.PieceWeightings
       Chess.Evaluation.ServantTypeclassInstances
       Chess.Fen
