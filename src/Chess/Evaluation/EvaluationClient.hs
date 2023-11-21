@@ -5,15 +5,16 @@ module Chess.Evaluation.EvaluationClient where
 
 import Chess.Evaluation.EvaluationApi
 import Chess.Evaluation.EvaluationRestApi
+import Chess.Evaluation.MinAndMaxEval
 import Chess.Evaluation.PieceWeightings
+import Chess.Evaluation.ServantTypeclassInstances
 import Chess.Fen (FenRepresentation)
-import Control.Arrow (left)
 import Control.Monad.Logger
 import Control.Monad.Reader
-import Data.ByteString.Lazy.Char8 (pack)
 import Network.HTTP.Client
 import Servant.API
 import Servant.Client
+import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 import UnliftIO.Exception
 
 newtype EvaluationClient a =
@@ -25,6 +26,7 @@ newtype EvaluationClient a =
 instance EvaluationApi EvaluationClient where
   evaluateFen = postFenEval
   updatePieceWeightings = postPieceWeightings
+  evaluateFens = postFens . Stream.fromFoldable
 
 data EvaluationClientConfig =
   EvaluationClientConfig
@@ -47,9 +49,7 @@ convertToClient clientM = EvaluationClient output
       clientEnv <- liftIO $ makeEvaluationClientEnvFromConfig evalClientConfig
       fromEitherIO $ runClientM clientM clientEnv
 
-instance MimeRender PlainText FenRepresentation where
-  mimeRender _ = pack . show
-
 postFenEval :: FenRepresentation -> EvaluationClient Double
 postPieceWeightings :: PieceWeightings_ Maybe -> EvaluationClient PieceWeightings
-postFenEval :<|> postPieceWeightings = hoistClient evalApiProxy convertToClient (client evalApiProxy)
+postFens :: Stream.Stream IO FenRepresentation -> EvaluationClient (Maybe MinAndMaxEval)
+postFenEval :<|> postPieceWeightings :<|> postFens = hoistClient evalApiProxy convertToClient (client evalApiProxy)

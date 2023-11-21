@@ -1,26 +1,24 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeOperators #-}
-{-# LANGUAGE MultiParamTypeClasses #-}
 
 module Chess.Evaluation.EvaluationRestApi where
 
+import Chess.Evaluation.MinAndMaxEval
 import Chess.Evaluation.PieceWeightings
 import Chess.Fen (FenRepresentation)
-import Chess.Fen.FenParser (parseFen)
-import Control.Arrow (left)
-import Data.ByteString.Lazy.Char8 (pack, unpack)
 import Data.Proxy
 import Servant.API
+import qualified Streamly.Internal.Data.Stream.StreamK as Stream
 
-type EvaluationRestApi = EvaluateFenEndpoint :<|> UpdatePieceWeightingsEndpoint
+type EvaluationRestApi = EvaluateFenEndpoint :<|> UpdatePieceWeightingsEndpoint :<|> EvaluationStreamingEndpoint
 
 type EvaluateFenEndpoint = "evaluate" :> "fen" :> ReqBody '[ PlainText] FenRepresentation :> Post '[ JSON] Double
 
 type UpdatePieceWeightingsEndpoint
    = "update" :> "piece" :> "weightings" :> ReqBody '[ JSON] (PieceWeightings_ Maybe) :> Post '[ JSON] PieceWeightings
 
-instance MimeUnrender PlainText FenRepresentation where
-  mimeUnrender _ = left show . parseFen . unpack
+type EvaluationStreamingEndpoint
+   = "evaluate" :> "fens" :> StreamBody NewlineFraming PlainText (Stream.Stream IO FenRepresentation) :> Post '[ JSON] (Maybe MinAndMaxEval)
 
 evalApiProxy :: Proxy EvaluationRestApi
 evalApiProxy = Proxy

@@ -7,7 +7,6 @@ import Chess.Fen.EnPassentSquare
 import Chess.Fen.FenRepresentation
 import Chess.Move
 import Chess.Piece
-import Chess.Position
 import Control.Lens
 import Data.Foldable
 import qualified Data.Map as Map
@@ -58,23 +57,23 @@ instance Semigroup a => Semigroup (MoveTree a) where
 instance Semigroup a => Monoid (MoveTree a) where
   mempty = EmptyTree
 
-makeMove :: MoveTypes -> Position -> Position
+makeMove :: MoveTypes -> FenRepresentation -> FenRepresentation
 makeMove mv pos =
   let (startSq, endSq) =
         case mv of
           Mv (Move start end) -> (start, end)
-      startingColour = pos ^. fen . nextToMove
+      startingColour = pos ^. nextToMove
       fullMoveIncrement =
         case startingColour of
           Black -> (+ 1)
           White -> id
-      fullMoveUpdate = over (fen . fullMoveClock) fullMoveIncrement
+      fullMoveUpdate = over fullMoveClock fullMoveIncrement
       startingPieceType = (pos ^. likePieces) Map.! startSq
       halfMoveIncrement =
         if startingPieceType == Pawn || Map.member endSq (pos ^. oppoPieces)
           then const 0
           else (+ 1)
-      halfMoveUpdate = over (fen . halfMoveClock) halfMoveIncrement
+      halfMoveUpdate = over halfMoveClock halfMoveIncrement
       startRankEnum = fromEnum (startSq ^. rank)
       endRankEnum = fromEnum (endSq ^. rank)
       enPSq =
@@ -82,8 +81,8 @@ makeMove mv pos =
           then let enPRank = toEnum ((startRankEnum + endRankEnum) `div` 2)
                 in Just $ Square (startSq ^. file) enPRank
           else Nothing
-      enPassentUpdate = set (fen . enPassentSquare . enPassentSq) enPSq
-      pceColourUpdate = over (fen . nextToMove) oppoColour
+      enPassentUpdate = set (enPassentSquare . enPassentSq) enPSq
+      pceColourUpdate = over nextToMove oppoColour
       likePiecesUpdate = over likePieces (changeKey startSq endSq)
       oppoPiecesUpdate = over oppoPieces (Map.delete endSq)
       kingSqUpdate =

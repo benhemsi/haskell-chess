@@ -7,7 +7,6 @@ import Chess.Board
 import Chess.Fen
 import Chess.Move
 import Chess.Piece
-import Chess.Position
 import Control.Lens
 import Data.Foldable (toList)
 import qualified Data.Map as Map
@@ -15,7 +14,7 @@ import Data.Maybe (isJust)
 import qualified Data.Set as Set
 
 class MoveFiltering mvs where
-  filterMoves :: mvs -> Position -> [MoveTypes]
+  filterMoves :: mvs -> FenRepresentation -> [MoveTypes]
 
 instance MoveFiltering SlidingMoves where
   filterMoves (SlidingMoves a b c d) pos = movesToMoveTypes $ foldMoves a ++ foldMoves b ++ foldMoves c ++ foldMoves d
@@ -52,7 +51,7 @@ instance MoveFiltering PawnMoves where
           _ -> forward1 ++ filterMove f2
       takingMoves = filter (\move -> _end move `Set.member` oppoSquares) tks
       enPassentMove =
-        case view (fen . enPassentSquare . enPassentSq) pos of
+        case view (enPassentSquare . enPassentSq) pos of
           Just sq -> map EnP $ filter (\(EnPassent move _) -> _end move == sq) enPs
           Nothing -> []
       promotionMoves = toList $ fmap (PP . PawnPromotion) (filterMove $ fmap (\(PawnPromotion move) -> move) pr)
@@ -64,7 +63,7 @@ instance MoveFiltering KingMoves where
       attackedSquares = getOppoAttackedSquares pos
       occupiedSquares = view likeOccupiedSquares pos `Set.union` view oppoOccupiedSquares pos
       rankToCheck =
-        case view (fen . nextToMove) pos of
+        case view nextToMove pos of
           White -> R1
           Black -> R8
       kingSideMove =
@@ -84,8 +83,8 @@ instance MoveFiltering KingMoves where
                    squaresToCheckIfOccupied = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfOccupied
                    squaresToCheckIfAttacked = Set.fromList $ map (`Square` rankToCheck) filesToCheckIfAttacked
                    cond =
-                     squaresToCheckIfOccupied `Set.disjoint` occupiedSquares && squaresToCheckIfAttacked `Set.disjoint`
-                     attackedSquares
+                     squaresToCheckIfOccupied `Set.disjoint` occupiedSquares &&
+                     squaresToCheckIfAttacked `Set.disjoint` attackedSquares
                 in if cond
                      then toList $ fmap Cst queenSide
                      else []
@@ -96,7 +95,7 @@ instance MoveFiltering Moves where
   filterMoves (Sliders moves) pos = filterMoves moves pos
   filterMoves (QueenMoves bishopMvs rookMvs) pos = filterMoves bishopMvs pos ++ filterMoves rookMvs pos
   filterMoves (PawnMoves whiteMoves blackMoves) pos =
-    case view (fen . nextToMove) pos of
+    case view nextToMove pos of
       White -> filterMoves whiteMoves pos
       Black -> filterMoves blackMoves pos
   filterMoves (KingMoves kingMoves) pos = filterMoves kingMoves pos
@@ -116,7 +115,7 @@ flattenMoves (PawnMoves w b) = whiteMoves ++ blackMoves
 flattenAttackedSquares :: [MoveTypes] -> [Square]
 flattenAttackedSquares = concatMap (toList . attackedSquare)
 
-getOppoAttackedSquares :: Position -> Squares
+getOppoAttackedSquares :: FenRepresentation -> Squares
 getOppoAttackedSquares pos = foldr (\mvs curr -> Set.union curr (getAttackedSquares pos mvs)) Set.empty oppoMoves
   where
     oppoMoves = [emptyBoardMoves pce sq | (sq, pce) <- Map.assocs $ view oppoPieces pos]
@@ -124,7 +123,7 @@ getOppoAttackedSquares pos = foldr (\mvs curr -> Set.union curr (getAttackedSqua
 movesToMoveTypes :: [Move] -> [MoveTypes]
 movesToMoveTypes = map Mv
 
-isTakingMove :: Position -> MoveTypes -> Bool
+isTakingMove :: FenRepresentation -> MoveTypes -> Bool
 isTakingMove pos move = output
   where
     attackedSq = attackedSquare move
@@ -133,28 +132,29 @@ isTakingMove pos move = output
         Just sq -> sq `Set.member` view oppoOccupiedSquares pos
         Nothing -> False
 
-getValidMoves :: Lens' Position (Map.Map Square PieceType) -> Position -> Map.Map PieceOnSquare [MoveTypes]
+getValidMoves ::
+     Lens' FenRepresentation (Map.Map Square PieceType) -> FenRepresentation -> Map.Map PieceOnSquare [MoveTypes]
 getValidMoves plLens pos =
   Map.fromList
-    [ (PieceOnSquare (Piece (pos ^. fen . nextToMove) pce) sq, filterMoves moves pos)
+    [ (PieceOnSquare (Piece (pos ^. nextToMove) pce) sq, filterMoves moves pos)
     | (sq, pce) <- Map.assocs $ view plLens pos
     , let moves = emptyBoardMoves pce sq
     ]
 
-getLikeValidMoves :: Position -> Map.Map PieceOnSquare [MoveTypes]
+getLikeValidMoves :: FenRepresentation -> Map.Map PieceOnSquare [MoveTypes]
 getLikeValidMoves = getValidMoves likePieces
 
-getOppoValidMoves :: Position -> Map.Map PieceOnSquare [MoveTypes]
+getOppoValidMoves :: FenRepresentation -> Map.Map PieceOnSquare [MoveTypes]
 getOppoValidMoves = getValidMoves oppoPieces
 
 -- This should return all squares which a king can't move to. This includes all squares a night can hop, all sliding moves up to and including the final piece, all king moves, and pawn taking moves.
-getAttackedSquares :: Position -> Moves -> Squares
+getAttackedSquares :: FenRepresentation -> Moves -> Squares
 getAttackedSquares pos (PawnMoves whiteMoves blackMoves) =
-  Set.fromList $ flattenAttackedSquares (map Mv (takes pawnMoves)) ++
-  map (\(PawnPromotion mv) -> _end mv) (promotionTakes pawnMoves)
+  Set.fromList $
+  flattenAttackedSquares (map Mv (takes pawnMoves)) ++ map (\(PawnPromotion mv) -> _end mv) (promotionTakes pawnMoves)
   where
     pawnMoves =
-      case view (fen . nextToMove) pos of
+      case view nextToMove pos of
         White -> blackMoves
         Black -> whiteMoves
 getAttackedSquares pos moves = Set.fromList $ flattenAttackedSquares (filterMoves moves pos)

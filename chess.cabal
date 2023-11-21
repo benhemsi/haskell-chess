@@ -35,16 +35,19 @@ library
       Chess.Evaluation.EvaluationRestApi
       Chess.Evaluation.EvaluationService
       Chess.Evaluation.FenEvaluationCalculator
+      Chess.Evaluation.MinAndMaxEval
       Chess.Evaluation.PieceWeightings
+      Chess.Evaluation.ServantTypeclassInstances
       Chess.Fen
       Chess.Fen.CastlingPrivileges
       Chess.Fen.EnPassentSquare
       Chess.Fen.FenError
       Chess.Fen.FenParser
       Chess.Fen.FenRepresentation
-      Chess.GameEnd
-      Chess.GameState
+      Chess.Game.GameApi
+      Chess.Game.GameEnd
       Chess.Move
+      Chess.Moves.MoveApi
       Chess.Moves.MoveFiltering
       Chess.Moves.MoveTree
       Chess.OpeningTable.OpeningTableAccessor
@@ -66,8 +69,6 @@ library
       Chess.Piece.PieceType
       Chess.Piece.Queen
       Chess.Piece.Rook
-      Chess.Position
-      Chess.PositionWithMoves
       Chess.Weighted
   other-modules:
       Paths_chess
@@ -99,6 +100,7 @@ library
     , servant-server
     , split
     , stm
+    , streamly
     , text
     , transformers
     , unliftio
@@ -142,6 +144,7 @@ executable opening-table-exe
     , servant-server
     , split
     , stm
+    , streamly
     , text
     , transformers
     , unliftio
@@ -175,7 +178,6 @@ test-suite chess-test
       Chess.Piece.PieceTypeSpec
       Chess.Piece.QueenSpec
       Chess.Piece.RookSpec
-      Chess.PositionSpec
       Paths_chess
   hs-source-dirs:
       test
@@ -207,6 +209,7 @@ test-suite chess-test
     , servant-server
     , split
     , stm
+    , streamly
     , text
     , transformers
     , unliftio
